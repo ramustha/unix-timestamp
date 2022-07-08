@@ -45,7 +45,7 @@ public class TimestampSplitter extends BaseSplitter {
     }
   }
 
-  private static boolean isMillisOrSecondsFormat(String t) {
+  public static boolean isMillisOrSecondsFormat(String t) {
     return t.length() == MILLIS_LENGTH || t.length() == SECONDS_LENGTH;
   }
 

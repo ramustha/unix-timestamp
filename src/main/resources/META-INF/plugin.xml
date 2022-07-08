@@ -25,6 +25,11 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>1.0.1</b></p>
+        <ul>
+            <li>Change default icon</li>
+            <li>Some improvement</li>
+        </ul>
         <p><b>1.0.0</b></p>
         <ul>
             <li>Support *.java *.kt *.txt *.json *.xml *.html *.html file type</li>

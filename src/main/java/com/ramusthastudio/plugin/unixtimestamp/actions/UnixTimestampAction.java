@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
+import com.ramusthastudio.plugin.unixtimestamp.splitter.TimestampSplitter;
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
@@ -29,11 +30,15 @@ public class UnixTimestampAction extends AnAction {
     final Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
     final CaretModel caretModel = editor.getCaretModel();
     final Caret primaryCaret = caretModel.getPrimaryCaret();
-    String selectedText = primaryCaret.getSelectedText();
+    if (primaryCaret.getSelectedText() == null) {
+      return;
+    }
 
-    if (NumberUtils.isDigits(selectedText)) {
+    String selectedText = primaryCaret.getSelectedText().replaceAll("\\D", "").trim();
+    if (NumberUtils.isDigits(selectedText)
+        && TimestampSplitter.isMillisOrSecondsFormat(selectedText)) {
       Instant instant = Helper.createInstantFormat(selectedText);
-      String localFormat = String.format("%s [DEF]",
+      String localFormat = String.format("%s [SYS]",
           appSettingsState.getDefaultLocalFormatter()
               .withZone(ZoneId.systemDefault())
               .format(instant));

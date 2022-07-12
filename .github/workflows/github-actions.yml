@@ -1,4 +1,4 @@
-name: UNIX Timestamp Actions
+name: UNIX Timestamp Converter
 on: [push, pull_request]
 jobs:
   gradle_runner:

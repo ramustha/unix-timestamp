@@ -1,5 +1,6 @@
-# unix-timestamp 
-==================
+# UNIX Timestamp Converter 
+![utc](https://github.com/ramustha/unix-timestamp/actions/workflows/github-actions.yml/badge.svg)
+![utc](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=main)
 
 IntelliJ plugin - https://plugins.jetbrains.com/plugin/19499
 

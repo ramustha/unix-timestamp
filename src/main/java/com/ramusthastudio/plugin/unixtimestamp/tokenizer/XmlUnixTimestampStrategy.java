@@ -16,8 +16,9 @@ public class XmlUnixTimestampStrategy extends UnixTimestampStrategy {
   }
 
   @Override
-  public boolean isMyContext(@NotNull PsiElement element) {
-    return "XML".equals(element.getLanguage().getID()) || "XHTML".equals(element.getLanguage()
-        .getID()) || "HTML".equals(element.getLanguage().getID());
+  public boolean isLanguageSupported(@NotNull PsiElement element) {
+    return "XML".equals(element.getLanguage().getID())
+        || "XHTML".equals(element.getLanguage().getID())
+        || "HTML".equals(element.getLanguage().getID());
   }
 }

@@ -41,11 +41,15 @@ public class AppSettingsConfigurable implements Configurable {
           mySettingsComponent.isAlreadyPreview()
               && !mySettingsComponent.getCustomPattern().equals(settings.getCustomPattern());
       modified |= mySettingsComponent.isUtcEnable() != settings.isUtcEnable();
+      modified |= mySettingsComponent.isInlayHintsEnable() != settings.isUtcEnable();
+      modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
       return modified;
     }
     boolean modified = !mySettingsComponent.getSelectedItem().getValue()
         .equals(settings.getDefaultLocalFormatter());
     modified |= mySettingsComponent.isUtcEnable() != settings.isUtcEnable();
+    modified |= mySettingsComponent.isInlayHintsEnable() != settings.isUtcEnable();
+    modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
     return modified;
   }
 
@@ -66,6 +70,8 @@ public class AppSettingsConfigurable implements Configurable {
       settings.setDateFormatSettings(selected);
     }
     settings.setUtcEnable(mySettingsComponent.isUtcEnable());
+    settings.setInlayHintsEnable(mySettingsComponent.isInlayHintsEnable());
+    settings.setInlayHintsPlaceEndOfLineEnable(mySettingsComponent.isInlayHintsPlaceEndOfLineEnable());
     LOG.debug("apply settings = " + settings);
   }
 
@@ -84,6 +90,8 @@ public class AppSettingsConfigurable implements Configurable {
       mySettingsComponent.enableDefaultFormat(true);
     }
     mySettingsComponent.setUtcEnable(settings.isUtcEnable());
+    mySettingsComponent.setInlayHintsEnable(settings.isInlayHintsEnable());
+    mySettingsComponent.setInlayHintsPlaceEndOfLineEnable(settings.isInlayHintsPlaceEndOfLineEnable());
   }
 
   @Override

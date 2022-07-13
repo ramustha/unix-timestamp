@@ -29,11 +29,20 @@ public class AppSettingsComponent implements ActionListener {
   private final JButton previewButton = new JButton("Preview");
   private final JBCheckBox customPatternCheckBox = new JBCheckBox("Custom format: ");
   private final JBCheckBox utcCheckBox = new JBCheckBox("UTC");
+  private final JBCheckBox inlayHintsCheckBox = new JBCheckBox("Inlay hints");
+  private final JBCheckBox inlayHintsPlaceEndOfLineCheckBox = new JBCheckBox("Place at the end of line");
   private final JBLabel previewLabel = new JBLabel();
   private boolean alreadyPreview;
   private boolean isInvalid;
 
   public AppSettingsComponent() {
+    Box inlayHintsBox = Box.createHorizontalBox();
+    inlayHintsBox.add(inlayHintsCheckBox);
+    inlayHintsBox.add(Box.createHorizontalStrut(5));
+    inlayHintsBox.add(inlayHintsPlaceEndOfLineCheckBox);
+    final JPanel inlayHintsPanel = new JPanel(new BorderLayout());
+    inlayHintsPanel.add(inlayHintsBox, BorderLayout.NORTH);
+
     Box patternBox = Box.createHorizontalBox();
     patternBox.add(patternComboBox);
     patternBox.add(utcCheckBox);
@@ -48,6 +57,7 @@ public class AppSettingsComponent implements ActionListener {
     previewPanel.add(previewBox, BorderLayout.NORTH);
 
     mainPanel = FormBuilder.createFormBuilder()
+        .addComponentToRightColumn(inlayHintsPanel, 1)
         .addLabeledComponent(new JBLabel("Date format: "), patternPanel, 1)
         .addSeparator(1)
         .addLabeledComponent(customPatternCheckBox, customPatternTextField, 1)
@@ -142,5 +152,21 @@ public class AppSettingsComponent implements ActionListener {
 
   public void setUtcEnable(boolean selected) {
     utcCheckBox.setSelected(selected);
+  }
+
+  public boolean isInlayHintsEnable() {
+    return inlayHintsCheckBox.isSelected();
+  }
+
+  public void setInlayHintsEnable(boolean selected) {
+    inlayHintsCheckBox.setSelected(selected);
+  }
+
+  public boolean isInlayHintsPlaceEndOfLineEnable() {
+    return inlayHintsPlaceEndOfLineCheckBox.isSelected();
+  }
+
+  public void setInlayHintsPlaceEndOfLineEnable(boolean selected) {
+    inlayHintsPlaceEndOfLineCheckBox.setSelected(selected);
   }
 }

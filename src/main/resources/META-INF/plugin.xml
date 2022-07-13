@@ -67,6 +67,21 @@
                          displayName="Unix timestamp converter"
                          enabledByDefault="true" level="INFO"
                          implementationClass="com.ramusthastudio.plugin.unixtimestamp.UnixTimestampInspection"/>
+
+        <codeInsight.inlayProvider language="TEXT"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.UnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="JAVA"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JavaUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="kotlin"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="JSON"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JsonUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="HTML"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.HtmlUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="XHTML"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.XHtmlUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="XML"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.XmlUnixTimestampInlayHints"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">

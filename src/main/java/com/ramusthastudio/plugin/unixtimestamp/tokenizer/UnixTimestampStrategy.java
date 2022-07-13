@@ -1,15 +1,11 @@
 package com.ramusthastudio.plugin.unixtimestamp.tokenizer;
 
 import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.PsiPlainText;
 import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.spellchecker.inspections.PlainTextSplitter;
 import com.intellij.spellchecker.tokenizer.TokenConsumer;
 import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.spellchecker.tokenizer.TokenizerBase;
@@ -17,8 +13,6 @@ import com.intellij.util.KeyedLazyInstance;
 import com.ramusthastudio.plugin.unixtimestamp.splitter.TimestampSplitter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 
 public class UnixTimestampStrategy {
   public static final ExtensionPointName<KeyedLazyInstance<UnixTimestampStrategy>> EP_NAME =
@@ -43,10 +37,7 @@ public class UnixTimestampStrategy {
   @SuppressWarnings("all")
   @NotNull
   public Tokenizer getTokenizer(PsiElement element) {
-    if (element instanceof XmlAttributeValue) {
-      return TIME_MILLIS_TOKENIZER;
-    }
-    if (element instanceof PsiPlainText) {
+    if (element instanceof PsiPlainText || element instanceof XmlAttributeValue) {
       return TIME_MILLIS_TOKENIZER;
     }
     return EMPTY_TOKENIZER;
@@ -70,7 +61,7 @@ public class UnixTimestampStrategy {
     return BATCH_FIXES;
   }
 
-  public boolean isMyContext(@NotNull PsiElement element) {
+  public boolean isLanguageSupported(@NotNull PsiElement element) {
     return "TEXT".equals(element.getLanguage().getID());
   }
 }

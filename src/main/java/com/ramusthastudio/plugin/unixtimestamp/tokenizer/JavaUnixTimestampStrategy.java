@@ -16,7 +16,7 @@ public class JavaUnixTimestampStrategy extends UnixTimestampStrategy {
   }
 
   @Override
-  public boolean isMyContext(@NotNull PsiElement element) {
+  public boolean isLanguageSupported(@NotNull PsiElement element) {
     return "JAVA".equals(element.getLanguage().getID());
   }
 }

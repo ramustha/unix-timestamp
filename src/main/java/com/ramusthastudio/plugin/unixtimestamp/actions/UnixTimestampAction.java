@@ -36,7 +36,7 @@ public class UnixTimestampAction extends AnAction {
 
     String selectedText = primaryCaret.getSelectedText().replaceAll("\\D", "").trim();
     if (NumberUtils.isDigits(selectedText)
-        && TimestampSplitter.isMillisOrSecondsFormat(selectedText)) {
+        && Helper.isMillisOrSecondsFormat(selectedText)) {
       Instant instant = Helper.createInstantFormat(selectedText);
       String localFormat = String.format("%s [SYS]",
           appSettingsState.getDefaultLocalFormatter()

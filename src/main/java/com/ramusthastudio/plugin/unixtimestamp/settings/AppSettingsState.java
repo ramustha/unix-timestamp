@@ -17,6 +17,8 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   private DateFormatSettings dateFormatSettings = DateFormatSettings.RFC_1123_DATE_TIME;
   private boolean isCustomPatternEnable;
   private boolean isUtcEnable;
+  private boolean isInlayHintsEnable;
+  private boolean isInlayHintsPlaceEndOfLineEnable;
   private String customPattern = null;
 
   public static AppSettingsState getInstance() {
@@ -94,10 +96,27 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     isUtcEnable = utcEnable;
   }
 
+  public boolean isInlayHintsEnable() {
+    return isInlayHintsEnable;
+  }
+
+  public void setInlayHintsEnable(boolean inlayHintsEnable) {
+    isInlayHintsEnable = inlayHintsEnable;
+  }
+
+  public boolean isInlayHintsPlaceEndOfLineEnable() {
+    return isInlayHintsPlaceEndOfLineEnable;
+  }
+
+  public void setInlayHintsPlaceEndOfLineEnable(boolean inlayHintsPlaceEndOfLineEnable) {
+    isInlayHintsPlaceEndOfLineEnable = inlayHintsPlaceEndOfLineEnable;
+  }
+
   @Override
   public String toString() {
     return "AppSettingsState{" + "dateFormatSettings=" + dateFormatSettings
         + ", isCustomPatternEnable=" + isCustomPatternEnable + ", isUtcEnable=" + isUtcEnable
-        + ", customPattern='" + customPattern + '\'' + '}';
+        + ", isInlayHintsEnable=" + isInlayHintsEnable + ", isInlayHintsPlaceEndOfLineEnable="
+        + isInlayHintsPlaceEndOfLineEnable + ", customPattern='" + customPattern + '\'' + '}';
   }
 }

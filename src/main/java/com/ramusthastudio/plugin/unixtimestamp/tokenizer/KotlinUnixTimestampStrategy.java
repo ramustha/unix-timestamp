@@ -16,7 +16,7 @@ public class KotlinUnixTimestampStrategy extends UnixTimestampStrategy {
   }
 
   @Override
-  public boolean isMyContext(@NotNull PsiElement element) {
+  public boolean isLanguageSupported(@NotNull PsiElement element) {
     return "kotlin".equals(element.getLanguage().getID());
   }
 }

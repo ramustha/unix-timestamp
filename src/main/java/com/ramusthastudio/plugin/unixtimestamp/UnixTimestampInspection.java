@@ -22,7 +22,6 @@ import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.CollectionFactory;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
-import com.ramusthastudio.plugin.unixtimestamp.splitter.TimestampSplitter;
 import com.ramusthastudio.plugin.unixtimestamp.tokenizer.LanguageUnixTimestamp;
 import com.ramusthastudio.plugin.unixtimestamp.tokenizer.SuppressibleUnixTimestampStrategy;
 import com.ramusthastudio.plugin.unixtimestamp.tokenizer.UnixTimestampStrategy;
@@ -41,6 +40,7 @@ import java.util.Set;
 
 public class UnixTimestampInspection extends LocalInspectionTool {
   private static final Logger LOG = LoggerFactory.getLogger(UnixTimestampInspection.class);
+  private final AppSettingsState appSettingsState = AppSettingsState.getInstance();
 
   @Override
   public SuppressQuickFix @NotNull [] getBatchSuppressActions(@Nullable PsiElement element) {
@@ -79,6 +79,10 @@ public class UnixTimestampInspection extends LocalInspectionTool {
     return new PsiElementVisitor() {
       @Override
       public void visitElement(@NotNull PsiElement element) {
+        if (appSettingsState.isInlayHintsEnable()) {
+          return;
+        }
+
         if (holder.getResultCount() > 1000)
           return;
 
@@ -116,7 +120,7 @@ public class UnixTimestampInspection extends LocalInspectionTool {
   private static UnixTimestampStrategy getUnixEpochStrategy(@NotNull PsiElement element,
       @NotNull Language language) {
     for (UnixTimestampStrategy strategy : LanguageUnixTimestamp.INSTANCE.allForLanguage(language)) {
-      if (strategy.isMyContext(element)) {
+      if (strategy.isLanguageSupported(element)) {
         return strategy;
       }
     }

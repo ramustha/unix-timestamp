@@ -81,11 +81,13 @@ public final class Helper {
         DateTimeFormatter formatter = appSettingsState.getDefaultLocalFormatter();
         String localFormat = String.format("%s", formatter.format(instant));
 
-        InlayPresentation smallText = factory.smallText(localFormat);
-        InlayPresentation presentation = new InsetPresentation(smallText, 5, 5, 5, 5);
+        PresentationFactory scaleAwareFactory = factory;
+        InlayPresentation inlayPresentation =
+            scaleAwareFactory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat));
+
         sink.addInlineElement(textRange.getStartOffset(),
             true,
-            presentation,
+            inlayPresentation,
             appSettingsState.isInlayHintsPlaceEndOfLineEnable());
       }
     }

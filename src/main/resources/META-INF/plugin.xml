@@ -25,6 +25,11 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>1.1.0</b></p>
+        <ul>
+            <li>Support inlay hints</li>
+            <li>add inlay hints settings</li>
+        </ul>
         <p><b>1.0.1</b></p>
         <ul>
             <li>Change default icon</li>

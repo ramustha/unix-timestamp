@@ -1,6 +1,7 @@
 # UNIX Timestamp Converter 
 ![utc](https://github.com/ramustha/unix-timestamp/actions/workflows/github-actions.yml/badge.svg)
-![utc](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=main)
+![release-date](https://img.shields.io/github/release-date/ramustha/unix-timestamp)
+![release-version](https://img.shields.io/github/v/release/ramustha/unix-timestamp)
 
 IntelliJ plugin - https://plugins.jetbrains.com/plugin/19499
 

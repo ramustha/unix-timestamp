@@ -25,6 +25,10 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>2.0.0</b></p>
+        <ul>
+            <li>Support IC 2022.2.3</li>
+        </ul>
         <p><b>1.1.0</b></p>
         <ul>
             <li>Support inlay hints</li>

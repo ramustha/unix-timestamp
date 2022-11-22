@@ -54,8 +54,8 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends optional="true">com.intellij.java</depends>
-    <depends optional="true">org.jetbrains.kotlin</depends>
+    <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
+    <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
 
     <extensionPoints>
         <extensionPoint name="ep.support"
@@ -83,10 +83,6 @@
 
         <codeInsight.inlayProvider language="TEXT"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.UnixTimestampInlayHints"/>
-        <codeInsight.inlayProvider language="JAVA"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JavaUnixTimestampInlayHints"/>
-        <codeInsight.inlayProvider language="kotlin"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="JSON"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JsonUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="HTML"
@@ -100,10 +96,6 @@
     <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">
         <ep.support language="TEXT"
                     implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.UnixTimestampStrategy"/>
-        <ep.support language="JAVA"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.JavaUnixTimestampStrategy"/>
-        <ep.support language="kotlin"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.KotlinUnixTimestampStrategy"/>
         <ep.support language="JSON"
                     implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.JsonUnixTimestampStrategy"/>
         <ep.support language="HTML"

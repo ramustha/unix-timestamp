@@ -1,0 +1,13 @@
+<idea-plugin>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.inlayProvider language="kotlin"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">
+        <ep.support language="kotlin"
+                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.KotlinUnixTimestampStrategy"/>
+    </extensions>
+</idea-plugin>

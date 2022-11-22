@@ -3,11 +3,13 @@ package com.ramusthastudio.plugin.unixtimestamp;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Ignore
 public class UnixTimestampInspectionTest extends LightJavaCodeInsightFixtureTestCase {
 
   @Override

@@ -17,8 +17,8 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   private DateFormatSettings dateFormatSettings = DateFormatSettings.RFC_1123_DATE_TIME;
   private boolean isCustomPatternEnable;
   private boolean isUtcEnable;
-  private boolean isInlayHintsEnable;
-  private boolean isInlayHintsPlaceEndOfLineEnable;
+  private boolean isInlayHintsEnable = true;
+  private boolean isInlayHintsPlaceEndOfLineEnable = true;
   private String customPattern = null;
 
   public static AppSettingsState getInstance() {

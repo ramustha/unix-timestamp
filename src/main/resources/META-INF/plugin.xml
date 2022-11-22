@@ -25,6 +25,10 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>3.0.0</b></p>
+        <ul>
+            <li>Support other IntelliJ Product like DataGrip etc..</li>
+        </ul>
         <p><b>2.0.0</b></p>
         <ul>
             <li>Support IC 2022.2.3</li>
@@ -50,8 +54,8 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.java</depends>
-    <depends>org.jetbrains.kotlin</depends>
+    <depends optional="true">com.intellij.java</depends>
+    <depends optional="true">org.jetbrains.kotlin</depends>
 
     <extensionPoints>
         <extensionPoint name="ep.support"

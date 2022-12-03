@@ -20,6 +20,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   private boolean isInlayHintsEnable = true;
   private boolean isInlayHintsPlaceEndOfLineEnable = true;
   private String customPattern = null;
+  private DateTimeFormatter effectiveFormatter;
 
   public static AppSettingsState getInstance() {
     return ApplicationManager.getApplication().getService(AppSettingsState.class);
@@ -34,23 +35,29 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   @Override
   public void loadState(@NotNull AppSettingsState state) {
     XmlSerializerUtil.copyBean(state, this);
+    createEffectiveFormatter();
+  }
+
+  @Override
+  public void noStateLoaded() {
+    PersistentStateComponent.super.noStateLoaded();
+    createEffectiveFormatter();
   }
 
   public DateTimeFormatter getDefaultLocalFormatter() {
+    return effectiveFormatter;
+  }
+
+  private void createEffectiveFormatter() {
+    effectiveFormatter = dateFormatSettings.getValue();
     try {
       if (isCustomPatternEnable) {
-        if (isUtcEnable) {
-          return DateTimeFormatter.ofPattern(customPattern).withZone(ZoneId.of("UTC"));
-        }
-        return DateTimeFormatter.ofPattern(customPattern).withZone(ZoneId.systemDefault());
+        effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
       }
     } catch (Exception e) {
       // ignored
     }
-    if (isUtcEnable) {
-      return dateFormatSettings.getValue().withZone(ZoneId.of("UTC"));
-    }
-    return dateFormatSettings.getValue().withZone(ZoneId.systemDefault());
+    effectiveFormatter = effectiveFormatter.withZone(isUtcEnable ? ZoneId.of("UTC") : ZoneId.systemDefault());
   }
 
   public DateTimeFormatter getDefaultUtcFormatter() {
@@ -70,6 +77,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   public void setDateFormatSettings(DateFormatSettings dateFormatSettings) {
     this.dateFormatSettings = dateFormatSettings;
+    createEffectiveFormatter();
   }
 
   public String getCustomPattern() {
@@ -78,10 +86,12 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   public void setCustomPattern(String customPattern) {
     this.customPattern = customPattern;
+    createEffectiveFormatter();
   }
 
   public void setCustomPatternEnable(boolean customPatternEnable) {
     isCustomPatternEnable = customPatternEnable;
+    createEffectiveFormatter();
   }
 
   public boolean isCustomPatternEnable() {
@@ -94,6 +104,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   public void setUtcEnable(boolean utcEnable) {
     isUtcEnable = utcEnable;
+    createEffectiveFormatter();
   }
 
   public boolean isInlayHintsEnable() {

@@ -36,19 +36,15 @@ public class AppSettingsConfigurable implements Configurable {
   @Override
   public boolean isModified() {
     AppSettingsState settings = AppSettingsState.getInstance();
+    boolean modified;
     if (mySettingsComponent.isCustomPatternEnable()) {
-      boolean modified =
-          mySettingsComponent.isAlreadyPreview()
-              && !mySettingsComponent.getCustomPattern().equals(settings.getCustomPattern());
-      modified |= mySettingsComponent.isUtcEnable() != settings.isUtcEnable();
-      modified |= mySettingsComponent.isInlayHintsEnable() != settings.isUtcEnable();
-      modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
-      return modified;
+      modified = mySettingsComponent.isAlreadyPreview()
+          && !mySettingsComponent.getCustomPattern().equals(settings.getCustomPattern());
+    } else {
+      modified = !mySettingsComponent.getSelectedItem().equals(settings.getDateFormatSettings());
     }
-    boolean modified = !mySettingsComponent.getSelectedItem().getValue()
-        .equals(settings.getDefaultLocalFormatter());
     modified |= mySettingsComponent.isUtcEnable() != settings.isUtcEnable();
-    modified |= mySettingsComponent.isInlayHintsEnable() != settings.isUtcEnable();
+    modified |= mySettingsComponent.isInlayHintsEnable() != settings.isInlayHintsEnable();
     modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
     return modified;
   }

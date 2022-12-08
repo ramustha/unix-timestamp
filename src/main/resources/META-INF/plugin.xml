@@ -25,6 +25,11 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>3.1.0</b></p>
+        <ul>
+            <li>Fixed memory leak issue</li>
+            <li>Add some improvement</li>
+        </ul>
         <p><b>3.0.0</b></p>
         <ul>
             <li>Support other IntelliJ Product like DataGrip etc..</li>

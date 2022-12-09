@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.psi.KtFile;
 
-public class KotlinUnixTimestampInlayHints extends UnixTimestampInlayHints {
+public class KotlinUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
 
   @Nullable
   @Override

@@ -1,19 +1,20 @@
-package com.ramusthastudio.plugin.unixtimestamp.hints;
+package com.ramusthastudio.plugin.unixtimestamp.hints.javascript;
 
 import com.intellij.codeInsight.hints.FactoryInlayHintsCollector;
 import com.intellij.codeInsight.hints.InlayHintsCollector;
 import com.intellij.codeInsight.hints.InlayHintsSink;
-import com.intellij.json.psi.JsonFile;
 import com.intellij.lang.Language;
+import com.intellij.lang.javascript.psi.JSFile;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class JsonUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
+public class JavaScriptUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
 
   @Nullable
   @Override
@@ -24,7 +25,7 @@ public class JsonUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHint
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (element instanceof JsonFile) {
+        if (element instanceof JSFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }
@@ -35,6 +36,6 @@ public class JsonUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHint
 
   @Override
   public boolean isLanguageSupported(@NotNull Language language) {
-    return "JSON".equals(language.getID());
+    return language.getID().contains("ECMAScript");
   }
 }

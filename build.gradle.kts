@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.9.0"
+    id("org.jetbrains.intellij") version "1.10.1"
 }
 
 group = "com.ramusthastudio.plugin"
@@ -8,6 +8,8 @@ version = "3.1.0"
 
 repositories {
     mavenCentral()
+    maven("https://www.jetbrains.com/intellij-repository/releases")
+    maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
 }
 
 dependencies {
@@ -19,7 +21,12 @@ intellij {
     version.set("2022.2.3")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf("com.intellij.java", "org.jetbrains.kotlin"))
+    plugins.set(listOf(
+        "com.intellij.java",
+        "org.jetbrains.kotlin",
+        "JavaScript",
+        "com.intellij.css"
+    ))
 }
 
 tasks {

@@ -1,4 +1,4 @@
-package com.ramusthastudio.plugin.unixtimestamp.hints;
+package com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet;
 
 import com.intellij.codeInsight.hints.FactoryInlayHintsCollector;
 import com.intellij.codeInsight.hints.InlayHintsCollector;
@@ -7,13 +7,14 @@ import com.intellij.lang.Language;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.css.CssFile;
+import com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HtmlUnixTimestampInlayHints extends UnixTimestampInlayHints {
+public class CSSUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
 
   @Nullable
   @Override
@@ -24,7 +25,7 @@ public class HtmlUnixTimestampInlayHints extends UnixTimestampInlayHints {
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (element instanceof XmlFile) {
+        if (element instanceof CssFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }
@@ -35,6 +36,6 @@ public class HtmlUnixTimestampInlayHints extends UnixTimestampInlayHints {
 
   @Override
   public boolean isLanguageSupported(@NotNull Language language) {
-    return "HTML".equals(language.getID());
+    return "CSS".equals(language.getID());
   }
 }

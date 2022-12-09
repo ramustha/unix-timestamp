@@ -13,7 +13,7 @@ import com.ramusthastudio.plugin.unixtimestamp.utils.Helper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class JavaUnixTimestampInlayHints extends UnixTimestampInlayHints {
+public class JavaUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
 
   @Nullable
   @Override

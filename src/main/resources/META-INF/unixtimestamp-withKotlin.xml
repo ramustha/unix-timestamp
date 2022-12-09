@@ -5,9 +5,4 @@
         <codeInsight.inlayProvider language="kotlin"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
     </extensions>
-
-    <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">
-        <ep.support language="kotlin"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.KotlinUnixTimestampStrategy"/>
-    </extensions>
 </idea-plugin>

@@ -24,7 +24,7 @@ public class JsonUnixTimestampInlayHints extends UnixTimestampInlayHints {
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (settingsState.isInlayHintsEnable() && element instanceof JsonFile) {
+        if (element instanceof JsonFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }

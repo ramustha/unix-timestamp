@@ -24,7 +24,7 @@ public class HtmlUnixTimestampInlayHints extends UnixTimestampInlayHints {
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (settingsState.isInlayHintsEnable() && element instanceof XmlFile) {
+        if (element instanceof XmlFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }

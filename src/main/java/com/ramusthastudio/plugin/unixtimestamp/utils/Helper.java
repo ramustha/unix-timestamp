@@ -15,7 +15,9 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class Helper {
@@ -63,10 +65,15 @@ public final class Helper {
       }
       wordLength = word.length();
     }
-    return indexes.stream()
-        .map(i -> new TextRange(i, i + word.length()))
-        .distinct()
-        .collect(Collectors.toList());
+    List<TextRange> list = new ArrayList<>();
+    Set<TextRange> uniqueValues = new HashSet<>();
+    for (Integer i : indexes) {
+      TextRange textRange = new TextRange(i, i + word.length());
+      if (uniqueValues.add(textRange)) {
+        list.add(textRange);
+      }
+    }
+    return list;
   }
 
   public static void createInlayHintsElement(

@@ -24,7 +24,7 @@ public class JavaUnixTimestampInlayHints extends UnixTimestampInlayHints {
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (settingsState.isInlayHintsEnable() && element instanceof PsiJavaFile) {
+        if (element instanceof PsiJavaFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }

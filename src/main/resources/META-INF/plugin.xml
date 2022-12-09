@@ -62,14 +62,6 @@
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
 
-    <extensionPoints>
-        <extensionPoint name="ep.support"
-                        beanClass="com.intellij.lang.LanguageExtensionPoint" dynamic="true">
-            <with attribute="implementationClass"
-                  implements="com.ramusthastudio.plugin.unixtimestamp.tokenizer.UnixTimestampStrategy"/>
-        </extensionPoint>
-    </extensionPoints>
-
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
@@ -79,12 +71,6 @@
                                  displayName="Unix Timestamp"/>
         <applicationService
                 serviceImplementation="com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState"/>
-
-        <localInspection shortName="UnixTimestampInspection"
-                         groupName="Unix timestamp"
-                         displayName="Unix timestamp converter"
-                         enabledByDefault="true" level="INFO"
-                         implementationClass="com.ramusthastudio.plugin.unixtimestamp.UnixTimestampInspection"/>
 
         <codeInsight.inlayProvider language="TEXT"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.UnixTimestampInlayHints"/>
@@ -97,28 +83,4 @@
         <codeInsight.inlayProvider language="XML"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.XmlUnixTimestampInlayHints"/>
     </extensions>
-
-    <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">
-        <ep.support language="TEXT"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.UnixTimestampStrategy"/>
-        <ep.support language="JSON"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.JsonUnixTimestampStrategy"/>
-        <ep.support language="HTML"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.XmlUnixTimestampStrategy"/>
-        <ep.support language="XHTML"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.XmlUnixTimestampStrategy"/>
-        <ep.support language="XML"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.XmlUnixTimestampStrategy"/>
-    </extensions>
-
-    <actions>
-        <action id="UnixTimestampAction"
-                class="com.ramusthastudio.plugin.unixtimestamp.actions.UnixTimestampAction"
-                text="Show Date Format"
-                description="Convert UNIX timestamp format to human-readable date format.">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt D"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-            <add-to-group group-id="ConsoleEditorPopupMenu" anchor="last"/>
-        </action>
-    </actions>
 </idea-plugin>

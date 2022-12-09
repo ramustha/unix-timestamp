@@ -5,9 +5,4 @@
         <codeInsight.inlayProvider language="JAVA"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JavaUnixTimestampInlayHints"/>
     </extensions>
-
-    <extensions defaultExtensionNs="com.ramusthastudio.plugin.unixtimestamp">
-        <ep.support language="JAVA"
-                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.tokenizer.JavaUnixTimestampStrategy"/>
-    </extensions>
 </idea-plugin>

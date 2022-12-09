@@ -30,7 +30,7 @@ public class UnixTimestampInlayHints implements InlayHintsProvider<AppSettingsSt
     return new FactoryInlayHintsCollector(editor) {
       @Override
       public boolean collect(@NotNull PsiElement element, @NotNull Editor editor, @NotNull InlayHintsSink sink) {
-        if (settingsState.isInlayHintsEnable() && element instanceof PsiPlainTextFile) {
+        if (element instanceof PsiPlainTextFile) {
           Helper.createInlayHintsElement(element, sink, getFactory(), settingsState);
           return true;
         }

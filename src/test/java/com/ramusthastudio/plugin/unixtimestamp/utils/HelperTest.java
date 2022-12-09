@@ -1,13 +1,10 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils;
 
-import com.intellij.mock.MockPsiManager;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.DummyHolderViewProvider;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 
 public class HelperTest extends TestCase {

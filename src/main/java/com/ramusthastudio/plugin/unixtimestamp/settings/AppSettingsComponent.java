@@ -55,7 +55,7 @@ public class AppSettingsComponent implements ActionListener {
     previewPanel.add(previewBox, BorderLayout.NORTH);
 
     mainPanel = FormBuilder.createFormBuilder()
-        .addComponentToRightColumn(inlayHintsPanel, 1)
+        .addLabeledComponent(new JBLabel("Position: "), inlayHintsPanel, 1)
         .addLabeledComponent(new JBLabel("Date format: "), patternPanel, 1)
         .addSeparator(1)
         .addLabeledComponent(customPatternCheckBox, customPatternTextField, 1)

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "3.1.0"
+version = "4.0.0"
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ dependencies {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     version.set("2022.2.3")
-    type.set("IC") // Target IDE Platform
+    type.set("IU") // Target IDE Platform
 
     plugins.set(listOf(
         "com.intellij.java",

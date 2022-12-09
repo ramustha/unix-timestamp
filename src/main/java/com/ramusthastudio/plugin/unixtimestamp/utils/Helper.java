@@ -2,7 +2,6 @@ package com.ramusthastudio.plugin.unixtimestamp.utils;
 
 import com.intellij.codeInsight.hints.InlayHintsSink;
 import com.intellij.codeInsight.hints.presentation.InlayPresentation;
-import com.intellij.codeInsight.hints.presentation.InsetPresentation;
 import com.intellij.codeInsight.hints.presentation.PresentationFactory;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -14,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class Helper {
   public static final int MILLIS_LENGTH = 13;
@@ -40,10 +37,16 @@ public final class Helper {
 
   public static List<String> findUnixTimestamp(String text) {
     String fixedText = text.replaceAll("\\D", " ");
-    return Arrays.stream(fixedText.split("\\s+"))
-        .filter(t -> (NumberUtils.isDigits(t) && Helper.isMillisOrSecondsFormat(t)))
-        .distinct()
-        .collect(Collectors.toList());
+    List<String> list = new ArrayList<>();
+    Set<String> uniqueValues = new HashSet<>();
+    for (String t : fixedText.split("\\s+")) {
+      if ((NumberUtils.isDigits(t) && Helper.isMillisOrSecondsFormat(t))) {
+        if (uniqueValues.add(t)) {
+          list.add(t);
+        }
+      }
+    }
+    return list;
   }
 
   public static List<TextRange> findTextRange(String text, List<String> wordOfList) {
@@ -76,8 +79,10 @@ public final class Helper {
     return list;
   }
 
-  public static void createInlayHintsElement(
-      @NotNull PsiElement element, @NotNull InlayHintsSink sink, PresentationFactory factory, AppSettingsState appSettingsState) {
+  public static void createInlayHintsElement(@NotNull PsiElement element,
+      @NotNull InlayHintsSink sink,
+      PresentationFactory factory,
+      AppSettingsState appSettingsState) {
     String text = element.getText();
 
     List<String> unixEpochCandidateList = Helper.findUnixTimestamp(text);

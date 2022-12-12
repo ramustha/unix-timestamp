@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    testImplementation("org.mockito:mockito-core:4.8.0")
     testImplementation("junit:junit:4.13.2")
 }
 

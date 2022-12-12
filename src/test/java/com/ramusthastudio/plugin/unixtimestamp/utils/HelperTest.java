@@ -1,11 +1,19 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils;
 
+import com.intellij.codeInsight.hints.InlayHintsSink;
+import com.intellij.codeInsight.hints.presentation.PresentationFactory;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
+import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class HelperTest extends TestCase {
 
@@ -52,6 +60,14 @@ public class HelperTest extends TestCase {
   }
 
   public void testCreateInlayHintsElement() {
+    PsiElement psiElement = mock(PsiElement.class);
+    InlayHintsSink inlayHintsSink = mock(InlayHintsSink.class);
+    PresentationFactory presentationFactory = mock(PresentationFactory.class);
+    AppSettingsState appSettingsState = mock(AppSettingsState.class);
 
+    when(psiElement.getText()).thenReturn("1607446800000");
+    when(appSettingsState.getDefaultLocalFormatter()).thenReturn(DateTimeFormatter.ISO_INSTANT);
+
+    Helper.createInlayHintsElement(psiElement, inlayHintsSink, presentationFactory, appSettingsState);
   }
 }

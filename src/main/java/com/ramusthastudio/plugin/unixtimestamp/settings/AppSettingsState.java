@@ -50,25 +50,10 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   private void createEffectiveFormatter() {
     effectiveFormatter = dateFormatSettings.getValue();
-    try {
-      if (isCustomPatternEnable) {
-        effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
-      }
-    } catch (Exception e) {
-      // ignored
+    if (isCustomPatternEnable) {
+      effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
     }
     effectiveFormatter = effectiveFormatter.withZone(isUtcEnable ? ZoneId.of("UTC") : ZoneId.systemDefault());
-  }
-
-  public DateTimeFormatter getDefaultUtcFormatter() {
-    try {
-      if (isCustomPatternEnable) {
-        return DateTimeFormatter.ofPattern(customPattern).withZone(ZoneId.of("UTC"));
-      }
-    } catch (Exception e) {
-      // ignored
-    }
-    return dateFormatSettings.getValue().withZone(ZoneId.of("UTC"));
   }
 
   public DateFormatSettings getDateFormatSettings() {

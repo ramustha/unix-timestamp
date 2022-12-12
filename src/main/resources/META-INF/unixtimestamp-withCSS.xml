@@ -1,0 +1,16 @@
+<idea-plugin>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.CSSUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.SCSSUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.SASSUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.LESSUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.StylusUnixTimestampInlayHints"/>
+    </extensions>
+</idea-plugin>

@@ -5,6 +5,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +18,6 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   private DateFormatSettings dateFormatSettings = DateFormatSettings.RFC_1123_DATE_TIME;
   private boolean isCustomPatternEnable;
   private boolean isUtcEnable;
-  private boolean isInlayHintsEnable = true;
   private boolean isInlayHintsPlaceEndOfLineEnable = true;
   private String customPattern = null;
   private DateTimeFormatter effectiveFormatter;
@@ -50,25 +50,10 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   private void createEffectiveFormatter() {
     effectiveFormatter = dateFormatSettings.getValue();
-    try {
-      if (isCustomPatternEnable) {
-        effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
-      }
-    } catch (Exception e) {
-      // ignored
+    if (isCustomPatternEnable) {
+      effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
     }
     effectiveFormatter = effectiveFormatter.withZone(isUtcEnable ? ZoneId.of("UTC") : ZoneId.systemDefault());
-  }
-
-  public DateTimeFormatter getDefaultUtcFormatter() {
-    try {
-      if (isCustomPatternEnable) {
-        return DateTimeFormatter.ofPattern(customPattern).withZone(ZoneId.of("UTC"));
-      }
-    } catch (Exception e) {
-      // ignored
-    }
-    return dateFormatSettings.getValue().withZone(ZoneId.of("UTC"));
   }
 
   public DateFormatSettings getDateFormatSettings() {
@@ -107,14 +92,6 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     createEffectiveFormatter();
   }
 
-  public boolean isInlayHintsEnable() {
-    return isInlayHintsEnable;
-  }
-
-  public void setInlayHintsEnable(boolean inlayHintsEnable) {
-    isInlayHintsEnable = inlayHintsEnable;
-  }
-
   public boolean isInlayHintsPlaceEndOfLineEnable() {
     return isInlayHintsPlaceEndOfLineEnable;
   }
@@ -125,9 +102,12 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
   @Override
   public String toString() {
-    return "AppSettingsState{" + "dateFormatSettings=" + dateFormatSettings
-        + ", isCustomPatternEnable=" + isCustomPatternEnable + ", isUtcEnable=" + isUtcEnable
-        + ", isInlayHintsEnable=" + isInlayHintsEnable + ", isInlayHintsPlaceEndOfLineEnable="
-        + isInlayHintsPlaceEndOfLineEnable + ", customPattern='" + customPattern + '\'' + '}';
+    return new ToStringBuilder(this).append("dateFormatSettings", dateFormatSettings)
+        .append("isCustomPatternEnable", isCustomPatternEnable)
+        .append("isUtcEnable", isUtcEnable)
+        .append("isInlayHintsPlaceEndOfLineEnable", isInlayHintsPlaceEndOfLineEnable)
+        .append("customPattern", customPattern)
+        .append("effectiveFormatter", effectiveFormatter)
+        .toString();
   }
 }

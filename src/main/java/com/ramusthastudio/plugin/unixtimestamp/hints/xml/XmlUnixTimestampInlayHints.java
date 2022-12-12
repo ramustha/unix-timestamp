@@ -1,16 +1,18 @@
-package com.ramusthastudio.plugin.unixtimestamp.hints;
+package com.ramusthastudio.plugin.unixtimestamp.hints.xml;
 
 import com.intellij.codeInsight.hints.InlayHintsCollector;
 import com.intellij.codeInsight.hints.InlayHintsSink;
-import com.intellij.json.psi.JsonFile;
 import com.intellij.lang.Language;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.xml.XmlFile;
+import com.ramusthastudio.plugin.unixtimestamp.hints.BaseInlayHintsCollector;
+import com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class JsonUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
+public class XmlUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHints {
 
   @Nullable
   @Override
@@ -18,11 +20,11 @@ public class JsonUnixTimestampInlayHints extends PlainTextUnixTimestampInlayHint
       @NotNull Editor editor,
       @NotNull AppSettingsState settingsState,
       @NotNull InlayHintsSink inlayHintsSink) {
-    return new BaseInlayHintsCollector(editor, settingsState, JsonFile.class);
+    return new BaseInlayHintsCollector(editor, settingsState, XmlFile.class);
   }
 
   @Override
   public boolean isLanguageSupported(@NotNull Language language) {
-    return "JSON".equals(language.getID());
+    return "XML".equals(language.getID());
   }
 }

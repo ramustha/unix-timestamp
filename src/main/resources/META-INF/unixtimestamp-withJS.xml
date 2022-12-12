@@ -8,5 +8,8 @@
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.javascript.TypeScriptUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="TypeScript JSX"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.javascript.TypeScriptJSXUnixTimestampInlayHints"/>
+
+        <codeInsight.inlayProvider language="Vue"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.javascript.VueUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

@@ -19,14 +19,15 @@ dependencies {
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
-    version.set("2022.2.3")
+    version.set("2022.3")
     type.set("IU") // Target IDE Platform
 
     plugins.set(listOf(
         "com.intellij.java",
         "org.jetbrains.kotlin",
         "JavaScript",
-        "com.intellij.css"
+        "com.intellij.css",
+        "org.jetbrains.plugins.vue:223.7571.233",
     ))
 }
 
@@ -38,8 +39,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("212")
-        untilBuild.set("223.*")
+        sinceBuild.set("213.*")
     }
 
     signPlugin {

@@ -25,6 +25,11 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>4.1.0</b></p>
+        <ul>
+            <li>Add timestamp generator (alt + insert)</li>
+            <li>Add some improvement</li>
+        </ul>
         <p><b>4.0.0</b></p>
         <ul>
             <li>Support JavaScript family (*.js, *.ts, *.tsx)</li>

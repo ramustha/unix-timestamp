@@ -5,6 +5,7 @@ import com.intellij.codeInsight.hints.presentation.InlayPresentation;
 import com.intellij.codeInsight.hints.presentation.PresentationFactory;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.jgoodies.common.base.Strings;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang.math.NumberUtils;
@@ -60,7 +61,7 @@ public final class Helper {
     List<String> list = new ArrayList<>();
     Set<String> uniqueValues = new HashSet<>();
     for (String t : fixedText.split("\\s+")) {
-      if ((NumberUtils.isDigits(t) && Helper.isMillisOrSecondsFormat(t))) {
+      if (!Strings.isBlank(t) && (NumberUtils.isDigits(t) && Helper.isMillisOrSecondsFormat(t))) {
         if (uniqueValues.add(t)) {
           list.add(t);
         }
@@ -79,11 +80,12 @@ public final class Helper {
 
   public static List<TextRange> findTextRange(String text, String word) {
     List<Integer> indexes = new ArrayList<>();
+    Set<Integer> uniqueIndexes = new HashSet<>();
     int wordLength = 0;
     int index = 0;
     while (index != -1) {
       index = text.indexOf(word, index + wordLength);
-      if (index != -1) {
+      if (index != -1 && uniqueIndexes.add(index)) {
         indexes.add(index);
       }
       wordLength = word.length();
@@ -105,6 +107,7 @@ public final class Helper {
       AppSettingsState appSettingsState) {
     String text = element.getText();
 
+    Set<Integer> uniqueIndex = new HashSet<>();
     List<String> unixEpochCandidateList = Helper.findUnixTimestamp(text);
     for (String word : unixEpochCandidateList) {
       for (TextRange textRange : Helper.findTextRange(text, word)) {
@@ -117,10 +120,12 @@ public final class Helper {
         InlayPresentation inlayPresentation =
             scaleAwareFactory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat));
 
-        sink.addInlineElement(textRange.getStartOffset(),
-            true,
-            inlayPresentation,
-            appSettingsState.isInlayHintsPlaceEndOfLineEnable());
+        if (uniqueIndex.add(textRange.getStartOffset())) {
+          sink.addInlineElement(textRange.getStartOffset(),
+              true,
+              inlayPresentation,
+              appSettingsState.isInlayHintsPlaceEndOfLineEnable());
+        }
       }
     }
   }

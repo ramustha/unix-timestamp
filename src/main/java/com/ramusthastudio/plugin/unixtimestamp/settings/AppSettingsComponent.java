@@ -30,16 +30,19 @@ public class AppSettingsComponent implements ActionListener {
   private final JBCheckBox customPatternCheckBox = new JBCheckBox("Custom format: ");
   private final JBCheckBox utcCheckBox = new JBCheckBox("UTC");
   private final JBCheckBox inlayHintsPlaceEndOfLineCheckBox = new JBCheckBox("Place at the end of line");
+  private final JBCheckBox currentTimestampGeneratorCheckBox = new JBCheckBox("Current timestamp");
+  private final JBCheckBox customTimestampGeneratorCheckBox = new JBCheckBox("Custom timestamp");
   private final JBLabel previewLabel = new JBLabel();
   private boolean alreadyPreview;
   private boolean isInvalid;
 
   public AppSettingsComponent() {
-    Box inlayHintsBox = Box.createHorizontalBox();
-    inlayHintsBox.add(Box.createHorizontalStrut(5));
-    inlayHintsBox.add(inlayHintsPlaceEndOfLineCheckBox);
-    final JPanel inlayHintsPanel = new JPanel(new BorderLayout());
-    inlayHintsPanel.add(inlayHintsBox, BorderLayout.NORTH);
+    Box generatorBox = Box.createHorizontalBox();
+    generatorBox.add(currentTimestampGeneratorCheckBox);
+    generatorBox.add(Box.createHorizontalStrut(5));
+    generatorBox.add(customTimestampGeneratorCheckBox);
+    final JPanel generatorPanel = new JPanel(new BorderLayout());
+    generatorPanel.add(generatorBox, BorderLayout.NORTH);
 
     Box patternBox = Box.createHorizontalBox();
     patternBox.add(patternComboBox);
@@ -55,7 +58,8 @@ public class AppSettingsComponent implements ActionListener {
     previewPanel.add(previewBox, BorderLayout.NORTH);
 
     mainPanel = FormBuilder.createFormBuilder()
-        .addLabeledComponent(new JBLabel("Position: "), inlayHintsPanel, 1)
+        .addLabeledComponent(new JBLabel("Position: "), inlayHintsPlaceEndOfLineCheckBox, 1)
+        .addLabeledComponent(new JBLabel("Generator: "), generatorPanel, 1)
         .addLabeledComponent(new JBLabel("Date format: "), patternPanel, 1)
         .addSeparator(1)
         .addLabeledComponent(customPatternCheckBox, customPatternTextField, 1)
@@ -158,5 +162,21 @@ public class AppSettingsComponent implements ActionListener {
 
   public void setInlayHintsPlaceEndOfLineEnable(boolean selected) {
     inlayHintsPlaceEndOfLineCheckBox.setSelected(selected);
+  }
+
+  public boolean isCurrentTimestampGeneratorEnable() {
+    return currentTimestampGeneratorCheckBox.isSelected();
+  }
+
+  public void setCurrentTimestampGeneratorEnable(boolean selected) {
+    currentTimestampGeneratorCheckBox.setSelected(selected);
+  }
+
+  public boolean isCustomTimestampGeneratorEnable() {
+    return customTimestampGeneratorCheckBox.isSelected();
+  }
+
+  public void setCustomTimestampGeneratorEnable(boolean selected) {
+    customTimestampGeneratorCheckBox.setSelected(selected);
   }
 }

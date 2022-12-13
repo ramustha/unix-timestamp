@@ -11,6 +11,8 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,11 +30,29 @@ public final class Helper {
     return t.length() == MILLIS_LENGTH || t.length() == SECONDS_LENGTH;
   }
 
-  public static Instant createInstantFormat(String value) {
-    if (value.length() == SECONDS_LENGTH) {
-      return Instant.ofEpochSecond(Long.parseLong(value));
+  public static Instant createInstantFormat(String longValue) {
+    if (longValue.length() == SECONDS_LENGTH) {
+      return Instant.ofEpochSecond(Long.parseLong(longValue));
     }
-    return Instant.ofEpochMilli(Long.parseLong(value));
+    return Instant.ofEpochMilli(Long.parseLong(longValue));
+  }
+
+  public static long createTimestamp(String value, DateTimeFormatter formatter, boolean isUtc) {
+    LocalDateTime localDateTime = LocalDateTime.parse(value, formatter);
+    Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+    if (isUtc) {
+      instant = localDateTime.atZone(ZoneId.of("UTC")).toInstant();
+    }
+    return instant.toEpochMilli();
+  }
+
+  public static long currentTimestamp(boolean isUtc) {
+    LocalDateTime localDateTime = LocalDateTime.now();
+    Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+    if (isUtc) {
+      instant = localDateTime.atZone(ZoneId.of("UTC")).toInstant();
+    }
+    return instant.toEpochMilli();
   }
 
   public static List<String> findUnixTimestamp(String text) {

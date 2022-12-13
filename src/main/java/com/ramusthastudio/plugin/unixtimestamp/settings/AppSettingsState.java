@@ -19,8 +19,10 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   private boolean isCustomPatternEnable;
   private boolean isUtcEnable;
   private boolean isInlayHintsPlaceEndOfLineEnable = true;
+  private boolean isCurrentTimestampGeneratorEnable = true;
+  private boolean isCustomTimestampGeneratorEnable = true;
   private String customPattern = null;
-  private DateTimeFormatter effectiveFormatter;
+  private DateTimeFormatter formatter;
 
   public static AppSettingsState getInstance() {
     return ApplicationManager.getApplication().getService(AppSettingsState.class);
@@ -45,15 +47,15 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
   }
 
   public DateTimeFormatter getDefaultLocalFormatter() {
-    return effectiveFormatter;
+    return formatter;
   }
 
   private void createEffectiveFormatter() {
-    effectiveFormatter = dateFormatSettings.getValue();
+    formatter = dateFormatSettings.getValue();
     if (isCustomPatternEnable) {
-      effectiveFormatter = DateTimeFormatter.ofPattern(customPattern);
+      formatter = DateTimeFormatter.ofPattern(customPattern);
     }
-    effectiveFormatter = effectiveFormatter.withZone(isUtcEnable ? ZoneId.of("UTC") : ZoneId.systemDefault());
+    formatter = formatter.withZone(isUtcEnable ? ZoneId.of("UTC") : ZoneId.systemDefault());
   }
 
   public DateFormatSettings getDateFormatSettings() {
@@ -100,14 +102,31 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     isInlayHintsPlaceEndOfLineEnable = inlayHintsPlaceEndOfLineEnable;
   }
 
+  public boolean isCurrentTimestampGeneratorEnable() {
+    return isCurrentTimestampGeneratorEnable;
+  }
+
+  public void setCurrentTimestampGeneratorEnable(boolean currentTimestampGeneratorEnable) {
+    this.isCurrentTimestampGeneratorEnable = currentTimestampGeneratorEnable;
+  }
+
+  public boolean isCustomTimestampGeneratorEnable() {
+    return isCustomTimestampGeneratorEnable;
+  }
+
+  public void setCustomTimestampGeneratorEnable(boolean customTimestampGeneratorEnable) {
+    this.isCustomTimestampGeneratorEnable = customTimestampGeneratorEnable;
+  }
+
   @Override
   public String toString() {
     return new ToStringBuilder(this).append("dateFormatSettings", dateFormatSettings)
         .append("isCustomPatternEnable", isCustomPatternEnable)
         .append("isUtcEnable", isUtcEnable)
         .append("isInlayHintsPlaceEndOfLineEnable", isInlayHintsPlaceEndOfLineEnable)
+        .append("showTimestampGenerator", isCurrentTimestampGeneratorEnable)
+        .append("showCustomTimestampGenerator", isCustomTimestampGeneratorEnable)
         .append("customPattern", customPattern)
-        .append("effectiveFormatter", effectiveFormatter)
         .toString();
   }
 }

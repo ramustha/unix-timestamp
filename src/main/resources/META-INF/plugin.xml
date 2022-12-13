@@ -91,4 +91,22 @@
         <codeInsight.inlayProvider language="XML"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.xml.XmlUnixTimestampInlayHints"/>
     </extensions>
+
+    <actions>
+        <group id="GenerateUnixTimestampAction">
+            <action id="com.ramusthastudio.plugin.unixtimestamp.CurrentUnixTimestampAction"
+                    class="com.ramusthastudio.plugin.unixtimestamp.action.CurrentUnixTimestampAction"
+                    text="Current Timestamp"
+                    description="Generate current timestamp">
+                <add-to-group group-id="GenerateGroup"/>
+            </action>
+            <action id="com.ramusthastudio.plugin.unixtimestamp.CustomUnixTimestampAction"
+                    class="com.ramusthastudio.plugin.unixtimestamp.action.CustomUnixTimestampAction"
+                    text="Custom Timestamp"
+                    popup="true"
+                    description="Generate Custom timestamp">
+                <add-to-group group-id="GenerateGroup"/>
+            </action>
+        </group>
+    </actions>
 </idea-plugin>

@@ -61,10 +61,11 @@ public final class Helper {
     List<String> list = new ArrayList<>();
     Set<String> uniqueValues = new HashSet<>();
     for (String t : fixedText.split("\\s+")) {
-      if (!Strings.isBlank(t) && (NumberUtils.isDigits(t) && Helper.isMillisOrSecondsFormat(t))) {
-        if (uniqueValues.add(t)) {
-          list.add(t);
-        }
+      if (uniqueValues.add(t)
+          && !Strings.isBlank(t)
+          && NumberUtils.isDigits(t)
+          && Helper.isMillisOrSecondsFormat(t)) {
+        list.add(t);
       }
     }
     return list;
@@ -79,13 +80,12 @@ public final class Helper {
   }
 
   public static List<TextRange> findTextRange(String text, String word) {
-    List<Integer> indexes = new ArrayList<>();
-    Set<Integer> uniqueIndexes = new HashSet<>();
+    Set<Integer> indexes = new HashSet<>();
     int wordLength = 0;
     int index = 0;
     while (index != -1) {
       index = text.indexOf(word, index + wordLength);
-      if (index != -1 && uniqueIndexes.add(index)) {
+      if (index != -1) {
         indexes.add(index);
       }
       wordLength = word.length();
@@ -108,17 +108,14 @@ public final class Helper {
     String text = element.getText();
 
     Set<Integer> uniqueIndex = new HashSet<>();
-    List<String> unixEpochCandidateList = Helper.findUnixTimestamp(text);
-    for (String word : unixEpochCandidateList) {
+    for (String word : Helper.findUnixTimestamp(text)) {
       for (TextRange textRange : Helper.findTextRange(text, word)) {
-
         Instant instant = Helper.createInstantFormat(word);
         DateTimeFormatter formatter = appSettingsState.getDefaultLocalFormatter();
         String localFormat = String.format("%s", formatter.format(instant));
 
-        PresentationFactory scaleAwareFactory = factory;
         InlayPresentation inlayPresentation =
-            scaleAwareFactory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat));
+            factory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat));
 
         if (uniqueIndex.add(textRange.getStartOffset())) {
           sink.addInlineElement(textRange.getStartOffset(),

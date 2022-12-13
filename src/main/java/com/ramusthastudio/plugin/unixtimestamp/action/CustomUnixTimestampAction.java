@@ -69,7 +69,7 @@ public final class CustomUnixTimestampAction extends AnActionButton {
         this.formatter = this.formatter.withZone(ZoneId.systemDefault());
       }
 
-      setTitle("Generate Timestamp");
+      setTitle("Generate Custom Millis");
       init();
     }
 

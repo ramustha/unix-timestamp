@@ -16,6 +16,8 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
         Convert UNIX timestamp format to human-readable date format.<br><br>
+        Convert 1671160204198 (millis) to fri, 16 Dec 2022 10:10:04<br>
+        Convert 1640970000 (seconds) to sat, 1 Jan 2022 00:00:00<br><br>
 
         <em>
             A UNIX timestamp, also known as Epoch Time or POSIX timestamp,

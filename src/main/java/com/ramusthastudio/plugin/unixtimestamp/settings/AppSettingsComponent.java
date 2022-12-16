@@ -30,8 +30,8 @@ public class AppSettingsComponent implements ActionListener {
   private final JBCheckBox customPatternCheckBox = new JBCheckBox("Custom format: ");
   private final JBCheckBox utcCheckBox = new JBCheckBox("UTC");
   private final JBCheckBox inlayHintsPlaceEndOfLineCheckBox = new JBCheckBox("Place at the end of line");
-  private final JBCheckBox currentTimestampGeneratorCheckBox = new JBCheckBox("Current timestamp");
-  private final JBCheckBox customTimestampGeneratorCheckBox = new JBCheckBox("Custom timestamp");
+  private final JBCheckBox currentTimestampGeneratorCheckBox = new JBCheckBox("Current millis");
+  private final JBCheckBox customTimestampGeneratorCheckBox = new JBCheckBox("Custom millis");
   private final JBLabel previewLabel = new JBLabel();
   private boolean alreadyPreview;
   private boolean isInvalid;
@@ -74,8 +74,7 @@ public class AppSettingsComponent implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() instanceof JBCheckBox) {
-      JBCheckBox checkBox = (JBCheckBox) e.getSource();
+    if (e.getSource() instanceof JBCheckBox checkBox) {
       enableDefaultFormat(!checkBox.isSelected());
     }
 

@@ -1,6 +1,5 @@
 package com.ramusthastudio.plugin.unixtimestamp.action;
 
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -27,12 +26,6 @@ public final class CurrentUnixTimestampAction extends AnAction {
     WriteCommandAction.runWriteCommandAction(project,
         () -> document.replaceString(start, end, System.currentTimeMillis() + ""));
   }
-
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.EDT;
-  }
-
   @Override
   public void update(@NotNull AnActionEvent event) {
     event.getPresentation().setEnabledAndVisible(appSettingsState.isCurrentTimestampGeneratorEnable());

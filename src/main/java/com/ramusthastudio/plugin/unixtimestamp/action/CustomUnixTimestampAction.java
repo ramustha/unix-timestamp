@@ -1,6 +1,5 @@
 package com.ramusthastudio.plugin.unixtimestamp.action;
 
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -42,11 +41,6 @@ public final class CustomUnixTimestampAction extends AnActionButton {
       WriteCommandAction.runWriteCommandAction(project,
           () -> document.replaceString(start, end, timestampDialog.getResult()));
     }
-  }
-
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.EDT;
   }
 
   @Override

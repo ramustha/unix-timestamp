@@ -21,3 +21,9 @@ jobs:
 
       - name: Execute Gradle build
         run: ./gradlew test
+
+      - name: Execute Plugin Verifier
+        run: ./gradlew runPluginVerifier
+
+      - name: Execute Sign Plugin
+        run: ./gradlew signPlugin

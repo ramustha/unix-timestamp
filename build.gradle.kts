@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "4.0.0"
+version = "4.1.0"
 
 repositories {
     mavenCentral()
@@ -51,4 +51,14 @@ tasks {
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
+
+    runPluginVerifier {
+        ideVersions.set(
+            listOf(
+                "IU-2022.3",
+                "IU-2022.2.4",
+                "IU-2022.1.4"
+            ))
+    }
+
 }

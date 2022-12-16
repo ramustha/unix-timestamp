@@ -45,6 +45,8 @@ public class AppSettingsConfigurable implements Configurable {
     }
     modified |= mySettingsComponent.isUtcEnable() != settings.isUtcEnable();
     modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
+    modified |= mySettingsComponent.isCurrentTimestampGeneratorEnable() != settings.isCurrentTimestampGeneratorEnable();
+    modified |= mySettingsComponent.isCustomTimestampGeneratorEnable() != settings.isCustomTimestampGeneratorEnable();
     return modified;
   }
 
@@ -66,6 +68,8 @@ public class AppSettingsConfigurable implements Configurable {
     }
     settings.setUtcEnable(mySettingsComponent.isUtcEnable());
     settings.setInlayHintsPlaceEndOfLineEnable(mySettingsComponent.isInlayHintsPlaceEndOfLineEnable());
+    settings.setCurrentTimestampGeneratorEnable(mySettingsComponent.isCurrentTimestampGeneratorEnable());
+    settings.setCustomTimestampGeneratorEnable(mySettingsComponent.isCustomTimestampGeneratorEnable());
     LOG.debug("apply settings = " + settings);
   }
 
@@ -85,6 +89,8 @@ public class AppSettingsConfigurable implements Configurable {
     }
     mySettingsComponent.setUtcEnable(settings.isUtcEnable());
     mySettingsComponent.setInlayHintsPlaceEndOfLineEnable(settings.isInlayHintsPlaceEndOfLineEnable());
+    mySettingsComponent.setCurrentTimestampGeneratorEnable(settings.isCurrentTimestampGeneratorEnable());
+    mySettingsComponent.setCustomTimestampGeneratorEnable(settings.isCustomTimestampGeneratorEnable());
   }
 
   @Override

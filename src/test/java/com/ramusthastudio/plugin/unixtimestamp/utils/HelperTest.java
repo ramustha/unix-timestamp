@@ -31,6 +31,22 @@ public class HelperTest extends TestCase {
     Assert.assertEquals(Instant.ofEpochMilli(1607446800000L), instantFormatMillis);
   }
 
+  public void testCreateTimestamp() {
+    long localTimestamp =
+        Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME, false);
+    long utcTimestamp =
+        Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME, true);
+    Assert.assertEquals(1670778000000L, localTimestamp);
+    Assert.assertEquals(1670803200000L, utcTimestamp);
+  }
+
+  public void testCurrentTimestamp() {
+    long localTimestamp = Helper.currentTimestamp(false);
+    long utcTimestamp = Helper.currentTimestamp(true);
+
+    Assert.assertNotEquals(localTimestamp, utcTimestamp);
+  }
+
   public void testFindUnixTimestamp() {
     List<String> instantFormatSeconds = Helper.findUnixTimestamp("1607446800");
     List<String> instantFormatMillis = Helper.findUnixTimestamp("1607446800000");

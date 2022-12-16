@@ -20,6 +20,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Execute Gradle build
+        run: ./gradlew build
+
+      - name: Execute Gradle build
         run: ./gradlew test
 
       - name: Execute Plugin Verifier

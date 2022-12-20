@@ -13,20 +13,14 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Execute Gradle build
-        run: ./gradlew clean build -x test
+        run: gradle clean build -x test
 
       - name: Execute Gradle test
-        run: ./gradlew test
+        run: gradle test
 
       - name: Execute Plugin Verifier
-        run: ./gradlew runPluginVerifier
+        run: gradle runPluginVerifier
 
       - name: Execute Sign Plugin
-        run: ./gradlew signPlugin
+        run: gradle signPlugin

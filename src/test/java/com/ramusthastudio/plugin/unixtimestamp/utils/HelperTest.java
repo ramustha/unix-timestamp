@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Ignore;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,7 @@ public class HelperTest extends TestCase {
     Assert.assertEquals(Instant.ofEpochMilli(1607446800000L), instantFormatMillis);
   }
 
+  @Ignore
   public void testCreateTimestamp() {
     long localTimestamp =
         Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME, false);
@@ -40,6 +42,7 @@ public class HelperTest extends TestCase {
     Assert.assertEquals(1670803200000L, utcTimestamp);
   }
 
+  @Ignore
   public void testCurrentTimestamp() {
     long localTimestamp = Helper.currentTimestamp(false);
     long utcTimestamp = Helper.currentTimestamp(true);

@@ -17,7 +17,7 @@ jobs:
         run: gradle clean build -x test
 
       - name: Execute Gradle test
-        run: gradle test
+        run: gradle clean test
 
       - name: Execute Plugin Verifier
         run: gradle runPluginVerifier

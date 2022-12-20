@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.10.1"
+    id("org.jetbrains.intellij") version "1.11.0"
 }
 
 group = "com.ramusthastudio.plugin"
@@ -39,7 +39,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("213.*")
+        sinceBuild.set("223.*")
     }
 
     signPlugin {

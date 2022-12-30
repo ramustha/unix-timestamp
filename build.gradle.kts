@@ -43,7 +43,6 @@ tasks {
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
         sinceBuild.set("213.*")
-        untilBuild.set("223.*")
     }
 
     signPlugin {

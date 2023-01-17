@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "4.1.1"
+version = "4.1.2"
 
 repositories {
     mavenCentral()
@@ -30,6 +30,7 @@ intellij {
         "org.jetbrains.kotlin",
         "JavaScript",
         "org.jetbrains.plugins.vue:223.7571.233",
+        "com.jetbrains.restClient:223.7571.59"
     ))
 }
 

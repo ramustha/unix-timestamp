@@ -1,0 +1,8 @@
+<idea-plugin>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.inlayProvider language="HTTP Request"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.restclient.RestClientUnixTimestampInlayHints"/>
+    </extensions>
+</idea-plugin>

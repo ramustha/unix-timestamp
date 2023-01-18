@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "4.1.0"
+version = "4.1.2"
 
 repositories {
     mavenCentral()
@@ -19,15 +19,18 @@ dependencies {
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
+    // https://www.jetbrains.com/idea/download/other.html
     version.set("2022.3")
     type.set("IU") // Target IDE Platform
 
     plugins.set(listOf(
         "com.intellij.java",
+        "com.intellij.css",
+        "com.intellij.database",
         "org.jetbrains.kotlin",
         "JavaScript",
-        "com.intellij.css",
         "org.jetbrains.plugins.vue:223.7571.233",
+        "com.jetbrains.restClient:223.7571.59"
     ))
 }
 
@@ -38,8 +41,9 @@ tasks {
         targetCompatibility = "17"
     }
 
+    // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
-        sinceBuild.set("223.*")
+        sinceBuild.set("213.*")
     }
 
     signPlugin {

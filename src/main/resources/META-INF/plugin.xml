@@ -16,8 +16,8 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
         Convert UNIX timestamp format to human-readable date format.<br><br>
-        Convert 1671160204198 (millis) to fri, 16 Dec 2022 10:10:04<br>
-        Convert 1640970000 (seconds) to sat, 1 Jan 2022 00:00:00<br><br>
+        Convert <b>1671160204198</b> (millis) to <b>Fri, 16 Dec 2022 10:10:04</b><br>
+        Convert <b>1640970000</b> (seconds) to <b>Sat, 1 Jan 2022 00:00:00</b><br><br>
 
         <em>
             A UNIX timestamp, also known as Epoch Time or POSIX timestamp,
@@ -27,6 +27,14 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>4.1.2</b></p>
+        <ul>
+            <li>Support Rest client (*.http)</li>
+        </ul>
+        <p><b>4.1.1</b></p>
+        <ul>
+            <li>Support SQL family (*.sql) and other dialects (BigQuery, CassandraQL, Derby, etc)</li>
+        </ul>
         <p><b>4.1.0</b></p>
         <ul>
             <li>Add timestamp generator (alt + insert)</li>
@@ -76,6 +84,8 @@
     <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="unixtimestamp-withJS.xml">JavaScript</depends>
     <depends optional="true" config-file="unixtimestamp-withCSS.xml">com.intellij.css</depends>
+    <depends optional="true" config-file="unixtimestamp-withDatabase.xml">com.intellij.database</depends>
+    <depends optional="true" config-file="unixtimestamp-withRestClient.xml">com.jetbrains.restClient</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->

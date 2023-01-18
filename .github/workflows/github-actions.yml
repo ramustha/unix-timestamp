@@ -12,9 +12,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
-      - name: Execute Gradle build
-        run: gradle clean build -x test
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean build -x test
 
       - name: Execute Plugin Verifier
         run: gradle runPluginVerifier

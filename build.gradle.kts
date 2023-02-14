@@ -1,14 +1,16 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.11.0"
+    // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
+    id("org.jetbrains.intellij") version "1.13.0"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "4.1.2"
+version = "4.1.3"
 
 repositories {
     mavenCentral()
     maven("https://www.jetbrains.com/intellij-repository/releases")
+    maven("https://www.jetbrains.com/intellij-repository/snapshots")
     maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
 }
 
@@ -22,6 +24,7 @@ intellij {
     // https://www.jetbrains.com/idea/download/other.html
     version.set("2022.3")
     type.set("IU") // Target IDE Platform
+    updateSinceUntilBuild.set(false)
 
     plugins.set(listOf(
         "com.intellij.java",
@@ -43,7 +46,7 @@ tasks {
 
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
-        sinceBuild.set("213.*")
+        sinceBuild.set("223.*")
     }
 
     signPlugin {

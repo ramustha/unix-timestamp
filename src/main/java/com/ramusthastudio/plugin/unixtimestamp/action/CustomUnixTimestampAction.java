@@ -23,6 +23,7 @@ import java.awt.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public final class CustomUnixTimestampAction extends AnActionButton {
   private final AppSettingsState appSettingsState = AppSettingsState.getInstance();
@@ -34,12 +35,13 @@ public final class CustomUnixTimestampAction extends AnActionButton {
       Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
       Project project = e.getRequiredData(CommonDataKeys.PROJECT);
       Document document = editor.getDocument();
-      Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-
-      int start = primaryCaret.getSelectionStart();
-      int end = primaryCaret.getSelectionEnd();
-      WriteCommandAction.runWriteCommandAction(project,
-          () -> document.replaceString(start, end, timestampDialog.getResult()));
+      List<Caret> allCarets = editor.getCaretModel().getAllCarets();
+      for (Caret caret : allCarets) {
+        int start = caret.getSelectionStart();
+        int end = caret.getSelectionEnd();
+        WriteCommandAction.runWriteCommandAction(project,
+            () -> document.replaceString(start, end, timestampDialog.getResult()));
+      }
     }
   }
 

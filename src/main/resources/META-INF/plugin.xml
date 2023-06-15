@@ -27,6 +27,10 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>4.1.4</b></p>
+        <ul>
+            <li>Multiple caret support</li>
+        </ul>
         <p><b>4.1.3</b></p>
         <ul>
             <li>Bump gradle version to 1.13.0</li>

@@ -11,6 +11,8 @@ import com.intellij.openapi.project.Project;
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public final class CurrentUnixTimestampAction extends AnAction {
   private final AppSettingsState appSettingsState = AppSettingsState.getInstance();
 
@@ -19,12 +21,13 @@ public final class CurrentUnixTimestampAction extends AnAction {
     Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
     Project project = e.getRequiredData(CommonDataKeys.PROJECT);
     Document document = editor.getDocument();
-    Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-
-    int start = primaryCaret.getSelectionStart();
-    int end = primaryCaret.getSelectionEnd();
-    WriteCommandAction.runWriteCommandAction(project,
-        () -> document.replaceString(start, end, System.currentTimeMillis() + ""));
+    List<Caret> allCarets = editor.getCaretModel().getAllCarets();
+    for (Caret caret : allCarets) {
+      int start = caret.getSelectionStart();
+      int end = caret.getSelectionEnd();
+      WriteCommandAction.runWriteCommandAction(project,
+          () -> document.replaceString(start, end, String.valueOf(System.currentTimeMillis())));
+    }
   }
   @Override
   public void update(@NotNull AnActionEvent event) {

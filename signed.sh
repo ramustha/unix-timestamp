@@ -3,4 +3,4 @@ java -jar publish/marketplace-zip-signer-cli.jar sign\
   -out "build/distributions/unix-timestamp-4.1.4-signed.zip"\
   -cert-file "publish/chain.crt"\
   -key-file "publish/private.pem"\
-  -key-pass Istrikusukakucing110
+  -key-pass {{password}}

@@ -27,6 +27,10 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>4.2.0</b></p>
+        <ul>
+            <li>Add Zone ID setting</li>
+        </ul>
         <p><b>4.1.4</b></p>
         <ul>
             <li>Multiple caret support</li>
@@ -121,15 +125,15 @@
         <group id="GenerateUnixTimestampAction">
             <action id="com.ramusthastudio.plugin.unixtimestamp.CurrentUnixTimestampAction"
                     class="com.ramusthastudio.plugin.unixtimestamp.action.CurrentUnixTimestampAction"
-                    text="Current Millis"
-                    description="Generate current millis">
+                    text="Current Timestamp"
+                    description="Generate current timestamp">
                 <add-to-group group-id="GenerateGroup"/>
             </action>
             <action id="com.ramusthastudio.plugin.unixtimestamp.CustomUnixTimestampAction"
                     class="com.ramusthastudio.plugin.unixtimestamp.action.CustomUnixTimestampAction"
-                    text="Custom Millis"
+                    text="Custom Timestamp"
                     popup="true"
-                    description="Generate Custom millis">
+                    description="Generate Custom timestamp">
                 <add-to-group group-id="GenerateGroup"/>
             </action>
         </group>

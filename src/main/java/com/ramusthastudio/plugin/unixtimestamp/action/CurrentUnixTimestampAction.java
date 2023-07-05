@@ -22,11 +22,11 @@ public final class CurrentUnixTimestampAction extends AnAction {
     Project project = e.getRequiredData(CommonDataKeys.PROJECT);
     Document document = editor.getDocument();
     List<Caret> allCarets = editor.getCaretModel().getAllCarets();
+    String currentTime = String.valueOf(System.currentTimeMillis());
     for (Caret caret : allCarets) {
       int start = caret.getSelectionStart();
       int end = caret.getSelectionEnd();
-      WriteCommandAction.runWriteCommandAction(project,
-          () -> document.replaceString(start, end, String.valueOf(System.currentTimeMillis())));
+      WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(start, end, currentTime));
     }
   }
   @Override

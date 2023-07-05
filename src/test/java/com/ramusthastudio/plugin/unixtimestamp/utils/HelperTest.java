@@ -34,11 +34,8 @@ public class HelperTest extends TestCase {
 
   public void testCreateTimestamp() {
     long localTimestamp =
-        Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME, false);
-    long utcTimestamp =
-        Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME, true);
+        Helper.createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME);
     Assert.assertEquals(1670778000000L, localTimestamp);
-    Assert.assertEquals(1670803200000L, utcTimestamp);
   }
 
   public void testCurrentTimestamp() {

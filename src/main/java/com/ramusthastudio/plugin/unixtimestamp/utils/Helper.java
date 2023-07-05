@@ -38,12 +38,9 @@ public final class Helper {
     return Instant.ofEpochMilli(Long.parseLong(longValue));
   }
 
-  public static long createTimestamp(String value, DateTimeFormatter formatter, boolean isUtc) {
+  public static long createTimestamp(String value, DateTimeFormatter formatter) {
     LocalDateTime localDateTime = LocalDateTime.parse(value, formatter);
     Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-    if (isUtc) {
-      instant = localDateTime.atZone(ZoneId.of("UTC")).toInstant();
-    }
     return instant.toEpochMilli();
   }
 

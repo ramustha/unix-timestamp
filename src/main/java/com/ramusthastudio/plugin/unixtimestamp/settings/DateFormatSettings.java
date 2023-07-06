@@ -2,7 +2,8 @@ package com.ramusthastudio.plugin.unixtimestamp.settings;
 
 import java.time.format.DateTimeFormatter;
 
-enum DateFormatSettings {
+@Deprecated
+public enum DateFormatSettings {
   ISO_TIME(DateTimeFormatter.ISO_TIME, "10:15:30+01:00'; '10:15:30"),
   ISO_INSTANT(DateTimeFormatter.ISO_INSTANT, "2011-12-03T10:15:30Z"),
   ISO_DATE_TIME(DateTimeFormatter.ISO_DATE_TIME, "2011-12-03T10:15:30+01:00[Europe/Paris]"),

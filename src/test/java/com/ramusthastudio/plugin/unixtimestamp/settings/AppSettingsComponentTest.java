@@ -6,6 +6,7 @@ import org.junit.Assert;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.time.ZoneId;
 
 public class AppSettingsComponentTest extends TestCase {
 
@@ -14,10 +15,8 @@ public class AppSettingsComponentTest extends TestCase {
     Assert.assertNotNull(component);
     Assert.assertNotNull(component.getPanel());
     Assert.assertNotNull(component.getPreferredFocusedComponent());
-    Assert.assertNotNull(component.getSelectedItem());
-    Assert.assertFalse(component.isCustomPatternEnable());
+    Assert.assertNotNull(component.getSelectedZoneId());
     Assert.assertFalse(component.isInvalid());
-    Assert.assertFalse(component.isUtcEnable());
     Assert.assertFalse(component.isInlayHintsPlaceEndOfLineEnable());
 
     JBCheckBox checkBox = new JBCheckBox("Checkbox");
@@ -29,8 +28,6 @@ public class AppSettingsComponentTest extends TestCase {
 
   public void testActionPerformedFailed() {
     AppSettingsComponent component = new AppSettingsComponent();
-    component.setUtcEnable(true);
-    Assert.assertTrue(component.isUtcEnable());
 
     JBCheckBox checkBox = new JBCheckBox("Checkbox");
     component.actionPerformed(new ActionEvent(checkBox, 1, "custom"));
@@ -42,10 +39,8 @@ public class AppSettingsComponentTest extends TestCase {
   public void testActionPerformedInvalidFormat() {
     AppSettingsComponent component = new AppSettingsComponent();
     component.setCustomPattern("invalid");
-    component.setSelectedItem(DateFormatSettings.ISO_DATE_TIME);
-    component.setCustomPatternEnable(true);
+    component.setSelectedZoneId(ZoneId.systemDefault().getId());
     component.setInlayHintsPlaceEndOfLineEnable(true);
-    Assert.assertFalse(component.isUtcEnable());
     Assert.assertFalse(component.isAlreadyPreview());
     Assert.assertTrue(component.isInlayHintsPlaceEndOfLineEnable());
     Assert.assertNotNull(component.getCustomPattern());

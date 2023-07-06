@@ -8,8 +8,7 @@ import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
-import org.jdesktop.swingx.combobox.EnumComboBoxModel;
-import org.jetbrains.annotations.NotNull;
+import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,20 +17,19 @@ import java.awt.event.ActionListener;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class AppSettingsComponent implements ActionListener {
 
   private final JPanel mainPanel;
-  private final ComboBox<DateFormatSettings> patternComboBox =
-      new ComboBox<DateFormatSettings>(new EnumComboBoxModel<DateFormatSettings>(DateFormatSettings.class));
+  private final ComboBox<String> zoneIdComboBox =
+          new ComboBox<String>(new ListComboBoxModel<>(
+                  ZoneId.getAvailableZoneIds().stream().sorted().toList()));
   private final JBTextField customPatternTextField = new JBTextField("dd MMM yyyy HH:mm:ss", 25);
   private final JButton previewButton = new JButton("Preview");
-  private final JBCheckBox customPatternCheckBox = new JBCheckBox("Custom format: ");
-  private final JBCheckBox utcCheckBox = new JBCheckBox("UTC");
+  private final JButton systemDefaultButton = new JButton("System default");
   private final JBCheckBox inlayHintsPlaceEndOfLineCheckBox = new JBCheckBox("Place at the end of line");
-  private final JBCheckBox currentTimestampGeneratorCheckBox = new JBCheckBox("Current millis");
-  private final JBCheckBox customTimestampGeneratorCheckBox = new JBCheckBox("Custom millis");
+  private final JBCheckBox currentTimestampGeneratorCheckBox = new JBCheckBox("Current timestamp");
+  private final JBCheckBox customTimestampGeneratorCheckBox = new JBCheckBox("Custom timestamp");
   private final JBLabel previewLabel = new JBLabel();
   private boolean alreadyPreview;
   private boolean isInvalid;
@@ -44,11 +42,11 @@ public class AppSettingsComponent implements ActionListener {
     final JPanel generatorPanel = new JPanel(new BorderLayout());
     generatorPanel.add(generatorBox, BorderLayout.NORTH);
 
-    Box patternBox = Box.createHorizontalBox();
-    patternBox.add(patternComboBox);
-    patternBox.add(utcCheckBox);
-    final JPanel patternPanel = new JPanel(new BorderLayout());
-    patternPanel.add(patternBox, BorderLayout.NORTH);
+    Box zoneIdBox = Box.createHorizontalBox();
+    zoneIdBox.add(zoneIdComboBox);
+    zoneIdBox.add(systemDefaultButton);
+    final JPanel zoneIdPanel = new JPanel(new BorderLayout());
+    zoneIdPanel.add(zoneIdBox, BorderLayout.NORTH);
 
     Box previewBox = Box.createHorizontalBox();
     previewBox.add(previewButton);
@@ -60,50 +58,40 @@ public class AppSettingsComponent implements ActionListener {
     mainPanel = FormBuilder.createFormBuilder()
         .addLabeledComponent(new JBLabel("Position: "), inlayHintsPlaceEndOfLineCheckBox, 1)
         .addLabeledComponent(new JBLabel("Generator: "), generatorPanel, 1)
-        .addLabeledComponent(new JBLabel("Date format: "), patternPanel, 1)
         .addSeparator(1)
-        .addLabeledComponent(customPatternCheckBox, customPatternTextField, 1)
+        .addLabeledComponent(new JBLabel("Zone ID: "), zoneIdPanel, 1)
+        .addLabeledComponent(new JBLabel("Date format: "), customPatternTextField, 1)
         .addComponentToRightColumn(previewPanel, 1)
         .addComponentFillVertically(new JPanel(), 0)
         .getPanel();
 
-    enableDefaultFormat(true);
-    customPatternCheckBox.addActionListener(this);
+    systemDefaultButton.addActionListener(this);
     previewButton.addActionListener(this);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() instanceof JBCheckBox checkBox) {
-      enableDefaultFormat(!checkBox.isSelected());
-    }
-
-    if (e.getSource() instanceof JButton) {
-      try {
-        String customPattern = customPatternTextField.getText();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(customPattern);
-        if (isUtcEnable()) {
-          dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.of("UTC"));
-        } else {
-          dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.systemDefault());
-        }
-        previewLabel.setText(dateTimeFormatter.format(ZonedDateTime.now()));
-        previewLabel.setForeground(JBColor.foreground());
-        isInvalid = false;
-      } catch (Exception exception) {
-        previewLabel.setText("Invalid format!");
-        previewLabel.setForeground(JBColor.RED);
-        isInvalid = true;
+    if (e.getSource() instanceof JButton button) {
+      if (button.equals(systemDefaultButton)) {
+        zoneIdComboBox.setSelectedItem(ZoneId.systemDefault().getId());
       }
-      alreadyPreview = true;
-    }
-  }
 
-  public void enableDefaultFormat(boolean value) {
-    customPatternTextField.setEditable(!value);
-    previewButton.setEnabled(!value);
-    patternComboBox.setEnabled(value);
-    previewLabel.setText(null);
+      if (button.equals(previewButton)) {
+        try {
+          String customPattern = customPatternTextField.getText();
+          DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(customPattern);
+          dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.of(getSelectedZoneId()));
+          previewLabel.setText(dateTimeFormatter.format(ZonedDateTime.now()));
+          previewLabel.setForeground(JBColor.foreground());
+          isInvalid = false;
+        } catch (Exception exception) {
+          previewLabel.setText("Invalid format!");
+          previewLabel.setForeground(JBColor.RED);
+          isInvalid = true;
+        }
+        alreadyPreview = true;
+      }
+    }
   }
 
   public JPanel getPanel() {
@@ -111,16 +99,15 @@ public class AppSettingsComponent implements ActionListener {
   }
 
   public JComponent getPreferredFocusedComponent() {
-    return patternComboBox;
+    return customPatternTextField;
   }
 
-  @NotNull
-  public DateFormatSettings getSelectedItem() {
-    return (DateFormatSettings) Objects.requireNonNull(patternComboBox.getSelectedItem());
+  public String getSelectedZoneId() {
+    return (String) zoneIdComboBox.getSelectedItem();
   }
 
-  public void setSelectedItem(DateFormatSettings selectedItem) {
-    patternComboBox.setSelectedItem(selectedItem);
+  public void setSelectedZoneId(String zoneId) {
+    zoneIdComboBox.setSelectedItem(zoneId);
   }
 
   public String getCustomPattern() {
@@ -131,28 +118,12 @@ public class AppSettingsComponent implements ActionListener {
     customPatternTextField.setText(pattern);
   }
 
-  public boolean isCustomPatternEnable() {
-    return customPatternCheckBox.isSelected();
-  }
-
-  public void setCustomPatternEnable(boolean selected) {
-    customPatternCheckBox.setSelected(selected);
-  }
-
   public boolean isAlreadyPreview() {
     return alreadyPreview;
   }
 
   public boolean isInvalid() {
     return isInvalid;
-  }
-
-  public boolean isUtcEnable() {
-    return utcCheckBox.isSelected();
-  }
-
-  public void setUtcEnable(boolean selected) {
-    utcCheckBox.setSelected(selected);
   }
 
   public boolean isInlayHintsPlaceEndOfLineEnable() {

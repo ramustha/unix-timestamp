@@ -36,11 +36,11 @@ public final class CustomUnixTimestampAction extends AnActionButton {
       Project project = e.getRequiredData(CommonDataKeys.PROJECT);
       Document document = editor.getDocument();
       List<Caret> allCarets = editor.getCaretModel().getAllCarets();
+      String currentTime = timestampDialog.getResult();
       for (Caret caret : allCarets) {
         int start = caret.getSelectionStart();
         int end = caret.getSelectionEnd();
-        WriteCommandAction.runWriteCommandAction(project,
-            () -> document.replaceString(start, end, timestampDialog.getResult()));
+        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(start, end, currentTime));
       }
     }
   }
@@ -59,11 +59,7 @@ public final class CustomUnixTimestampAction extends AnActionButton {
       super(true);
       this.appSettingsState = appSettingsState;
       this.formatter = appSettingsState.getDefaultLocalFormatter();
-      if (appSettingsState.isUtcEnable()) {
-        this.formatter = this.formatter.withZone(ZoneId.of("UTC"));
-      } else {
-        this.formatter = this.formatter.withZone(ZoneId.systemDefault());
-      }
+      this.formatter = this.formatter.withZone(ZoneId.of(appSettingsState.getZoneId()));
 
       setTitle("Generate Custom Millis");
       init();
@@ -108,10 +104,7 @@ public final class CustomUnixTimestampAction extends AnActionButton {
     }
 
     public String getResult() {
-      return String.format("%s",
-          Helper.createTimestamp(customDateTextField.getText(),
-              formatter,
-              appSettingsState.isUtcEnable()));
+      return String.format("%s", Helper.createTimestamp(customDateTextField.getText(), formatter));
     }
   }
 }

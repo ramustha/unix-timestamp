@@ -62,9 +62,7 @@ tasks {
     runPluginVerifier {
         ideVersions.set(
             listOf(
-                "IU-2022.3",
-                "IU-2022.2.4",
-                "IU-2022.1.4"
+                "IU-2023.1"
             ))
     }
 

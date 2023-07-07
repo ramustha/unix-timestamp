@@ -22,3 +22,6 @@ jobs:
 
       - name: Execute Plugin Verifier
         run: gradle runPluginVerifier
+
+      - name: Execute Sign Plugin
+        run: gradle signPlugin

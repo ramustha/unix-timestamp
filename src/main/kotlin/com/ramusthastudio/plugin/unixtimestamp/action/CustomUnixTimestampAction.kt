@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.openapi.util.Computable
 import com.intellij.ui.AnActionButton
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
@@ -36,7 +37,9 @@ class CustomUnixTimestampAction : AnActionButton() {
             for (caret in allCarets) {
                 val start = caret.selectionStart
                 val end = caret.selectionEnd
-                WriteCommandAction.runWriteCommandAction(project) { document.replaceString(start, end, currentTime) }
+                WriteCommandAction.runWriteCommandAction(project, Computable {
+                    document.replaceString(start, end, currentTime)
+                })
             }
         }
     }
@@ -85,6 +88,7 @@ class CustomUnixTimestampAction : AnActionButton() {
             inlayHintsBox.add(customDateTextField)
             val inlayHintsPanel = JPanel(BorderLayout())
             inlayHintsPanel.add(inlayHintsBox, BorderLayout.NORTH)
+
             return FormBuilder.createFormBuilder()
                 .addLabeledComponent(JBLabel("Input date: "), inlayHintsPanel, 1)
                 .addComponentFillVertically(JPanel(), 0)

@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.util.Computable
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
 
 class CurrentUnixTimestampAction : AnAction() {
@@ -20,7 +21,9 @@ class CurrentUnixTimestampAction : AnAction() {
         for (caret in allCarets) {
             val start = caret.selectionStart
             val end = caret.selectionEnd
-            WriteCommandAction.runWriteCommandAction(project) { document.replaceString(start, end, currentTime) }
+            WriteCommandAction.runWriteCommandAction(project, Computable {
+                document.replaceString(start, end, currentTime)
+            })
         }
     }
 

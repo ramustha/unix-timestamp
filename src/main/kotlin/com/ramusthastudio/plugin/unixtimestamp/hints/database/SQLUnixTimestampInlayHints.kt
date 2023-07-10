@@ -9,7 +9,6 @@ import com.intellij.sql.psi.SqlFile
 import com.ramusthastudio.plugin.unixtimestamp.hints.BaseInlayHintsCollector
 import com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
-import java.util.*
 
 class SQLUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
 

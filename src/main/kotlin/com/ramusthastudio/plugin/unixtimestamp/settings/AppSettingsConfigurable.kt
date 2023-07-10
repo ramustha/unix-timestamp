@@ -1,86 +1,70 @@
 // Copyright 2000-2022 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+package com.ramusthastudio.plugin.unixtimestamp.settings
 
-package com.ramusthastudio.plugin.unixtimestamp.settings;
+import com.intellij.openapi.options.Configurable
+import com.intellij.openapi.options.ConfigurationException
+import org.jetbrains.annotations.Nls
+import javax.swing.JComponent
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.Nullable;
+class AppSettingsConfigurable : Configurable {
+    private var mySettingsComponent: AppSettingsComponent? = null
 
-import javax.swing.*;
-import java.time.ZoneId;
-
-public class AppSettingsConfigurable implements Configurable {
-  private static final Logger LOG = Logger.getInstance(AppSettingsConfigurable.class);
-
-  private AppSettingsComponent mySettingsComponent;
-
-  @Nls(capitalization = Nls.Capitalization.Title)
-  @Override
-  public String getDisplayName() {
-    return "Unix Epoch Time Visualize";
-  }
-
-  @Override
-  public JComponent getPreferredFocusedComponent() {
-    return mySettingsComponent.getPreferredFocusedComponent();
-  }
-
-  @Nullable
-  @Override
-  public JComponent createComponent() {
-    mySettingsComponent = new AppSettingsComponent();
-    return mySettingsComponent.getPanel();
-  }
-
-  @Override
-  public boolean isModified() {
-    AppSettingsState settings = AppSettingsState.getInstance();
-    boolean modified = mySettingsComponent.isAlreadyPreview();
-    if (mySettingsComponent.getCustomPattern() != null) {
-      modified |= !mySettingsComponent.getCustomPattern().equals(settings.getCustomPattern());
-    }
-    if (mySettingsComponent.getSelectedZoneId() != null) {
-      modified |= !mySettingsComponent.getSelectedZoneId().equals(settings.getZoneId());
+    override fun getDisplayName(): @Nls(capitalization = Nls.Capitalization.Title) String {
+        return "Unix Epoch Time Visualize"
     }
 
-    modified |= mySettingsComponent.isInlayHintsPlaceEndOfLineEnable() != settings.isInlayHintsPlaceEndOfLineEnable();
-    modified |= mySettingsComponent.isCurrentTimestampGeneratorEnable() != settings.isCurrentTimestampGeneratorEnable();
-    modified |= mySettingsComponent.isCustomTimestampGeneratorEnable() != settings.isCustomTimestampGeneratorEnable();
-    return modified;
-  }
-
-  @Override
-  public void apply() throws ConfigurationException {
-    if (mySettingsComponent.isInvalid()) {
-      throw new ConfigurationException("Invalid format!");
+    override fun getPreferredFocusedComponent(): JComponent? {
+        return mySettingsComponent?.preferredFocusedComponent
     }
 
-    AppSettingsState settings = AppSettingsState.getInstance();
-    String patternText = mySettingsComponent.getCustomPattern();
-    settings.setCustomPattern(patternText);
-    settings.setZoneId(mySettingsComponent.getSelectedZoneId());
-    settings.setInlayHintsPlaceEndOfLineEnable(mySettingsComponent.isInlayHintsPlaceEndOfLineEnable());
-    settings.setCurrentTimestampGeneratorEnable(mySettingsComponent.isCurrentTimestampGeneratorEnable());
-    settings.setCustomTimestampGeneratorEnable(mySettingsComponent.isCustomTimestampGeneratorEnable());
-    settings.applySettings();
-    LOG.debug("apply settings = " + settings);
-  }
+    override fun createComponent(): JComponent? {
+        mySettingsComponent = AppSettingsComponent()
+        return mySettingsComponent?.panel
+    }
 
-  @Override
-  public void reset() {
-    AppSettingsState settings = AppSettingsState.getInstance();
-    mySettingsComponent.setCustomPattern(settings.getCustomPattern());
-    mySettingsComponent.setSelectedZoneId(settings.getZoneId());
-    mySettingsComponent.setInlayHintsPlaceEndOfLineEnable(settings.isInlayHintsPlaceEndOfLineEnable());
-    mySettingsComponent.setCurrentTimestampGeneratorEnable(settings.isCurrentTimestampGeneratorEnable());
-    mySettingsComponent.setCustomTimestampGeneratorEnable(settings.isCustomTimestampGeneratorEnable());
-  }
+    override fun isModified(): Boolean {
+        val settings = AppSettingsState.instance
 
-  @Override
-  public void disposeUIResources() {
-    mySettingsComponent = null;
-  }
+        var modified = mySettingsComponent?.isAlreadyPreview ?: false
+        if (mySettingsComponent?.customPattern != null) {
+            modified = modified or (mySettingsComponent?.customPattern != settings.customPattern)
+        }
+        if (mySettingsComponent?.selectedZoneId != null) {
+            modified = modified or (mySettingsComponent?.selectedZoneId != settings.zoneId)
+        }
+        modified =
+            modified or (mySettingsComponent?.isInlayHintsPlaceEndOfLineEnable != settings.isInlayHintsPlaceEndOfLineEnable)
+        modified =
+            modified or (mySettingsComponent?.isCurrentTimestampGeneratorEnable != settings.isCurrentTimestampGeneratorEnable)
+        modified =
+            modified or (mySettingsComponent?.isCustomTimestampGeneratorEnable != settings.isCustomTimestampGeneratorEnable)
+        return modified
+    }
 
+    override fun apply() {
+        if (mySettingsComponent?.isInvalid == true) {
+            throw ConfigurationException("Invalid format!")
+        }
+
+        val settings = AppSettingsState.instance
+        settings.customPattern = mySettingsComponent?.customPattern.toString()
+        settings.zoneId = mySettingsComponent?.selectedZoneId.toString()
+        settings.isInlayHintsPlaceEndOfLineEnable = mySettingsComponent?.isInlayHintsPlaceEndOfLineEnable == true
+        settings.isCurrentTimestampGeneratorEnable = mySettingsComponent?.isCurrentTimestampGeneratorEnable == true
+        settings.isCustomTimestampGeneratorEnable = mySettingsComponent?.isCustomTimestampGeneratorEnable == true
+        settings.applySettings()
+    }
+
+    override fun reset() {
+        val settings = AppSettingsState.instance
+        mySettingsComponent?.customPattern = settings.customPattern
+        mySettingsComponent?.selectedZoneId = settings.zoneId
+        mySettingsComponent?.isInlayHintsPlaceEndOfLineEnable = settings.isInlayHintsPlaceEndOfLineEnable
+        mySettingsComponent?.isCurrentTimestampGeneratorEnable = settings.isCurrentTimestampGeneratorEnable
+        mySettingsComponent?.isCustomTimestampGeneratorEnable = settings.isCustomTimestampGeneratorEnable
+    }
+
+    override fun disposeUIResources() {
+        mySettingsComponent = null
+    }
 }

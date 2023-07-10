@@ -1,7 +1,8 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.14.1"
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
@@ -12,6 +13,10 @@ repositories {
     maven("https://www.jetbrains.com/intellij-repository/releases")
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
     maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
@@ -39,9 +44,12 @@ intellij {
 
 tasks {
     // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "17"
     }
 
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html

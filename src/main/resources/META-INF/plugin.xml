@@ -27,64 +27,17 @@
         ]]></description>
     <change-notes>
         <![CDATA[
-        <p><b>4.2.0</b></p>
-        <ul>
-            <li>Add Zone ID setting</li>
-        </ul>
-        <p><b>4.1.4</b></p>
-        <ul>
-            <li>Multiple caret support</li>
-        </ul>
-        <p><b>4.1.3</b></p>
-        <ul>
-            <li>Bump gradle version to 1.13.0</li>
-        </ul>
-        <p><b>4.1.2</b></p>
-        <ul>
-            <li>Support Rest client (*.http)</li>
-        </ul>
-        <p><b>4.1.1</b></p>
-        <ul>
-            <li>Support SQL family (*.sql) and other dialects (BigQuery, CassandraQL, Derby, etc)</li>
-        </ul>
-        <p><b>4.1.0</b></p>
-        <ul>
-            <li>Add timestamp generator (alt + insert)</li>
-            <li>Add some improvement</li>
-        </ul>
-        <p><b>4.0.0</b></p>
-        <ul>
-            <li>Support JavaScript family (*.js, *.ts, *.tsx)</li>
-            <li>Support Stylesheet family (*.css, *.scss, *.less, *.sass)</li>
-            <li>Support Vue Project (*.vue)</li>
-        </ul>
-        <p><b>3.1.0</b></p>
-        <ul>
-            <li>Fixed memory leak issue</li>
-            <li>Add some improvement</li>
-        </ul>
-        <p><b>3.0.0</b></p>
-        <ul>
-            <li>Support other IntelliJ Product like DataGrip etc..</li>
-        </ul>
-        <p><b>2.0.0</b></p>
-        <ul>
-            <li>Support IC 2022.2.3</li>
-        </ul>
-        <p><b>1.1.0</b></p>
+        <p><b>5.0.0</b></p>
         <ul>
             <li>Support inlay hints</li>
-            <li>Add inlay hints settings</li>
-        </ul>
-        <p><b>1.0.1</b></p>
-        <ul>
-            <li>Change default icon</li>
-            <li>Some improvement</li>
-        </ul>
-        <p><b>1.0.0</b></p>
-        <ul>
+            <li>Support multiple caret</li>
+            <li>Support custom date pattern & Zone ID settings</li>
+            <li>Support Rest client (*.http)</li>
+            <li>Support JavaScript family (*.js, *.ts, *.tsx)</li>
+            <li>Support Stylesheet family (*.css, *.scss, *.less, *.sass)</li>
+            <li>Support SQL family (*.sql) and other dialects (BigQuery, CassandraQL, Derby, etc)</li>
+            <li>Support Vue Project (*.vue)</li>
             <li>Support *.java *.kt *.txt *.json *.xml *.html *.html file type</li>
-            <li>Support custom pattern settings</li>
         </ul>
         ]]>
     </change-notes>

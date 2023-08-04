@@ -4,9 +4,7 @@ import com.intellij.codeInsight.hints.InlayHintsSink
 import com.intellij.codeInsight.hints.presentation.PresentationFactory
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.jgoodies.common.base.Strings
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
-import org.apache.commons.lang.math.NumberUtils
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -34,49 +32,32 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val fixedText = text.replace("\\D".toRegex(), " ")
-        val list: MutableList<String> = ArrayList()
-        val uniqueValues: MutableSet<String> = HashSet()
-
-        for (t in fixedText.split("\\s+".toRegex())) {
-            if (uniqueValues.add(t)
-                && !Strings.isBlank(t)
-                && NumberUtils.isDigits(t)
-                && isMillisOrSecondsFormat(t)
-            ) {
-                list.add(t)
-            }
-        }
-        return list
-    }
-
-    fun findTextRange(text: String, wordOfList: List<String>): List<TextRange> {
-        return wordOfList.stream()
-            .flatMap { findTextRange(text, it).stream() }
+        val pattern = "\\b\\d{10,13}\\b".toRegex()
+        return pattern.findAll(text)
+            .map { it.value }
+            .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH }
+            .distinct()
             .toList()
     }
 
-    fun findTextRange(text: String, word: String): List<TextRange> {
-        val indexes: MutableSet<Int> = HashSet()
-        var wordLength = 0
-        var index = 0
-        while (index != -1) {
-            index = text.indexOf(word, index + wordLength)
-            if (index != -1) {
-                indexes.add(index)
-            }
-            wordLength = word.length
-        }
-        val list: MutableList<TextRange> = ArrayList()
-        val uniqueValues: MutableSet<TextRange> = HashSet()
+    fun findTextRanges(text: String, wordListOfWords: List<String>): List<TextRange> =
+        wordListOfWords.flatMap { word -> findTextRanges(text, word) }
 
-        for (i in indexes) {
-            val textRange = TextRange(i, i + word.length)
-            if (uniqueValues.add(textRange)) {
-                list.add(textRange)
+    fun findTextRanges(text: String, targetWord: String): List<TextRange> {
+        val targetWordLength = targetWord.length
+        val targetPositions = mutableSetOf<Int>()
+        var searchStartIndex = 0
+
+        while (true) {
+            val foundIndex = text.indexOf(targetWord, searchStartIndex)
+            if (foundIndex == -1) {
+                break // Target word not found anymore
             }
+            targetPositions.add(foundIndex)
+            searchStartIndex = foundIndex + targetWordLength
         }
-        return list
+
+        return targetPositions.map { TextRange(it, it + targetWordLength) }
     }
 
     fun createInlayHintsElement(
@@ -86,24 +67,24 @@ object Helper {
         appSettingsState: AppSettingsState
     ) {
         val text = element.text
-        val uniqueIndex: MutableSet<Int> = HashSet()
+        val uniqueIndices = mutableSetOf<Int>()
         val formatter = appSettingsState.defaultLocalFormatter
-        val inlayHintsPlaceEndOfLineEnable = appSettingsState.isInlayHintsPlaceEndOfLineEnable
+        val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
 
-        for (word in findUnixTimestamp(text)) {
-            val instant = createInstantFormat(word)
-            val localFormat = String.format("%s", formatter.format(instant))
-            val inlayPresentation = factory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat))
-            for (textRange in findTextRange(text, word)) {
-                if (uniqueIndex.add(textRange.startOffset)) {
+        findUnixTimestamp(text)
+            .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }  // Pairing each word with its range
+            .forEach { (word, textRange) ->
+                if (uniqueIndices.add(textRange.startOffset)) {
+                    val instant = createInstantFormat(word)
+                    val localFormat = formatter.format(instant)
+                    val inlayPresentation = factory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat))
                     sink.addInlineElement(
                         textRange.startOffset,
                         true,
                         inlayPresentation,
-                        inlayHintsPlaceEndOfLineEnable
+                        inlayHintsPlaceEndOfLineEnabled
                     )
                 }
             }
-        }
     }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "5.0.0"
+version = "5.0.1"
 
 repositories {
     mavenCentral()
@@ -20,6 +20,7 @@ java {
 }
 
 dependencies {
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
     testImplementation("org.mockito:mockito-core:4.8.0")
     testImplementation("junit:junit:4.13.2")
 }

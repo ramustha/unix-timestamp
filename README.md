@@ -15,7 +15,8 @@ UNIX Timestamp Converter is a project that converts UNIX timestamp (also known a
 ![unix3](img/unix3.jpg)
 
 ## Installation
-$ git clone https://github.com/ramustha/unix-timestamp.git $ cd unix-timestamp
+$ git clone https://github.com/ramustha/unix-timestamp.git 
+$ cd unix-timestamp
 ## Usage
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please insert correct instructions in **Usage** section and modify **Contributing** section if needed.

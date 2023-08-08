@@ -1,22 +1,29 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "4.2.0"
+version = "5.0.1"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven("https://www.jetbrains.com/intellij-repository/releases")
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
     maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
 dependencies {
-    testImplementation("org.mockito:mockito-core:4.8.0")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.kotest:kotest-framework-engine:5.6.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -39,9 +46,12 @@ intellij {
 
 tasks {
     // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "17"
     }
 
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
@@ -64,6 +74,10 @@ tasks {
             listOf(
                 "IU-2023.1"
             ))
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
 }

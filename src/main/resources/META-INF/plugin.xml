@@ -27,7 +27,7 @@
         ]]></description>
     <change-notes>
         <![CDATA[
-        <p><b>5.0.0</b></p>
+        <p><b>5.x.x</b></p>
         <ul>
             <li>Support inlay hints</li>
             <li>Support multiple caret</li>

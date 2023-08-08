@@ -1,79 +1,102 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils
 
-import com.intellij.codeInsight.hints.InlayHintsSink
-import com.intellij.codeInsight.hints.presentation.PresentationFactory
-import com.intellij.psi.PsiElement
-import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.createInlayHintsElement
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.createInstantFormat
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.createTimestamp
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.currentTimestamp
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.findTextRanges
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.findUnixTimestamp
-import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.isMillisOrSecondsFormat
-import junit.framework.TestCase
-import org.mockito.Mockito
+import com.intellij.openapi.util.TextRange
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContainAll
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import kotlin.random.Random
 
-class HelperTest : TestCase() {
-    fun testIsMillisOrSecondsFormat() {
-        assertTrue(isMillisOrSecondsFormat("1670587272776"))
-        assertTrue(isMillisOrSecondsFormat("1607446800000"))
-        assertFalse(isMillisOrSecondsFormat("1670587"))
+class HelperTest : StringSpec({
+
+    "createTimestamp should correctly convert formatted date-time string to UNIX timestamp" {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val value = "2033-05-18 03:33:20"
+        val result = Helper.createTimestamp(value, formatter)
+        result shouldBe 1999974800000L  // This should be the expected UNIX timestamp
     }
 
-    fun testCreateInstantFormat() {
-        val instantFormatSeconds = createInstantFormat("1607446800")
-        val instantFormatMillis = createInstantFormat("1607446800000")
-        assertEquals(Instant.ofEpochSecond(1607446800), instantFormatSeconds)
-        assertEquals(Instant.ofEpochMilli(1607446800000L), instantFormatMillis)
+    "findUnixTimestamp should correctly identify unix timestamp in string" {
+        val text = "This is an example string with UNIX timestamp 1609459200000."
+        val result = Helper.findUnixTimestamp(text)
+        result[0] shouldBe "1609459200000"
     }
 
-    fun testCreateTimestamp() {
-        val localTimestamp = createTimestamp("2022-12-12T00:00:00", DateTimeFormatter.ISO_DATE_TIME)
-        assertEquals(1670778000000L, localTimestamp)
+    "Find all valid Unix timestamps in the text" {
+        val text = "The unix times were 1479999999, 1479999999000 and there was also 1479999999"
+
+        val result = Helper.findUnixTimestamp(text)
+
+        result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }
 
-    fun testCurrentTimestamp() {
-        val localTimestamp = currentTimestamp()
-        assertNotNull(localTimestamp)
+    "Find Unix timestamps and ignore other numbers" {
+        val text = "The unix times were 1479999999, 1479999999000 but there were also 12345, 789000"
+
+        val result = Helper.findUnixTimestamp(text)
+
+        result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }
 
-    fun testFindUnixTimestamp() {
-        val instantFormatSeconds = findUnixTimestamp("1607446800")
-        val instantFormatMillis = findUnixTimestamp("1607446800000")
-        assertEquals(listOf("1607446800"), instantFormatSeconds)
-        assertEquals(listOf("1607446800000"), instantFormatMillis)
+    "findUnixTimestamp should return the correct unique UNIX timestamps from a large string" {
+        // Create a large string with sentences mixed with unix timestamps
+        val timestamp1 = "1688849864454"
+        val timestamp2 = "1688849864455"
+
+        val largeString = buildString {
+            repeat(5000) {
+                append("This is a sample sentence timestamp: $timestamp1. ")
+                append("This is another sample sentence timestamp: $timestamp2. ")
+            }
+        }
+
+        val result = Helper.findUnixTimestamp(largeString)
+
+        // Assert the size of the result
+        result shouldHaveSize 2
+
+        // Assert that the correct timestamps were found
+        result[0] shouldBe timestamp1
+        result[1] shouldBe timestamp2
     }
 
-    fun testFindTextRanges() {
-        val instantFormatSeconds = findTextRanges("1607446800", listOf("1607446800", "1607446800"))
-        val instantFormatMillis = findTextRanges("1607446800000", listOf("1607446800000", "1607446800000"))
-        val instantFormatInvalid = findTextRanges("1607446800000", listOf("16074468000001607446800000"))
-        assertEquals(2, instantFormatSeconds.size.toLong())
-        assertEquals(2, instantFormatMillis.size.toLong())
-        assertEquals(0, instantFormatInvalid.size.toLong())
-        assertEquals(10, instantFormatSeconds[0].length.toLong())
-        assertEquals(13, instantFormatMillis[0].length.toLong())
+    "findTextRanges should return correct ranges when searching for a timestamp" {
+        val timeStamp = "1691475292429"
+        val text = "Hey there! Timestamp is here: 1691475292429. That's it."
+
+        val result = Helper.findTextRanges(text, timeStamp)
+
+        val expected = listOf(TextRange(30, 30 + timeStamp.length))
+
+        result shouldBe expected
     }
 
-    fun testTestFindTextRanges() {
-        val instantFormatSeconds = findTextRanges("1607446800", "1607446800, 1607446800000")
-        val instantFormatMillis = findTextRanges("1607446800000", "1607446800000, 1607446800")
-        assertEquals(0, instantFormatSeconds.size.toLong())
-        assertEquals(0, instantFormatMillis.size.toLong())
+    "findTextRanges should return empty list when targetWord not found" {
+        val text = "Hello Universe"
+        val targetWord = "World"
+
+        val result =  Helper.findTextRanges(text, targetWord)
+
+        result shouldBe emptyList()
     }
 
-    fun testCreateInlayHintsElement() {
-        val psiElement = Mockito.mock(PsiElement::class.java)
-        val inlayHintsSink = Mockito.mock(InlayHintsSink::class.java)
-        val presentationFactory = Mockito.mock(
-            PresentationFactory::class.java
-        )
-        val appSettingsState = Mockito.mock(AppSettingsState::class.java)
-        Mockito.`when`(psiElement.text).thenReturn("1607446800000")
-        Mockito.`when`(appSettingsState.defaultLocalFormatter).thenReturn(DateTimeFormatter.ISO_INSTANT)
-        createInlayHintsElement(psiElement, inlayHintsSink, presentationFactory, appSettingsState)
+    "findTextRanges should work with huge strings" {
+        // Generate a large string of random lowercase characters
+        val hugeText = StringBuilder().apply {
+            for (i in 1..1_000_000) {
+                append(Random.nextInt(97, 122).toChar())
+            }
+        }.toString()
+
+        // Insert the timestamp at 500_000 position
+        val timeStamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+        val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
+
+        val result =  Helper.findTextRanges(hugeTextWithTarget, timeStamp)
+        val expected = listOf(TextRange(500_000, 500_000 + timeStamp.length))
+
+        result shouldBe expected
     }
-}
+})

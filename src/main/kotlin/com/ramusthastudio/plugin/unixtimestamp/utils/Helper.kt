@@ -14,10 +14,6 @@ object Helper {
     private const val MILLIS_LENGTH = 13
     private const val SECONDS_LENGTH = 10
 
-    fun isMillisOrSecondsFormat(value: String) = value.length == MILLIS_LENGTH || value.length == SECONDS_LENGTH
-
-    fun currentTimestamp() = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-
     fun createInstantFormat(longValue: String): Instant {
         if (longValue.length == SECONDS_LENGTH) {
             return Instant.ofEpochSecond(longValue.toLong())
@@ -40,24 +36,11 @@ object Helper {
             .toList()
     }
 
-    fun findTextRanges(text: String, wordListOfWords: List<String>): List<TextRange> =
-        wordListOfWords.flatMap { word -> findTextRanges(text, word) }
-
     fun findTextRanges(text: String, targetWord: String): List<TextRange> {
-        val targetWordLength = targetWord.length
-        val targetPositions = mutableSetOf<Int>()
-        var searchStartIndex = 0
-
-        while (true) {
-            val foundIndex = text.indexOf(targetWord, searchStartIndex)
-            if (foundIndex == -1) {
-                break // Target word not found anymore
-            }
-            targetPositions.add(foundIndex)
-            searchStartIndex = foundIndex + targetWordLength
-        }
-
-        return targetPositions.map { TextRange(it, it + targetWordLength) }
+        return text.windowed(targetWord.length, 1)
+            .withIndex()
+            .filter { it.value == targetWord }
+            .map { TextRange(it.index, it.index + targetWord.length) }
     }
 
     fun createInlayHintsElement(

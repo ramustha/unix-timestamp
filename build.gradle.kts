@@ -10,6 +10,7 @@ version = "5.0.1"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven("https://www.jetbrains.com/intellij-repository/releases")
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
     maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
@@ -20,9 +21,9 @@ java {
 }
 
 dependencies {
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
-    testImplementation("org.mockito:mockito-core:4.8.0")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.kotest:kotest-framework-engine:5.6.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -73,6 +74,10 @@ tasks {
             listOf(
                 "IU-2023.1"
             ))
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
 }

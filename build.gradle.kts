@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "5.0.1"
+version = "5.0.2"
 
 repositories {
     mavenCentral()
@@ -29,18 +29,19 @@ dependencies {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     // https://www.jetbrains.com/idea/download/other.html
-    version.set("2022.3")
+    version.set("2023.1")
     type.set("IU") // Target IDE Platform
     updateSinceUntilBuild.set(false)
 
+    // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#intellij-extension-plugins
     plugins.set(listOf(
         "com.intellij.java",
         "com.intellij.css",
         "com.intellij.database",
         "org.jetbrains.kotlin",
         "JavaScript",
-        "org.jetbrains.plugins.vue:223.7571.233",
-        "com.jetbrains.restClient:223.7571.59"
+        "org.jetbrains.plugins.vue:231.8109.172",
+        "com.jetbrains.restClient:231.8109.126"
     ))
 }
 

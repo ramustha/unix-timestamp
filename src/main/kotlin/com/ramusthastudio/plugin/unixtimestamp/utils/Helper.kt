@@ -12,13 +12,21 @@ import java.time.format.DateTimeFormatter
 
 object Helper {
     private const val MILLIS_LENGTH = 13
+    private const val MILLIS_LENGTH_LONG = 14
+
     private const val SECONDS_LENGTH = 10
+    private const val SECONDS_LENGTH_LONG = 11
+
 
     fun createInstantFormat(longValue: String): Instant {
-        if (longValue.length == SECONDS_LENGTH) {
-            return Instant.ofEpochSecond(longValue.toLong())
+        var value = longValue;
+        if (longValue.last() == 'l' || longValue.last() == 'L') {
+            value = longValue.dropLast(1);
         }
-        return Instant.ofEpochMilli(longValue.toLong())
+        if (value.length == SECONDS_LENGTH) {
+            return Instant.ofEpochSecond(value.toLong())
+        }
+        return Instant.ofEpochMilli(value.toLong())
     }
 
     fun createTimestamp(value: String, formatter: DateTimeFormatter): Long {
@@ -28,10 +36,10 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}\\b".toRegex()
+        val pattern = "\\b\\d{10,13}[lL]?\\b".toRegex()
         return pattern.findAll(text)
             .map { it.value }
-            .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH }
+            .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH  || it.length == SECONDS_LENGTH_LONG || it.length == MILLIS_LENGTH_LONG}
             .distinct()
             .toList()
     }

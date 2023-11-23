@@ -79,7 +79,7 @@ class HelperTest : StringSpec({
         val result = Helper.findUnixTimestamp(largeString)
 
         // Assert the size of the result
-        result shouldHaveSize 2
+        result shouldHaveSize 3
 
         // Assert that the correct timestamps were found
         result[0] shouldBe timestamp1

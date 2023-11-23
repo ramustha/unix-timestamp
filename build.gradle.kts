@@ -44,12 +44,6 @@ intellij {
         "com.jetbrains.restClient:232.10072.15",
         "Pythonid:232.10227.8",
         "org.jetbrains.plugins.go:232.10203.2",
-        "org.intellij.scala:2023.2.27",
-        "io.flutter:76.2.4",
-        "com.jetbrains.rust:232.9921.62",
-        "Dart:232.10248",
-        "com.jetbrains.php:232.10227.13",
-        "org.jetbrains.plugins.ruby:232.10203.2",
     ))
 }
 
@@ -66,6 +60,7 @@ tasks {
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
         sinceBuild.set("221.*")
+        sinceBuild.set("231.*")
     }
 
     signPlugin {

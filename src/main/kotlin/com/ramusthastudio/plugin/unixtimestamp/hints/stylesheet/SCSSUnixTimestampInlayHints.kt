@@ -22,6 +22,6 @@ class SCSSUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "SCSS" == language.id
+        return compareLanguage(language, "SCSS")
     }
 }

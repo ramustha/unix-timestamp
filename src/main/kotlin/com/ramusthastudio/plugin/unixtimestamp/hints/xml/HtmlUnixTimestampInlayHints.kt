@@ -22,6 +22,6 @@ class HtmlUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "HTML" == language.id
+        return compareLanguage(language, "HTML")
     }
 }

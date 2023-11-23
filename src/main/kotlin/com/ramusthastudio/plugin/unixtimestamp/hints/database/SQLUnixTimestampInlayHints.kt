@@ -22,27 +22,30 @@ class SQLUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return language.id.uppercase().contains("SQL")
-                || "Sybase" == language.id
-                || "BigQuery" == language.id
-                || "CassandraQL" == language.id
-                || "ClickHouse" == language.id
-                || "CouchbaseQuery" == language.id
-                || "DB2_IS" == language.id
-                || "DB2" == language.id
-                || "Derby" == language.id
-                || "Exasol" == language.id
-                || "H2" == language.id
-                || "HiveQL" == language.id
-                || "MongoDB" == language.id
-                || "AZURE" == language.id
-                || "MariaDB" == language.id
-                || "Oracle" == language.id
-                || "Cockroach" == language.id
-                || "Greenplum" == language.id
-                || "Redshift" == language.id
-                || "Redis" == language.id
-                || "Snowflake" == language.id
-                || "Vertica" == language.id
+        return compareLanguage(
+            language,
+            "SQL",
+            "Sybase",
+            "BigQuery",
+            "CassandraQL",
+            "ClickHouse",
+            "CouchbaseQuery",
+            "DB2_IS",
+            "DB2",
+            "Derby",
+            "Exasol",
+            "H2",
+            "HiveQL",
+            "MongoDB",
+            "AZURE",
+            "MariaDB",
+            "Oracle",
+            "Cockroach",
+            "Greenplum",
+            "Redshift",
+            "Redis",
+            "Snowflake",
+            "Vertica",
+        )
     }
 }

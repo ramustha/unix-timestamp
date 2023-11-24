@@ -22,6 +22,6 @@ class LESSUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "LESS" == language.id
+        return compareLanguage(language, "LESS")
     }
 }

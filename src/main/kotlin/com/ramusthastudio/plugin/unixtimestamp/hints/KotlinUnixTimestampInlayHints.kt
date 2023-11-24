@@ -20,6 +20,6 @@ class KotlinUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "kotlin" == language.id
+        return compareLanguage(language, "kotlin")
     }
 }

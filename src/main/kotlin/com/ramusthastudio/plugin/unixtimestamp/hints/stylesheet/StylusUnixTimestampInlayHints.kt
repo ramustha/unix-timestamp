@@ -22,6 +22,6 @@ class StylusUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "Stylus" == language.id
+        return compareLanguage(language, "Stylus")
     }
 }

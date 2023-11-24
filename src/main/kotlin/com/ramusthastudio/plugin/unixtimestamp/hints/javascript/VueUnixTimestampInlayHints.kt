@@ -22,6 +22,6 @@ class VueUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "Vue" == language.id
+        return compareLanguage(language, "Vue")
     }
 }

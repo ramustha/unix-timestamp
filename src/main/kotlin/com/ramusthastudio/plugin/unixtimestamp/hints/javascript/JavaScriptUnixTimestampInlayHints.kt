@@ -21,6 +21,6 @@ class JavaScriptUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return language.id.contains("ECMAScript")
+        return compareLanguage(language, "ECMAScript")
     }
 }

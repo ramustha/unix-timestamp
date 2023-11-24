@@ -12,5 +12,7 @@
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.LESSUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="CSS"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.StylusUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="CSS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.stylesheet.PostCSSUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

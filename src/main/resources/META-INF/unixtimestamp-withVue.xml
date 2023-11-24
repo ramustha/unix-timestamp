@@ -1,0 +1,12 @@
+<idea-plugin>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.inlayProvider language="Vue"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="VueJS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
+        <codeInsight.inlayProvider language="VueTS"
+                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
+    </extensions>
+</idea-plugin>

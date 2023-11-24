@@ -1,12 +1,12 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij") version "1.16.0"
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "5.0.2"
+version = "5.1.0"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ dependencies {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     // https://www.jetbrains.com/idea/download/other.html
-    version.set("2023.1")
+    version.set("2023.2.5")
     type.set("IU") // Target IDE Platform
     updateSinceUntilBuild.set(false)
 
@@ -40,8 +40,10 @@ intellij {
         "com.intellij.database",
         "org.jetbrains.kotlin",
         "JavaScript",
-        "org.jetbrains.plugins.vue:231.8109.172",
-        "com.jetbrains.restClient:231.8109.126"
+        "org.jetbrains.plugins.vue:232.10227.13",
+        "com.jetbrains.restClient:232.10072.15",
+        "Pythonid:232.10227.8",
+        "org.jetbrains.plugins.go:232.10203.2",
     ))
 }
 
@@ -58,6 +60,7 @@ tasks {
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
         sinceBuild.set("221.*")
+        sinceBuild.set("231.*")
     }
 
     signPlugin {

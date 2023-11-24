@@ -22,6 +22,6 @@ class SASSUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "SASS" == language.id
+        return compareLanguage(language, "SASS")
     }
 }

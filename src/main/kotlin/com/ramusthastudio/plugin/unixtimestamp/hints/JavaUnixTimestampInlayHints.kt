@@ -20,6 +20,6 @@ class JavaUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "JAVA" == language.id
+        return compareLanguage(language, "JAVA")
     }
 }

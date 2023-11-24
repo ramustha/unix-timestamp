@@ -2,6 +2,7 @@ package com.ramusthastudio.plugin.unixtimestamp.utils
 
 import com.intellij.codeInsight.hints.InlayHintsSink
 import com.intellij.codeInsight.hints.presentation.PresentationFactory
+import com.intellij.database.util.common.lastCharIs
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
@@ -28,12 +29,19 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}\\b".toRegex()
+        val pattern = "\\b\\d{10,13}([lL])?\\b".toRegex()
         return pattern.findAll(text)
-            .map { it.value }
+            .map { dropLastChar(it) }
             .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH }
             .distinct()
             .toList()
+    }
+
+    private fun dropLastChar(it: MatchResult): String {
+        if (it.value.lastCharIs('l') or it.value.lastCharIs('L')) {
+            return it.value.dropLast(1)
+        }
+        return it.value
     }
 
     fun findTextRanges(text: String, targetWord: String): List<TextRange> {
@@ -55,7 +63,12 @@ object Helper {
         val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
 
         findUnixTimestamp(text)
-            .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }  // Pairing each word with its range
+            .flatMap { word ->
+                findTextRanges(
+                    text,
+                    word
+                ).map { textRange -> word to textRange }
+            }  // Pairing each word with its range
             .forEach { (word, textRange) ->
                 if (uniqueIndices.add(textRange.startOffset)) {
                     val instant = createInstantFormat(word)

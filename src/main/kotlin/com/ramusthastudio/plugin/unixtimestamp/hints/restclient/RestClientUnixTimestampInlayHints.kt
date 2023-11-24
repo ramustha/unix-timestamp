@@ -22,6 +22,6 @@ class RestClientUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "HTTP Request".equals(language.id, ignoreCase = true)
+        return compareLanguage(language, "HTTP Request")
     }
 }

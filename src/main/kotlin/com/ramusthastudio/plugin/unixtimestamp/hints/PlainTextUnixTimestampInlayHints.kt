@@ -54,4 +54,10 @@ open class PlainTextUnixTimestampInlayHints : InlayHintsProvider<AppSettingsStat
             }
         }
     }
+
+    fun compareLanguage(language: Language, vararg languageIds: String): Boolean {
+        return languageIds.any {
+            it.equals(language.id, ignoreCase = true)|| language.id.contains(it)
+        }
+    }
 }

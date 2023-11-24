@@ -22,6 +22,6 @@ class TypeScriptUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "TypeScript" == language.id
+        return compareLanguage(language, "TypeScript")
     }
 }

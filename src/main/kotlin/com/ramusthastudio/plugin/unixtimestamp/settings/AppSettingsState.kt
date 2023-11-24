@@ -5,7 +5,6 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
-import org.apache.commons.lang.builder.ToStringBuilder
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -47,12 +46,13 @@ class AppSettingsState private constructor() : PersistentStateComponent<AppSetti
     }
 
     override fun toString(): String {
-        return ToStringBuilder(this)
-            .append("zoneId", zoneId)
-            .append("isInlayHintsPlaceEndOfLineEnable", isInlayHintsPlaceEndOfLineEnable)
-            .append("showTimestampGenerator", isCurrentTimestampGeneratorEnable)
-            .append("showCustomTimestampGenerator", isCustomTimestampGeneratorEnable)
-            .append("customPattern", customPattern)
-            .toString()
+        return "AppSettingsState(" +
+                "isInlayHintsPlaceEndOfLineEnable=$isInlayHintsPlaceEndOfLineEnable, " +
+                "isCurrentTimestampGeneratorEnable=$isCurrentTimestampGeneratorEnable, " +
+                "isCustomTimestampGeneratorEnable=$isCustomTimestampGeneratorEnable, " +
+                "customPattern='$customPattern', " +
+                "defaultLocalFormatter=$defaultLocalFormatter, " +
+                "zoneId='$zoneId'" +
+                ")"
     }
 }

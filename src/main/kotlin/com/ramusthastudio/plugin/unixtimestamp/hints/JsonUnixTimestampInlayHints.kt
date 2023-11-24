@@ -20,6 +20,6 @@ class JsonUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "JSON" == language.id
+        return compareLanguage(language, "JSON")
     }
 }

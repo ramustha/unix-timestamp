@@ -22,6 +22,6 @@ class XmlUnixTimestampInlayHints : PlainTextUnixTimestampInlayHints() {
     }
 
     override fun isLanguageSupported(language: Language): Boolean {
-        return "XML" == language.id
+        return compareLanguage(language, "XML")
     }
 }

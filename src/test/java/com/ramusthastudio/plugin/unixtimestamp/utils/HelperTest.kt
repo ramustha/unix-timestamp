@@ -62,6 +62,31 @@ class HelperTest : StringSpec({
         result[1] shouldBe timestamp2
     }
 
+    "findUnixTimestamp should return the correct unique UNIX timestamps contains suffix l or L" {
+        // Create a large string with sentences mixed with unix timestamps
+        val timestamp1 = 1700723850083L
+        val timestamp2 = "1688849864455l"
+        val timestamp3 = "1700723877716L"
+
+        val largeString = buildString {
+            repeat(5000) {
+                append("This is a sample sentence timestamp: $timestamp1. ")
+                append("This is another sample sentence timestamp: $timestamp2. ")
+                append("And This is another sample sentence timestamp: $timestamp3. ")
+            }
+        }
+
+        val result = Helper.findUnixTimestamp(largeString)
+
+        // Assert the size of the result
+        result shouldHaveSize 3
+
+        // Assert that the correct timestamps were found
+        result[0] shouldBe timestamp1.toString()
+        result[1] shouldBe timestamp2.dropLast(1)
+        result[2] shouldBe timestamp3.dropLast(1)
+    }
+
     "findTextRanges should return correct ranges when searching for a timestamp" {
         val timeStamp = "1691475292429"
         val text = "Hey there! Timestamp is here: 1691475292429. That's it."

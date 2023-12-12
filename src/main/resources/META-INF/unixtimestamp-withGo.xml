@@ -2,7 +2,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.inlayProvider language="go"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.go.GoUnixTimestampInlayHints"/>
+        <codeInsight.declarativeInlayProvider
+                language="go"
+                providerId="go"
+                isEnabledByDefault="true"
+                bundle="UnixBundle"
+                nameKey="go.inlay.provider.name"
+                group="CODE_VISION_GROUP"
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.go.GoUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

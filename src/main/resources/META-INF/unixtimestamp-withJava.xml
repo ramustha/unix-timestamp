@@ -2,7 +2,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.inlayProvider language="JAVA"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JavaUnixTimestampInlayHints"/>
+        <codeInsight.declarativeInlayProvider
+                language="JAVA"
+                providerId="java"
+                isEnabledByDefault="true"
+                bundle="UnixBundle"
+                nameKey="java.inlay.provider.name"
+                group="CODE_VISION_GROUP"
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JavaUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

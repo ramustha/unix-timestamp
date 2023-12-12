@@ -1,7 +1,7 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils
 
-import com.intellij.codeInsight.hints.InlayHintsSink
-import com.intellij.codeInsight.hints.presentation.PresentationFactory
+import com.intellij.codeInsight.hints.declarative.InlayTreeSink
+import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
 import com.intellij.database.util.common.lastCharIs
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
@@ -15,7 +15,7 @@ object Helper {
     private const val MILLIS_LENGTH = 13
     private const val SECONDS_LENGTH = 10
 
-    fun createInstantFormat(longValue: String): Instant {
+    private fun createInstantFormat(longValue: String): Instant {
         if (longValue.length == SECONDS_LENGTH) {
             return Instant.ofEpochSecond(longValue.toLong())
         }
@@ -52,13 +52,12 @@ object Helper {
     }
 
     fun createInlayHintsElement(
+        uniqueIndices: MutableSet<Int>,
         element: PsiElement,
-        sink: InlayHintsSink,
-        factory: PresentationFactory,
+        sink: InlayTreeSink,
         appSettingsState: AppSettingsState
     ) {
         val text = element.text
-        val uniqueIndices = mutableSetOf<Int>()
         val formatter = appSettingsState.defaultLocalFormatter
         val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
 
@@ -70,16 +69,16 @@ object Helper {
                 ).map { textRange -> word to textRange }
             }  // Pairing each word with its range
             .forEach { (word, textRange) ->
-                if (uniqueIndices.add(textRange.startOffset)) {
+                val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
+                if (uniqueIndices.add(offset)) {
                     val instant = createInstantFormat(word)
-                    val localFormat = formatter.format(instant)
-                    val inlayPresentation = factory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat))
-                    sink.addInlineElement(
-                        textRange.startOffset,
-                        true,
-                        inlayPresentation,
-                        inlayHintsPlaceEndOfLineEnabled
-                    )
+                    val hint = formatter.format(instant)
+
+                    sink.addPresentation(
+                        InlineInlayPosition(offset, false), hasBackground = true
+                    ) {
+                        text(hint)
+                    }
                 }
             }
     }

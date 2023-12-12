@@ -2,7 +2,6 @@ package com.ramusthastudio.plugin.unixtimestamp.utils
 
 import com.intellij.codeInsight.hints.declarative.InlayTreeSink
 import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
-import com.intellij.database.util.common.lastCharIs
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
@@ -41,7 +40,7 @@ object Helper {
     }
 
     private fun dropLastChar(value: String): String {
-        if (value.lastCharIs('l') or value.lastCharIs('L')) {
+        if ((value.last() == 'l') or (value.last() == 'L')) {
             return value.dropLast(1)
         }
         return value

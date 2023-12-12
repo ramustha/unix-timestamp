@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.0.0"
+version = "6.0.0-IC"
 
 repositories {
     mavenCentral()
@@ -30,20 +30,14 @@ dependencies {
 intellij {
     // https://www.jetbrains.com/idea/download/other.html
     version.set("2023.3")
-    type.set("IU") // Target IDE Platform
+    type.set("IC") // Target IDE Platform
     updateSinceUntilBuild.set(false)
 
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#intellij-extension-plugins
     plugins.set(listOf(
         "com.intellij.java",
-        "com.intellij.css",
-        "com.intellij.database",
         "org.jetbrains.kotlin",
-        "JavaScript",
-        "org.jetbrains.plugins.vue:233.11799.232",
-        "com.jetbrains.restClient:233.11799.165",
-        "Pythonid:233.11799.241",
-        "org.jetbrains.plugins.go:233.11799.196",
+        "PythonCore:233.11799.300",
     ))
 }
 
@@ -75,7 +69,7 @@ tasks {
     runPluginVerifier {
         ideVersions.set(
             listOf(
-                "IU-2023.1"
+                "IC-2023.1"
             ))
     }
 

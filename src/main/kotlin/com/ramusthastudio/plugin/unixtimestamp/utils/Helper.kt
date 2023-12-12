@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter
 
 object Helper {
     private const val MILLIS_LENGTH = 13
+    private const val MILLIS_SUFFIX_LENGTH = 14
     private const val SECONDS_LENGTH = 10
 
     private fun createInstantFormat(longValue: String): Instant {
@@ -31,17 +32,19 @@ object Helper {
     fun findUnixTimestamp(text: String): List<String> {
         val pattern = "\\b\\d{10,13}([lL])?\\b".toRegex()
         return pattern.findAll(text)
-            .map { dropLastChar(it) }
-            .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH }
+            .map { it.value }
+            .filter {
+                it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH || it.length == MILLIS_SUFFIX_LENGTH
+            }
             .distinct()
             .toList()
     }
 
-    private fun dropLastChar(it: MatchResult): String {
-        if (it.value.lastCharIs('l') or it.value.lastCharIs('L')) {
-            return it.value.dropLast(1)
+    private fun dropLastChar(value: String): String {
+        if (value.lastCharIs('l') or value.lastCharIs('L')) {
+            return value.dropLast(1)
         }
-        return it.value
+        return value
     }
 
     fun findTextRanges(text: String, targetWord: String): List<TextRange> {
@@ -71,7 +74,8 @@ object Helper {
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
                 if (uniqueIndices.add(offset)) {
-                    val instant = createInstantFormat(word)
+                    val value = dropLastChar(word)
+                    val instant = createInstantFormat(value)
                     val hint = formatter.format(instant)
 
                     sink.addPresentation(

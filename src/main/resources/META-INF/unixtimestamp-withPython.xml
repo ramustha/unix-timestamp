@@ -2,7 +2,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.inlayProvider language="Python"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.python.PythonUnixTimestampInlayHints"/>
+        <codeInsight.declarativeInlayProvider
+                language="Python"
+                providerId="python"
+                isEnabledByDefault="true"
+                bundle="UnixBundle"
+                nameKey="python.inlay.provider.name"
+                group="CODE_VISION_GROUP"
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.python.PythonUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

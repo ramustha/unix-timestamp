@@ -1,7 +1,7 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils
 
-import com.intellij.codeInsight.hints.InlayHintsSink
-import com.intellij.codeInsight.hints.presentation.PresentationFactory
+import com.intellij.codeInsight.hints.declarative.InlayTreeSink
+import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
 import com.intellij.database.util.common.lastCharIs
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
@@ -13,9 +13,10 @@ import java.time.format.DateTimeFormatter
 
 object Helper {
     private const val MILLIS_LENGTH = 13
+    private const val MILLIS_SUFFIX_LENGTH = 14
     private const val SECONDS_LENGTH = 10
 
-    fun createInstantFormat(longValue: String): Instant {
+    private fun createInstantFormat(longValue: String): Instant {
         if (longValue.length == SECONDS_LENGTH) {
             return Instant.ofEpochSecond(longValue.toLong())
         }
@@ -31,17 +32,19 @@ object Helper {
     fun findUnixTimestamp(text: String): List<String> {
         val pattern = "\\b\\d{10,13}([lL])?\\b".toRegex()
         return pattern.findAll(text)
-            .map { dropLastChar(it) }
-            .filter { it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH }
+            .map { it.value }
+            .filter {
+                it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH || it.length == MILLIS_SUFFIX_LENGTH
+            }
             .distinct()
             .toList()
     }
 
-    private fun dropLastChar(it: MatchResult): String {
-        if (it.value.lastCharIs('l') or it.value.lastCharIs('L')) {
-            return it.value.dropLast(1)
+    private fun dropLastChar(value: String): String {
+        if (value.lastCharIs('l') or value.lastCharIs('L')) {
+            return value.dropLast(1)
         }
-        return it.value
+        return value
     }
 
     fun findTextRanges(text: String, targetWord: String): List<TextRange> {
@@ -52,13 +55,12 @@ object Helper {
     }
 
     fun createInlayHintsElement(
+        uniqueIndices: MutableSet<Int>,
         element: PsiElement,
-        sink: InlayHintsSink,
-        factory: PresentationFactory,
+        sink: InlayTreeSink,
         appSettingsState: AppSettingsState
     ) {
         val text = element.text
-        val uniqueIndices = mutableSetOf<Int>()
         val formatter = appSettingsState.defaultLocalFormatter
         val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
 
@@ -70,16 +72,17 @@ object Helper {
                 ).map { textRange -> word to textRange }
             }  // Pairing each word with its range
             .forEach { (word, textRange) ->
-                if (uniqueIndices.add(textRange.startOffset)) {
-                    val instant = createInstantFormat(word)
-                    val localFormat = formatter.format(instant)
-                    val inlayPresentation = factory.roundWithBackgroundAndSmallInset(factory.smallText(localFormat))
-                    sink.addInlineElement(
-                        textRange.startOffset,
-                        true,
-                        inlayPresentation,
-                        inlayHintsPlaceEndOfLineEnabled
-                    )
+                val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
+                if (uniqueIndices.add(offset)) {
+                    val value = dropLastChar(word)
+                    val instant = createInstantFormat(value)
+                    val hint = formatter.format(instant)
+
+                    sink.addPresentation(
+                        InlineInlayPosition(offset, false), hasBackground = true
+                    ) {
+                        text(hint)
+                    }
                 }
             }
     }

@@ -2,7 +2,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.inlayProvider language="kotlin"
-                                   implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
+        <codeInsight.declarativeInlayProvider
+                language="kotlin"
+                providerId="java"
+                isEnabledByDefault="true"
+                bundle="UnixBundle"
+                nameKey="kotlin.inlay.provider.name"
+                group="CODE_VISION_GROUP"
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.KotlinUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

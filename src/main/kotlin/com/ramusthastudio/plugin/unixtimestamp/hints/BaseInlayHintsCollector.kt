@@ -1,22 +1,23 @@
 package com.ramusthastudio.plugin.unixtimestamp.hints
 
-import com.intellij.codeInsight.hints.FactoryInlayHintsCollector
-import com.intellij.codeInsight.hints.InlayHintsSink
+import com.intellij.codeInsight.hints.declarative.InlayTreeSink
+import com.intellij.codeInsight.hints.declarative.SharedBypassCollector
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.createInlayHintsElement
 
 class BaseInlayHintsCollector<T : PsiElement?>(
-    editor: Editor,
-    private val settingsState: AppSettingsState,
-    private val psiElement: Class<T>
-) : FactoryInlayHintsCollector(editor) {
-    override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
+    val file: PsiFile,
+    val editor: Editor,
+    private val psiElement: Class<T>,
+    private val settingsState: AppSettingsState = AppSettingsState.instance,
+    private val uniqueIndices: MutableSet<Int> = mutableSetOf()
+) : SharedBypassCollector {
+    override fun collectFromElement(element: PsiElement, sink: InlayTreeSink) {
         if (psiElement.isInstance(element)) {
-            createInlayHintsElement(element, sink, factory, settingsState)
-            return true
+            createInlayHintsElement(uniqueIndices, element, sink, settingsState)
         }
-        return false
     }
 }

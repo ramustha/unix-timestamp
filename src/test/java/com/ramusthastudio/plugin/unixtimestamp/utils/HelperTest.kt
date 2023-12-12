@@ -83,8 +83,8 @@ class HelperTest : StringSpec({
 
         // Assert that the correct timestamps were found
         result[0] shouldBe timestamp1.toString()
-        result[1] shouldBe timestamp2.dropLast(1)
-        result[2] shouldBe timestamp3.dropLast(1)
+        result[1] shouldBe timestamp2
+        result[2] shouldBe timestamp3
     }
 
     "findTextRanges should return correct ranges when searching for a timestamp" {

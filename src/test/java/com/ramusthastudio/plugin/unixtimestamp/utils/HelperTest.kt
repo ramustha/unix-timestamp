@@ -11,6 +11,19 @@ import kotlin.random.Random
 
 class HelperTest : StringSpec({
 
+    "createInstantFormat should correctly convert UNIX timestamp" {
+        // Epoch seconds
+        Helper.createInstantFormat("1700723850") shouldBe Instant.parse("2023-11-23T07:17:30.000Z")
+        // Epoch millis
+        Helper.createInstantFormat("1700723850123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        // Epoch with decimal millis
+        Helper.createInstantFormat("1700723850.123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        // Epoch with decimal micros
+        Helper.createInstantFormat("1700723850.123456") shouldBe Instant.parse("2023-11-23T07:17:30.123456Z")
+        // Epoch with decimal nanos
+        Helper.createInstantFormat("1700723850.123456789") shouldBe Instant.parse("2023-11-23T07:17:30.123456789Z")
+    }
+
     "createTimestamp should correctly convert formatted date-time string to UNIX timestamp" {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val value = "2033-05-18 03:33:20"
@@ -87,6 +100,25 @@ class HelperTest : StringSpec({
         result[2] shouldBe timestamp3
     }
 
+    "findUnixTimestamp should return the correct unique UNIX timestamps containing decimals" {
+        val timestamp1 = "1700723850.123"
+        val timestamp2 = "1688849864.123456"
+        val timestamp3 = "1700723877.123456789"
+
+        val largeString = buildString {
+            append("First: $timestamp1. ")
+            append("Second: $timestamp2. ")
+            append("Third: $timestamp3. ")
+        }
+
+        val result = Helper.findUnixTimestamp(largeString)
+
+        result shouldHaveSize 3
+        result[0] shouldBe timestamp1
+        result[1] shouldBe timestamp2
+        result[2] shouldBe timestamp3
+    }
+
     "findTextRanges should return correct ranges when searching for a timestamp" {
         val timeStamp = "1691475292429"
         val text = "Hey there! Timestamp is here: 1691475292429. That's it."
@@ -102,7 +134,7 @@ class HelperTest : StringSpec({
         val text = "Hello Universe"
         val targetWord = "World"
 
-        val result =  Helper.findTextRanges(text, targetWord)
+        val result = Helper.findTextRanges(text, targetWord)
 
         result shouldBe emptyList()
     }
@@ -119,7 +151,7 @@ class HelperTest : StringSpec({
         val timeStamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
         val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
 
-        val result =  Helper.findTextRanges(hugeTextWithTarget, timeStamp)
+        val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp)
         val expected = listOf(TextRange(500_000, 500_000 + timeStamp.length))
 
         result shouldBe expected

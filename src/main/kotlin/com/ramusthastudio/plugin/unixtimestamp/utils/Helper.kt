@@ -15,11 +15,18 @@ object Helper {
     private const val MILLIS_SUFFIX_LENGTH = 14
     private const val SECONDS_LENGTH = 10
 
-    private fun createInstantFormat(longValue: String): Instant {
-        if (longValue.length == SECONDS_LENGTH) {
-            return Instant.ofEpochSecond(longValue.toLong())
+    fun createInstantFormat(timestamp: String): Instant {
+        return if (timestamp.length == SECONDS_LENGTH) {
+            Instant.ofEpochSecond(timestamp.toLong())
+        } else if (timestamp.contains(".")) {
+            val parts = timestamp.split(".")
+            Instant.ofEpochSecond(
+                parts[0].toLong(),
+                parts[1].padEnd(9, '0').toLong() // pad to nano seconds to allow arbitrary precision in input
+            )
+        } else {
+            Instant.ofEpochMilli(timestamp.toLong())
         }
-        return Instant.ofEpochMilli(longValue.toLong())
     }
 
     fun createTimestamp(value: String, formatter: DateTimeFormatter): Long {
@@ -29,11 +36,14 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}([lL])?\\b".toRegex()
+        val pattern = "\\b\\d{10,13}([lL])?(\\.\\d{1,9})?\\b".toRegex()
         return pattern.findAll(text)
             .map { it.value }
             .filter {
-                it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH || it.length == MILLIS_SUFFIX_LENGTH
+                it.length == SECONDS_LENGTH
+                        || it.length == MILLIS_LENGTH
+                        || it.length == MILLIS_SUFFIX_LENGTH
+                        || it.contains(".")
             }
             .distinct()
             .toList()

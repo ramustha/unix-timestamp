@@ -1,0 +1,14 @@
+<idea-plugin>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.declarativeInlayProvider
+                language="PHP"
+                providerId="php"
+                isEnabledByDefault="true"
+                bundle="UnixBundle"
+                nameKey="php.inlay.provider.name"
+                group="CODE_VISION_GROUP"
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.php.PhpUnixTimestampInlayHints"/>
+    </extensions>
+</idea-plugin>

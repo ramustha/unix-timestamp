@@ -56,6 +56,7 @@
         <depends optional="true" config-file="unixtimestamp-withRestClient.xml">com.jetbrains.restClient</depends>
         <depends optional="true" config-file="unixtimestamp-withPython.xml">Pythonid</depends>
         <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
+        <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.0.2"
+version = "6.1.0"
 
 repositories {
     mavenCentral()
@@ -44,6 +44,7 @@ intellij {
         "com.jetbrains.restClient:233.11799.165",
         "Pythonid:233.11799.241",
         "org.jetbrains.plugins.go:233.11799.196",
+        "com.jetbrains.php:233.11799.300",
     ))
 }
 

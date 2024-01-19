@@ -58,7 +58,7 @@ object Helper {
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
-        val pattern = Pattern.compile("\\b$wordToFind?(\\.\\d{1,9})?\\b")
+        val pattern = Pattern.compile("\\b$wordToFind?([lL])?(\\.\\d{1,9})?\\b")
         val matcher = pattern.matcher(sentence)
         val indexList = mutableListOf<TextRange>()
         while (matcher.find()) {

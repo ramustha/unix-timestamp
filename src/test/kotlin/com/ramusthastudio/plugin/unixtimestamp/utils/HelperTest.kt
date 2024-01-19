@@ -120,12 +120,20 @@ class HelperTest : StringSpec({
     }
 
     "findTextRanges should return correct ranges when searching for a timestamp" {
-        val timeStamp = "1691475292429"
-        val text = "Hey there! Timestamp is here: 1691475292429. That's it."
+        val timeStamp = "1691475292"
+        val text = """
+            Hey there! Timestamp is here: 1691475292 . That's it.
+            Hey there! Timestamp is here: 1691475292.1 . That's it.
+            Hey there! Timestamp is here: 1691475292.12. That's it.
+            """
 
         val result = Helper.findTextRanges(text, timeStamp)
 
-        val expected = listOf(TextRange(30, 30 + timeStamp.length))
+        val expected = listOf(
+            TextRange(43, 53),
+            TextRange(109, 121),
+            TextRange(177, 190),
+        )
 
         result shouldBe expected
     }
@@ -148,7 +156,7 @@ class HelperTest : StringSpec({
         }.toString()
 
         // Insert the timestamp at 500_000 position
-        val timeStamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+        val timeStamp = " ${System.currentTimeMillis()} "
         val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
 
         val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp)

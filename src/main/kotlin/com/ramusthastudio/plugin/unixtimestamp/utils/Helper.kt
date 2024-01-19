@@ -9,6 +9,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.regex.Pattern
 
 object Helper {
     private const val MILLIS_LENGTH = 13
@@ -56,11 +57,14 @@ object Helper {
         return value
     }
 
-    fun findTextRanges(text: String, targetWord: String): List<TextRange> {
-        return text.windowed(targetWord.length, 1)
-            .withIndex()
-            .filter { it.value == targetWord }
-            .map { TextRange(it.index, it.index + targetWord.length) }
+    fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
+        val pattern = Pattern.compile("\\b$wordToFind?(\\.\\d{1,9})?\\b")
+        val matcher = pattern.matcher(sentence)
+        val indexList = mutableListOf<TextRange>()
+        while (matcher.find()) {
+            indexList.add(TextRange(matcher.start(), matcher.end()))
+        }
+        return indexList
     }
 
     fun createInlayHintsElement(

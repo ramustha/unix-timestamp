@@ -28,7 +28,7 @@ class HelperTest : StringSpec({
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val value = "2033-05-18 03:33:20"
         val result = Helper.createTimestamp(value, formatter)
-        result shouldBe 1999974800000L  // This should be the expected UNIX timestamp
+        result shouldBe 19999748000001L  // This should be the expected UNIX timestamp
     }
 
     "findUnixTimestamp should correctly identify unix timestamp in string" {

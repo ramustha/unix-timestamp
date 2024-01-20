@@ -37,7 +37,7 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}([lL])?(\\.\\d{1,9})?\\b".toRegex()
+        val pattern = "\\b\\d{10,13}([lL])?(.\\d{1,9})?\\b".toRegex()
         return pattern.findAll(text)
             .map { it.value }
             .filter {
@@ -58,7 +58,7 @@ object Helper {
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
-        val pattern = Pattern.compile("\\b$wordToFind?([lL])?(\\.\\d{1,9})?\\b")
+        val pattern = Pattern.compile("\\b$wordToFind?(.\\d{1,9})?\\b")
         val matcher = pattern.matcher(sentence)
         val indexList = mutableListOf<TextRange>()
         while (matcher.find()) {

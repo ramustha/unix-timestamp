@@ -44,6 +44,7 @@ intellij {
         "org.jetbrains.plugins.vue:233.11799.232",
         "com.jetbrains.restClient:233.11799.165",
         "Pythonid:233.11799.241",
+        "PythonCore:233.11799.300",
         "org.jetbrains.plugins.go:233.11799.196",
         "com.jetbrains.php:233.11799.300",
         "org.intellij.scala:2023.3.19",

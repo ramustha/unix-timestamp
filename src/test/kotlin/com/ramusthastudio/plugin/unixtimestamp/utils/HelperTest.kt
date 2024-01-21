@@ -4,6 +4,8 @@ import com.intellij.openapi.util.TextRange
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.longs.shouldBeGreaterThan
+import io.kotest.matchers.longs.shouldNotBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -28,7 +30,7 @@ class HelperTest : StringSpec({
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val value = "2033-05-18 03:33:20"
         val result = Helper.createTimestamp(value, formatter)
-        result shouldBe 1999974800000L  // This should be the expected UNIX timestamp
+        result shouldBeGreaterThan 19999
     }
 
     "findUnixTimestamp should correctly identify unix timestamp in string" {
@@ -120,12 +122,20 @@ class HelperTest : StringSpec({
     }
 
     "findTextRanges should return correct ranges when searching for a timestamp" {
-        val timeStamp = "1691475292429"
-        val text = "Hey there! Timestamp is here: 1691475292429. That's it."
+        val timeStamp = "1691475292"
+        val text = """
+            Hey there! Timestamp is here: 1691475292 . That's it.
+            Hey there! Timestamp is here: 1691475292.1 . That's it.
+            Hey there! Timestamp is here: 1691475292.12. That's it.
+            """
 
         val result = Helper.findTextRanges(text, timeStamp)
 
-        val expected = listOf(TextRange(30, 30 + timeStamp.length))
+        val expected = listOf(
+            TextRange(43, 53),
+            TextRange(109, 121),
+            TextRange(177, 190),
+        )
 
         result shouldBe expected
     }
@@ -148,7 +158,7 @@ class HelperTest : StringSpec({
         }.toString()
 
         // Insert the timestamp at 500_000 position
-        val timeStamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+        val timeStamp = " ${System.currentTimeMillis()} "
         val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
 
         val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp)

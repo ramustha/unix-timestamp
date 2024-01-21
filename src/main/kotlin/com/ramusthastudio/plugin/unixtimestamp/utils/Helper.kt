@@ -13,7 +13,6 @@ import java.util.regex.Pattern
 
 object Helper {
     private const val MILLIS_LENGTH = 13
-    private const val MILLIS_SUFFIX_LENGTH = 14
     private const val SECONDS_LENGTH = 10
 
     fun createInstantFormat(timestamp: String): Instant {
@@ -37,13 +36,13 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}([lL])?(.\\d{1,9})?\\b".toRegex()
+        val pattern = "\\b\\d{10,13}([lL])?(\\.\\d{1,9})?\\b".toRegex()
         return pattern.findAll(text)
             .map { it.value }
             .filter {
-                it.length == SECONDS_LENGTH
-                        || it.length == MILLIS_LENGTH
-                        || it.length == MILLIS_SUFFIX_LENGTH
+                it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH
+                        || it.endsWith("l")
+                        || it.endsWith("L")
                         || it.contains(".")
             }
             .distinct()

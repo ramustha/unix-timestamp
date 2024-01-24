@@ -39,7 +39,8 @@
             <li>Support Stylesheet family (*.css, *.scss, *.less, *.sass. *.pcss)</li>
             <li>Support SQL family (*.sql) and other dialects (BigQuery, CassandraQL, Derby, etc)</li>
             <li>Support Vue Project (*.vue)</li>
-            <li>Support *.java *.kt *.txt *.json *.xml *.html *.html file type</li>
+            <li>Support PHP Project (*.php)</li>
+            <li>Support *.java *.groovy *.kt *.scala *.txt *.json *.xml *.html *.html file type</li>
         </ul>
         ]]>
     </change-notes>
@@ -48,15 +49,19 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
-        <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
-        <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
-        <depends optional="true" config-file="unixtimestamp-withJS.xml">JavaScript</depends>
-        <depends optional="true" config-file="unixtimestamp-withCSS.xml">com.intellij.css</depends>
-        <depends optional="true" config-file="unixtimestamp-withDatabase.xml">com.intellij.database</depends>
-        <depends optional="true" config-file="unixtimestamp-withRestClient.xml">com.jetbrains.restClient</depends>
-        <depends optional="true" config-file="unixtimestamp-withPython.xml">Pythonid</depends>
-        <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
-        <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
+    <depends>com.intellij.modules.python</depends>
+    <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
+    <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
+    <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>
+    <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
+    <depends optional="true" config-file="unixtimestamp-withJS.xml">JavaScript</depends>
+    <depends optional="true" config-file="unixtimestamp-withCSS.xml">com.intellij.css</depends>
+    <depends optional="true" config-file="unixtimestamp-withDatabase.xml">com.intellij.database</depends>
+    <depends optional="true" config-file="unixtimestamp-withRestClient.xml">com.jetbrains.restClient</depends>
+    <depends optional="true" config-file="unixtimestamp-withPython.xml">Pythonid</depends>
+    <depends optional="true" config-file="unixtimestamp-withPythonCore.xml">PythonCore</depends>
+    <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
+    <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->

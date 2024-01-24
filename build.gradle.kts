@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.1.0"
+version = "6.2.0"
 
 repositories {
     mavenCentral()
@@ -36,6 +36,7 @@ intellij {
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#intellij-extension-plugins
     plugins.set(listOf(
         "com.intellij.java",
+        "org.intellij.groovy",
         "com.intellij.css",
         "com.intellij.database",
         "org.jetbrains.kotlin",
@@ -43,8 +44,10 @@ intellij {
         "org.jetbrains.plugins.vue:233.11799.232",
         "com.jetbrains.restClient:233.11799.165",
         "Pythonid:233.11799.241",
+        "PythonCore:233.11799.300",
         "org.jetbrains.plugins.go:233.11799.196",
         "com.jetbrains.php:233.11799.300",
+        "org.intellij.scala:2023.3.19",
     ))
 }
 

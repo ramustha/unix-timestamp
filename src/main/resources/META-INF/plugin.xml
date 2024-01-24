@@ -34,7 +34,7 @@
             <li>Support custom date pattern & Zone ID settings</li>
             <li>Support Python (*.py)</li>
             <li>Support JavaScript family (*.js, *.ts, *.tsx)</li>
-            <li>Support *.java *.kt *.txt *.json *.xml *.html *.html file type</li>
+            <li>Support *.java *.groovy *.kt *.scala *.txt *.json *.xml *.html *.html file type</li>
         </ul>
         ]]>
     </change-notes>
@@ -44,6 +44,8 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
+    <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
+    <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>
     <depends optional="true" config-file="unixtimestamp-withKotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="unixtimestamp-withPython.xml">PythonCore</depends>
 

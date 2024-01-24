@@ -36,8 +36,10 @@ intellij {
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#intellij-extension-plugins
     plugins.set(listOf(
         "com.intellij.java",
+        "org.intellij.groovy",
         "org.jetbrains.kotlin",
         "PythonCore:233.11799.300",
+        "org.intellij.scala:2023.3.19",
     ))
 }
 

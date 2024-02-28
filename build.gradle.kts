@@ -1,12 +1,12 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij") version "1.16.1"
+    id("org.jetbrains.intellij") version "1.17.1"
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.2.0"
+version = "6.3.0"
 
 repositories {
     mavenCentral()

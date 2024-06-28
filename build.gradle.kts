@@ -47,8 +47,6 @@ intellij {
         "com.jetbrains.restClient:241.14494.150",
         // https://plugins.jetbrains.com/plugin/631-python/versions/stable
         "Pythonid:241.14494.314",
-        // https://plugins.jetbrains.com/plugin/7322-python-community-edition/versions
-        "PythonCore:241.14494.127",
         // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
         "org.jetbrains.plugins.go:241.14494.127",
         // https://plugins.jetbrains.com/plugin/6610-php/versions/stable

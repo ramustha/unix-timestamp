@@ -1,12 +1,12 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij") version "1.17.2"
+    id("org.jetbrains.intellij") version "1.17.4"
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.3.0"
+version = "6.4.0"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ dependencies {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     // https://www.jetbrains.com/idea/download/other.html
-    version.set("2023.3")
+    version.set("2024.1")
     type.set("IU") // Target IDE Platform
     updateSinceUntilBuild.set(false)
 
@@ -41,13 +41,18 @@ intellij {
         "com.intellij.database",
         "org.jetbrains.kotlin",
         "JavaScript",
-        "org.jetbrains.plugins.vue:233.11799.232",
-        "com.jetbrains.restClient:233.11799.165",
-        "Pythonid:233.11799.241",
-        "PythonCore:233.11799.300",
-        "org.jetbrains.plugins.go:233.11799.196",
-        "com.jetbrains.php:233.11799.300",
-        "org.intellij.scala:2023.3.19",
+        // https://plugins.jetbrains.com/plugin/9442-vue-js/versions/stable
+        "org.jetbrains.plugins.vue:241.14494.238",
+        // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable
+        "com.jetbrains.restClient:241.14494.150",
+        // https://plugins.jetbrains.com/plugin/631-python/versions/stable
+        "Pythonid:241.14494.314",
+        // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
+        "org.jetbrains.plugins.go:241.14494.127",
+        // https://plugins.jetbrains.com/plugin/6610-php/versions/stable
+        "com.jetbrains.php:241.14494.240",
+        // https://plugins.jetbrains.com/plugin/1347-scala/versions
+        "org.intellij.scala:2024.1.24",
     ))
 }
 
@@ -63,7 +68,7 @@ tasks {
 
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
-        sinceBuild.set("231.*")
+         sinceBuild.set("231.*")
     }
 
     signPlugin {
@@ -79,7 +84,7 @@ tasks {
     runPluginVerifier {
         ideVersions.set(
             listOf(
-                "IU-2023.1"
+                "IU-2024.1"
             ))
     }
 

@@ -12,20 +12,27 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 object Helper {
-    private const val MILLIS_LENGTH = 13
     private const val SECONDS_LENGTH = 10
+    private const val MILLIS_LENGTH = 13
+    private const val MICROS_LENGTH = MILLIS_LENGTH + 3
+    private const val NANOS_LENGTH = MICROS_LENGTH + 3
+    private const val DEFAULT_DECIMAL_LENGTH = 9
 
     fun createInstantFormat(timestamp: String): Instant {
-        return if (timestamp.length == SECONDS_LENGTH) {
-            Instant.ofEpochSecond(timestamp.toLong())
+        return if (timestamp.length == NANOS_LENGTH) {
+            Instant.ofEpochMilli(timestamp.toLong() / 1_000_000)
+        } else if (timestamp.length == MICROS_LENGTH) {
+            Instant.ofEpochMilli(timestamp.toLong() / 1_000)
+        } else if (timestamp.length == MILLIS_LENGTH) {
+            Instant.ofEpochMilli(timestamp.toLong())
         } else if (timestamp.contains(".")) {
             val parts = timestamp.split(".")
             Instant.ofEpochSecond(
                 parts[0].toLong(),
-                parts[1].padEnd(9, '0').toLong() // pad to nano seconds to allow arbitrary precision in input
+                parts[1].padEnd(DEFAULT_DECIMAL_LENGTH, '0').toLong() // pad to nano seconds to allow arbitrary precision in input
             )
-        } else {
-            Instant.ofEpochMilli(timestamp.toLong())
+        }  else {
+            Instant.ofEpochSecond(timestamp.toLong())
         }
     }
 
@@ -36,11 +43,22 @@ object Helper {
     }
 
     fun findUnixTimestamp(text: String): List<String> {
-        val pattern = "\\b\\d{10,13}([lL])?(\\.\\d{1,9})?\\b".toRegex()
+        val regex = String.format(
+            "\\b(\\d{%s,%s}([lL])?|\\d{%s,%s})(\\.\\d{1,%s})?\\b",
+            SECONDS_LENGTH,
+            MILLIS_LENGTH,
+            MICROS_LENGTH,
+            NANOS_LENGTH,
+            DEFAULT_DECIMAL_LENGTH
+        )
+        val pattern = regex.toRegex()
         return pattern.findAll(text)
             .map { it.value }
             .filter {
-                it.length == SECONDS_LENGTH || it.length == MILLIS_LENGTH
+                it.length == SECONDS_LENGTH
+                        || it.length == MILLIS_LENGTH
+                        || it.length == MICROS_LENGTH
+                        || it.length == NANOS_LENGTH
                         || it.endsWith("l")
                         || it.endsWith("L")
                         || it.contains(".")
@@ -57,7 +75,8 @@ object Helper {
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
-        val pattern = Pattern.compile("\\b$wordToFind?(.\\d{1,9})?\\b")
+        val regex = String.format("\\b$wordToFind?(.\\d{1,%s})?\\b", DEFAULT_DECIMAL_LENGTH)
+        val pattern = Pattern.compile(regex)
         val matcher = pattern.matcher(sentence)
         val indexList = mutableListOf<TextRange>()
         while (matcher.find()) {

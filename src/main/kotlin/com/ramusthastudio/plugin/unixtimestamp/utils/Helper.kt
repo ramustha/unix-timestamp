@@ -42,7 +42,11 @@ object Helper {
         return instant.toEpochMilli()
     }
 
-    fun findUnixTimestamp(text: String): List<String> {
+    fun findUnixTimestamp(
+        text: String,
+        isSupportMicroSeconds: Boolean = true,
+        isSupportNanoSeconds: Boolean = true
+    ): List<String> {
         val regex = String.format(
             "\\b(\\d{%s,%s}([lL])?|\\d{%s,%s})(\\.\\d{1,%s})?\\b",
             SECONDS_LENGTH,
@@ -57,8 +61,8 @@ object Helper {
             .filter {
                 it.length == SECONDS_LENGTH
                         || it.length == MILLIS_LENGTH
-                        || it.length == MICROS_LENGTH
-                        || it.length == NANOS_LENGTH
+                        || (it.length == MICROS_LENGTH && isSupportMicroSeconds)
+                        || (it.length == NANOS_LENGTH && isSupportNanoSeconds)
                         || it.endsWith("l")
                         || it.endsWith("L")
                         || it.contains(".")
@@ -95,7 +99,11 @@ object Helper {
         val formatter = appSettingsState.defaultLocalFormatter
         val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
 
-        findUnixTimestamp(text)
+        findUnixTimestamp(
+            text,
+            appSettingsState.isSupportMicroSecondsEnable,
+            appSettingsState.isSupportNanoSecondsEnable
+        )
             .flatMap { word ->
                 findTextRanges(
                     text,

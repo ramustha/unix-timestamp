@@ -29,6 +29,8 @@ class AppSettingsComponent : ActionListener {
     private val inlayHintsPlaceEndOfLineCheckBox = JBCheckBox("Place at the end of line")
     private val currentTimestampGeneratorCheckBox = JBCheckBox("Current timestamp")
     private val customTimestampGeneratorCheckBox = JBCheckBox("Custom timestamp")
+    private val microSecondsCheckbox = JBCheckBox("Micro seconds")
+    private val nanoSecondsCheckbox = JBCheckBox("Nano seconds")
     private val previewLabel = JBLabel()
     val panel: JPanel
     var isAlreadyPreview = false
@@ -39,8 +41,14 @@ class AppSettingsComponent : ActionListener {
         generatorBox.add(currentTimestampGeneratorCheckBox)
         generatorBox.add(Box.createHorizontalStrut(5))
         generatorBox.add(customTimestampGeneratorCheckBox)
+        val unitBox = Box.createHorizontalBox()
+        unitBox.add(microSecondsCheckbox)
+        unitBox.add(Box.createHorizontalStrut(5))
+        unitBox.add(nanoSecondsCheckbox)
         val generatorPanel = JPanel(BorderLayout())
         generatorPanel.add(generatorBox, BorderLayout.NORTH)
+        val customUnitPanel = JPanel(BorderLayout())
+        customUnitPanel.add(unitBox, BorderLayout.NORTH)
         val zoneIdBox = Box.createHorizontalBox()
         zoneIdBox.add(zoneIdComboBox)
         zoneIdBox.add(systemDefaultButton)
@@ -56,6 +64,7 @@ class AppSettingsComponent : ActionListener {
         panel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Position: "), inlayHintsPlaceEndOfLineCheckBox, 1)
             .addLabeledComponent(JBLabel("Generator: "), generatorPanel, 1)
+            .addLabeledComponent(JBLabel(""), customUnitPanel, 1)
             .addSeparator(1)
             .addLabeledComponent(JBLabel("Zone ID: "), zoneIdPanel, 1)
             .addLabeledComponent(JBLabel("Date format: "), customPatternTextField, 1)
@@ -115,5 +124,15 @@ class AppSettingsComponent : ActionListener {
         get() = customTimestampGeneratorCheckBox.isSelected
         set(selected) {
             customTimestampGeneratorCheckBox.setSelected(selected)
+        }
+    var isSupportMicroSecondsEnable: Boolean
+        get() = microSecondsCheckbox.isSelected
+        set(selected) {
+            microSecondsCheckbox.setSelected(selected)
+        }
+    var isSupportNanoSecondsEnable: Boolean
+        get() = nanoSecondsCheckbox.isSelected
+        set(selected) {
+            nanoSecondsCheckbox.setSelected(selected)
         }
 }

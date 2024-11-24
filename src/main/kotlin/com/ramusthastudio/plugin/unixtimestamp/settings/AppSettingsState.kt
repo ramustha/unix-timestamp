@@ -16,6 +16,8 @@ class AppSettingsState private constructor() : PersistentStateComponent<AppSetti
     var isInlayHintsPlaceEndOfLineEnable = true
     var isCurrentTimestampGeneratorEnable = true
     var isCustomTimestampGeneratorEnable = true
+    var isSupportMicroSecondsEnable = true
+    var isSupportNanoSecondsEnable = true
     var customPattern = "dd MMM yyyy HH:mm:ss"
     var defaultLocalFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(customPattern)
     var zoneId: String = ZoneId.systemDefault().id
@@ -50,6 +52,8 @@ class AppSettingsState private constructor() : PersistentStateComponent<AppSetti
                 "isInlayHintsPlaceEndOfLineEnable=$isInlayHintsPlaceEndOfLineEnable, " +
                 "isCurrentTimestampGeneratorEnable=$isCurrentTimestampGeneratorEnable, " +
                 "isCustomTimestampGeneratorEnable=$isCustomTimestampGeneratorEnable, " +
+                "isSupportMicroSecondsEnable=$isSupportMicroSecondsEnable, " +
+                "isSupportNanoSecondsEnable=$isSupportNanoSecondsEnable, " +
                 "customPattern='$customPattern', " +
                 "defaultLocalFormatter=$defaultLocalFormatter, " +
                 "zoneId='$zoneId'" +

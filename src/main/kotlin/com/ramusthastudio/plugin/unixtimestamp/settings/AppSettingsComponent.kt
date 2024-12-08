@@ -64,7 +64,7 @@ class AppSettingsComponent : ActionListener {
         panel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Position: "), inlayHintsPlaceEndOfLineCheckBox, 1)
             .addLabeledComponent(JBLabel("Generator: "), generatorPanel, 1)
-            .addLabeledComponent(JBLabel(""), customUnitPanel, 1)
+            .addLabeledComponent(JBLabel("Unit: "), customUnitPanel, 1)
             .addSeparator(1)
             .addLabeledComponent(JBLabel("Zone ID: "), zoneIdPanel, 1)
             .addLabeledComponent(JBLabel("Date format: "), customPatternTextField, 1)

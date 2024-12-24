@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.4.0"
+version = "6.5.0"
 
 repositories {
     mavenCentral()

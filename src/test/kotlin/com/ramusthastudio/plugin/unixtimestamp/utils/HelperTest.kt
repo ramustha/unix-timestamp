@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.longs.shouldBeGreaterThan
-import io.kotest.matchers.longs.shouldNotBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -18,6 +17,10 @@ class HelperTest : StringSpec({
         Helper.createInstantFormat("1700723850") shouldBe Instant.parse("2023-11-23T07:17:30.000Z")
         // Epoch millis
         Helper.createInstantFormat("1700723850123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        // Epoch micros
+        Helper.createInstantFormat("1732184141128000") shouldBe Instant.parse("2024-11-21T10:15:41.128Z")
+        // Epoch nanos
+        Helper.createInstantFormat("1732184198639000000") shouldBe Instant.parse("2024-11-21T10:16:38.639Z")
         // Epoch with decimal millis
         Helper.createInstantFormat("1700723850.123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
         // Epoch with decimal micros

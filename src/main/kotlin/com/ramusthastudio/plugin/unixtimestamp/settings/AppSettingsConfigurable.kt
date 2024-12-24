@@ -38,6 +38,10 @@ class AppSettingsConfigurable : Configurable {
             modified or (mySettingsComponent?.isCurrentTimestampGeneratorEnable != settings.isCurrentTimestampGeneratorEnable)
         modified =
             modified or (mySettingsComponent?.isCustomTimestampGeneratorEnable != settings.isCustomTimestampGeneratorEnable)
+        modified =
+            modified or (mySettingsComponent?.isSupportMicroSecondsEnable != settings.isSupportMicroSecondsEnable)
+        modified =
+            modified or (mySettingsComponent?.isSupportNanoSecondsEnable != settings.isSupportNanoSecondsEnable)
         return modified
     }
 
@@ -52,6 +56,8 @@ class AppSettingsConfigurable : Configurable {
         settings.isInlayHintsPlaceEndOfLineEnable = mySettingsComponent?.isInlayHintsPlaceEndOfLineEnable == true
         settings.isCurrentTimestampGeneratorEnable = mySettingsComponent?.isCurrentTimestampGeneratorEnable == true
         settings.isCustomTimestampGeneratorEnable = mySettingsComponent?.isCustomTimestampGeneratorEnable == true
+        settings.isSupportMicroSecondsEnable = mySettingsComponent?.isSupportMicroSecondsEnable == true
+        settings.isSupportNanoSecondsEnable = mySettingsComponent?.isSupportNanoSecondsEnable == true
         settings.applySettings()
     }
 
@@ -62,6 +68,8 @@ class AppSettingsConfigurable : Configurable {
         mySettingsComponent?.isInlayHintsPlaceEndOfLineEnable = settings.isInlayHintsPlaceEndOfLineEnable
         mySettingsComponent?.isCurrentTimestampGeneratorEnable = settings.isCurrentTimestampGeneratorEnable
         mySettingsComponent?.isCustomTimestampGeneratorEnable = settings.isCustomTimestampGeneratorEnable
+        mySettingsComponent?.isSupportMicroSecondsEnable = settings.isSupportMicroSecondsEnable
+        mySettingsComponent?.isSupportNanoSecondsEnable = settings.isSupportNanoSecondsEnable
     }
 
     override fun disposeUIResources() {

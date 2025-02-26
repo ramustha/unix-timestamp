@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
@@ -13,6 +15,9 @@ repositories {
 
     intellijPlatform {
         defaultRepositories()
+        localPlatformArtifacts()
+        releases()
+        marketplace()
     }
 }
 
@@ -40,7 +45,7 @@ dependencies {
         // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
         plugin("org.jetbrains.plugins.go", "241.14494.127")
         // https://plugins.jetbrains.com/plugin/6610-php/versions/stable
-        plugin("com.jetbrains.php", "241.14494.240")
+        plugin("com.jetbrains.php", "241.14494.237")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
         plugin("org.intellij.scala", "2024.1.24")
     }
@@ -48,6 +53,35 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.kotest:kotest-framework-engine:5.6.2")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "231.*"
+        }
+    }
+
+    publishing {
+        token = System.getenv("PUBLISH_TOKEN")
+    }
+
+    signing {
+        certificateChain = System.getenv("CERTIFICATE_CHAIN")
+        privateKey = System.getenv("PRIVATE_KEY")
+        password = System.getenv("PRIVATE_KEY_PASSWORD")
+    }
+
+    pluginVerification {
+        ides {
+            ide(IntelliJPlatformType.IntellijIdeaUltimate, "2024.1")
+            recommended()
+            select {
+                types = listOf(IntelliJPlatformType.IntellijIdeaUltimate)
+                sinceBuild = "231.*"
+            }
+        }
+    }
 }
 
 tasks {
@@ -58,21 +92,6 @@ tasks {
 
     compileTestKotlin {
         kotlinOptions.jvmTarget = "17"
-    }
-
-    // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
-    patchPluginXml {
-         sinceBuild.set("231.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
     }
 
     test {

@@ -38,7 +38,7 @@ class HelperTest : StringSpec({
 
     "findUnixTimestamp should correctly identify unix timestamp in string" {
         val text = "This is an example string with UNIX timestamp 1609459200000."
-        val result = Helper.findUnixTimestamp(text)
+        val result = Helper.findUnixTimestamp(text).toList()
         result[0] shouldBe "1609459200000"
     }
 
@@ -70,7 +70,7 @@ class HelperTest : StringSpec({
             }
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).toList()
 
         // Assert the size of the result
         result shouldHaveSize 2
@@ -94,7 +94,7 @@ class HelperTest : StringSpec({
             }
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).toList()
 
         // Assert the size of the result
         result shouldHaveSize 3
@@ -116,7 +116,7 @@ class HelperTest : StringSpec({
             append("Third: $timestamp3. ")
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).toList()
 
         result shouldHaveSize 3
         result[0] shouldBe timestamp1
@@ -132,7 +132,7 @@ class HelperTest : StringSpec({
             Hey there! Timestamp is here: 1691475292.12. That's it.
             """
 
-        val result = Helper.findTextRanges(text, timeStamp)
+        val result = Helper.findTextRanges(text, timeStamp).toList()
 
         val expected = listOf(
             TextRange(43, 53),
@@ -147,7 +147,7 @@ class HelperTest : StringSpec({
         val text = "Hello Universe"
         val targetWord = "World"
 
-        val result = Helper.findTextRanges(text, targetWord)
+        val result = Helper.findTextRanges(text, targetWord).toList()
 
         result shouldBe emptyList()
     }
@@ -164,7 +164,7 @@ class HelperTest : StringSpec({
         val timeStamp = " ${System.currentTimeMillis()} "
         val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
 
-        val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp)
+        val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp).toList()
         val expected = listOf(TextRange(500_000, 500_000 + timeStamp.length))
 
         result shouldBe expected

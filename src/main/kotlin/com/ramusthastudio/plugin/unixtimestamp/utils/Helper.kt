@@ -4,6 +4,7 @@ import com.intellij.codeInsight.hints.declarative.InlayTreeSink
 import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.ramusthastudio.plugin.unixtimestamp.hints.FixedSizeSet
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
 import java.time.Instant
 import java.time.LocalDateTime
@@ -46,8 +47,8 @@ object Helper {
         text: String,
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
-    ): List<String> {
-        val results = mutableSetOf<String>()
+    ): Set<String> {
+        val results = FixedSizeSet<String>(1000)
         TIMESTAMP_REGEX.findAll(text).forEach { match ->
             val value = match.value
             if (
@@ -61,12 +62,12 @@ object Helper {
                 results.add(value)
             }
         }
-        return results.toList()
+        return results
     }
 
-    fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
+    fun findTextRanges(sentence: String, wordToFind: String): Sequence<TextRange> {
         val regex = Regex("\\b$wordToFind(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b")
-        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }.toList()
+        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }
     }
 
     private fun dropLastChar(value: String): String =
@@ -90,6 +91,7 @@ object Helper {
             .flatMap { word ->
                 findTextRanges(text, word).map { textRange -> word to textRange }
             }
+            .parallelStream()
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
                 if (uniqueIndices.add(offset)) {

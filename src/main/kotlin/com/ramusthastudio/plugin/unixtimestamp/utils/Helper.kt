@@ -4,7 +4,6 @@ import com.intellij.codeInsight.hints.declarative.InlayTreeSink
 import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.ramusthastudio.plugin.unixtimestamp.hints.FixedSizeSet
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
 import java.time.Instant
 import java.time.LocalDateTime
@@ -48,7 +47,7 @@ object Helper {
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
     ): Set<String> {
-        val results = FixedSizeSet<String>(100)
+        val results = mutableSetOf<String>()
         TIMESTAMP_REGEX.findAll(text).forEach { match ->
             val value = match.value
             if (
@@ -88,9 +87,7 @@ object Helper {
             appSettingsState.isSupportMicroSecondsEnable,
             appSettingsState.isSupportNanoSecondsEnable
         )
-            .flatMap { word ->
-                findTextRanges(text, word).map { textRange -> word to textRange }
-            }
+            .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }
             .parallelStream()
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset

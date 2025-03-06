@@ -13,7 +13,7 @@ class BaseInlayHintsCollector<T : PsiElement?>(
     val editor: Editor,
     private val psiElement: Class<T>,
     private val settingsState: AppSettingsState = AppSettingsState.instance,
-    private val uniqueIndices: MutableSet<Int> = FixedSizeSet(100) // Limit to 1000 entries
+    private val uniqueIndices: MutableSet<Int> = FixedSizeSet(250) // Limit to 1000 entries
 ) : SharedBypassCollector {
     override fun collectFromElement(element: PsiElement, sink: InlayTreeSink) {
         if (psiElement.isInstance(element)) {

@@ -48,7 +48,7 @@ object Helper {
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
     ): Set<String> {
-        val results = FixedSizeSet<String>(1000)
+        val results = FixedSizeSet<String>(100)
         TIMESTAMP_REGEX.findAll(text).forEach { match ->
             val value = match.value
             if (

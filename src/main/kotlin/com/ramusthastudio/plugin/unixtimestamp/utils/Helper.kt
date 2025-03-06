@@ -9,7 +9,6 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.regex.Pattern
 
 object Helper {
     private const val SECONDS_LENGTH = 10
@@ -18,28 +17,29 @@ object Helper {
     private const val NANOS_LENGTH = MICROS_LENGTH + 3
     private const val DEFAULT_DECIMAL_LENGTH = 9
 
+    private val TIMESTAMP_REGEX = Regex(
+        "\\b(\\d{$SECONDS_LENGTH,$MILLIS_LENGTH}([lL])?|\\d{$MICROS_LENGTH,$NANOS_LENGTH})(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b"
+    )
+
     fun createInstantFormat(timestamp: String): Instant {
-        return if (timestamp.length == NANOS_LENGTH) {
-            Instant.ofEpochMilli(timestamp.toLong() / 1_000_000)
-        } else if (timestamp.length == MICROS_LENGTH) {
-            Instant.ofEpochMilli(timestamp.toLong() / 1_000)
-        } else if (timestamp.length == MILLIS_LENGTH) {
-            Instant.ofEpochMilli(timestamp.toLong())
-        } else if (timestamp.contains(".")) {
-            val parts = timestamp.split(".")
-            Instant.ofEpochSecond(
-                parts[0].toLong(),
-                parts[1].padEnd(DEFAULT_DECIMAL_LENGTH, '0').toLong() // pad to nano seconds to allow arbitrary precision in input
-            )
-        }  else {
-            Instant.ofEpochSecond(timestamp.toLong())
+        val dotIndex = timestamp.indexOf('.')
+        return if (dotIndex != -1) {
+            val secondsPart = timestamp.substring(0, dotIndex).toLong()
+            val nanosPart = timestamp.substring(dotIndex + 1).padEnd(DEFAULT_DECIMAL_LENGTH, '0').toLong()
+            Instant.ofEpochSecond(secondsPart, nanosPart)
+        } else {
+            when (timestamp.length) {
+                NANOS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong() / 1_000_000)
+                MICROS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong() / 1_000)
+                MILLIS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong())
+                else -> Instant.ofEpochSecond(timestamp.toLong())
+            }
         }
     }
 
     fun createTimestamp(value: String, formatter: DateTimeFormatter): Long {
         val localDateTime = LocalDateTime.parse(value, formatter)
-        val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
-        return instant.toEpochMilli()
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
     }
 
     fun findUnixTimestamp(
@@ -47,47 +47,30 @@ object Helper {
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
     ): List<String> {
-        val regex = String.format(
-            "\\b(\\d{%s,%s}([lL])?|\\d{%s,%s})(\\.\\d{1,%s})?\\b",
-            SECONDS_LENGTH,
-            MILLIS_LENGTH,
-            MICROS_LENGTH,
-            NANOS_LENGTH,
-            DEFAULT_DECIMAL_LENGTH
-        )
-        val pattern = regex.toRegex()
-        return pattern.findAll(text)
-            .map { it.value }
-            .filter {
-                it.length == SECONDS_LENGTH
-                        || it.length == MILLIS_LENGTH
-                        || (it.length == MICROS_LENGTH && isSupportMicroSeconds)
-                        || (it.length == NANOS_LENGTH && isSupportNanoSeconds)
-                        || it.endsWith("l")
-                        || it.endsWith("L")
-                        || it.contains(".")
+        val results = mutableSetOf<String>()
+        TIMESTAMP_REGEX.findAll(text).forEach { match ->
+            val value = match.value
+            if (
+                value.length == SECONDS_LENGTH ||
+                value.length == MILLIS_LENGTH ||
+                (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
+                (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
+                value.contains(".") ||
+                value.last().equals('l', ignoreCase = true)
+            ) {
+                results.add(value)
             }
-            .distinct()
-            .toList()
-    }
-
-    private fun dropLastChar(value: String): String {
-        if ((value.last() == 'l') or (value.last() == 'L')) {
-            return value.dropLast(1)
         }
-        return value
+        return results.toList()
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
-        val regex = String.format("\\b$wordToFind?(.\\d{1,%s})?\\b", DEFAULT_DECIMAL_LENGTH)
-        val pattern = Pattern.compile(regex)
-        val matcher = pattern.matcher(sentence)
-        val indexList = mutableListOf<TextRange>()
-        while (matcher.find()) {
-            indexList.add(TextRange(matcher.start(), matcher.end()))
-        }
-        return indexList
+        val regex = Regex("\\b$wordToFind(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b")
+        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }.toList()
     }
+
+    private fun dropLastChar(value: String): String =
+        if (value.last().equals('l', ignoreCase = true)) value.dropLast(1) else value
 
     fun createInlayHintsElement(
         uniqueIndices: MutableSet<Int>,
@@ -105,24 +88,22 @@ object Helper {
             appSettingsState.isSupportNanoSecondsEnable
         )
             .flatMap { word ->
-                findTextRanges(
-                    text,
-                    word
-                ).map { textRange -> word to textRange }
-            }  // Pairing each word with its range
+                findTextRanges(text, word).map { textRange -> word to textRange }
+            }
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
                 if (uniqueIndices.add(offset)) {
-                    val value = dropLastChar(word)
-                    val instant = createInstantFormat(value)
+                    val instant = createInstantFormat(dropLastChar(word))
                     val hint = formatter.format(instant)
 
-                    sink.addPresentation(
-                        InlineInlayPosition(offset, false), hasBackground = true
-                    ) {
+                    sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) {
                         text(hint)
                     }
                 }
             }
+
+        uniqueIndices.clear()
     }
 }
+
+

@@ -3,13 +3,12 @@ package com.ramusthastudio.plugin.unixtimestamp.settings
 
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
-import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
 
 class AppSettingsConfigurable : Configurable {
     private var mySettingsComponent: AppSettingsComponent? = null
 
-    override fun getDisplayName(): @Nls(capitalization = Nls.Capitalization.Title) String {
+    override fun getDisplayName(): String {
         return "Unix Epoch Time Visualize"
     }
 

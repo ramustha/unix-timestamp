@@ -45,7 +45,7 @@ class HelperTest : StringSpec({
     "Find all valid Unix timestamps in the text" {
         val text = "The unix times were 1479999999, 1479999999000 and there was also 1479999999"
 
-        val result = Helper.findUnixTimestamp(text)
+        val result = Helper.findUnixTimestamp(text).toList()
 
         result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }
@@ -53,7 +53,7 @@ class HelperTest : StringSpec({
     "Find Unix timestamps and ignore other numbers" {
         val text = "The unix times were 1479999999, 1479999999000 but there were also 12345, 789000"
 
-        val result = Helper.findUnixTimestamp(text)
+        val result = Helper.findUnixTimestamp(text).toList()
 
         result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }

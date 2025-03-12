@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.8.0"
+version = "7.0.0"
 
 repositories {
     mavenCentral()
@@ -58,7 +58,7 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            sinceBuild = "231.*"
+            sinceBuild = "231"
         }
     }
 

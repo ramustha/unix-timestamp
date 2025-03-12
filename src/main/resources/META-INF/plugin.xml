@@ -27,7 +27,7 @@
         ]]></description>
     <change-notes>
         <![CDATA[
-        <p><b>6.x.x</b></p>
+        <p><b>7.x.x</b></p>
         <ul>
             <li>Support inlay hints</li>
             <li>Support multiple caret</li>
@@ -48,7 +48,6 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
     <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>

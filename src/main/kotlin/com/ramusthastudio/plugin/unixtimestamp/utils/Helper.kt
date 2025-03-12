@@ -13,12 +13,12 @@ import java.time.format.DateTimeFormatter
 object Helper {
     private const val SECONDS_LENGTH = 10
     private const val MILLIS_LENGTH = 13
-    private const val MICROS_LENGTH = MILLIS_LENGTH + 3
-    private const val NANOS_LENGTH = MICROS_LENGTH + 3
+    private const val MICROS_LENGTH = 16
+    private const val NANOS_LENGTH = 19
     private const val DEFAULT_DECIMAL_LENGTH = 9
 
     private val TIMESTAMP_REGEX = Regex(
-        "\\b(\\d{$SECONDS_LENGTH,$MILLIS_LENGTH}([lL])?|\\d{$MICROS_LENGTH,$NANOS_LENGTH})(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b"
+        """\b(\d{10,13}[lL]?|\d{16,19})(\.\d{1,$DEFAULT_DECIMAL_LENGTH})?\b"""
     )
 
     fun createInstantFormat(timestamp: String): Instant {
@@ -28,8 +28,9 @@ object Helper {
             val nanosPart = timestamp.substring(dotIndex + 1).padEnd(DEFAULT_DECIMAL_LENGTH, '0').toLong()
             Instant.ofEpochSecond(secondsPart, nanosPart)
         } else {
-            val longValue = dropLastChar(timestamp).toLong()
-            when (timestamp.length) {
+            val cleanedTimestamp = timestamp.dropLastChar()
+            val longValue = cleanedTimestamp.toLong()
+            when (cleanedTimestamp.length) {
                 NANOS_LENGTH -> Instant.ofEpochMilli(longValue / 1_000_000)
                 MICROS_LENGTH -> Instant.ofEpochMilli(longValue / 1_000)
                 MILLIS_LENGTH -> Instant.ofEpochMilli(longValue)
@@ -49,45 +50,54 @@ object Helper {
         isSupportNanoSeconds: Boolean = true
     ): Sequence<String> {
         return TIMESTAMP_REGEX.findAll(text)
-            .filter { match ->
-                val value = match.value
-                value.length == SECONDS_LENGTH ||
-                        value.length == MILLIS_LENGTH ||
-                        (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
-                        (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
-                        value.contains(".") ||
-                        value.last().equals('l', ignoreCase = true)
-            }.map { it.value }.distinct()
+            .map { it.value }
+            .filter { value ->
+                val hasDecimalOrSuffix = value.contains(".") || value.endsWith('l', true)
+                if (hasDecimalOrSuffix) return@filter true
+
+                when (value.dropLastChar().length) {
+                    SECONDS_LENGTH -> true
+                    MILLIS_LENGTH -> true
+                    MICROS_LENGTH -> isSupportMicroSeconds
+                    NANOS_LENGTH -> isSupportNanoSeconds
+                    else -> false
+                }
+            }
+            .distinct()
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): Sequence<TextRange> {
-        val regex = Regex("\\b$wordToFind(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b")
-        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }
+        val pattern = """\b$wordToFind(\.\d{1,$DEFAULT_DECIMAL_LENGTH})?\b""".toRegex()
+        return pattern.findAll(sentence)
+            .map { TextRange(it.range.first, it.range.last + 1) }
     }
 
-    private fun dropLastChar(value: String): String =
-        if (value.last().equals('l', ignoreCase = true)) value.dropLast(1) else value
+    private fun String.dropLastChar(): String =
+        if (isNotEmpty() && last().equals('l', ignoreCase = true)) dropLast(1) else this
 
     fun createInlayHintsElement(
-        uniqueIndices: MutableSet<Int>,
         element: PsiElement,
         sink: InlayTreeSink,
         appSettingsState: AppSettingsState
     ) {
         val text = element.text
         val formatter = appSettingsState.defaultLocalFormatter
-        val inlayHintsPlaceEndOfLineEnabled = appSettingsState.isInlayHintsPlaceEndOfLineEnable
+        val placeEndOfLine = appSettingsState.isInlayHintsPlaceEndOfLineEnable
+        val uniqueIndices = mutableSetOf<Int>()
 
         findUnixTimestamp(
             text,
             appSettingsState.isSupportMicroSecondsEnable,
             appSettingsState.isSupportNanoSecondsEnable
         )
-            .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }
+            .flatMap { word ->
+                findTextRanges(text, word)
+                    .map { word to it }
+            }
             .forEach { (word, textRange) ->
-                val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
+                val offset = if (placeEndOfLine) textRange.endOffset else textRange.startOffset
                 if (uniqueIndices.add(offset)) {
-                    val instant = createInstantFormat(dropLastChar(word))
+                    val instant = createInstantFormat(word)
                     val hint = formatter.format(instant)
 
                     sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) {

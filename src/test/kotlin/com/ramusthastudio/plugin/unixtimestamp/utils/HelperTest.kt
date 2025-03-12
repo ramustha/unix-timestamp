@@ -17,6 +17,8 @@ class HelperTest : StringSpec({
         Helper.createInstantFormat("1700723850") shouldBe Instant.parse("2023-11-23T07:17:30.000Z")
         // Epoch millis
         Helper.createInstantFormat("1700723850123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        // Epoch millis with suffix
+        Helper.createInstantFormat("1700723850123L") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
         // Epoch micros
         Helper.createInstantFormat("1732184141128000") shouldBe Instant.parse("2024-11-21T10:15:41.128Z")
         // Epoch nanos

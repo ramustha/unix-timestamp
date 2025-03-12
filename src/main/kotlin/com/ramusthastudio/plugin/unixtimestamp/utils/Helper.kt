@@ -28,11 +28,12 @@ object Helper {
             val nanosPart = timestamp.substring(dotIndex + 1).padEnd(DEFAULT_DECIMAL_LENGTH, '0').toLong()
             Instant.ofEpochSecond(secondsPart, nanosPart)
         } else {
+            val longValue = dropLastChar(timestamp).toLong()
             when (timestamp.length) {
-                NANOS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong() / 1_000_000)
-                MICROS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong() / 1_000)
-                MILLIS_LENGTH -> Instant.ofEpochMilli(timestamp.toLong())
-                else -> Instant.ofEpochSecond(timestamp.toLong())
+                NANOS_LENGTH -> Instant.ofEpochMilli(longValue / 1_000_000)
+                MICROS_LENGTH -> Instant.ofEpochMilli(longValue / 1_000)
+                MILLIS_LENGTH -> Instant.ofEpochMilli(longValue)
+                else -> Instant.ofEpochSecond(longValue)
             }
         }
     }
@@ -46,27 +47,22 @@ object Helper {
         text: String,
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
-    ): List<String> {
-        val results = mutableSetOf<String>()
-        TIMESTAMP_REGEX.findAll(text).forEach { match ->
-            val value = match.value
-            if (
+    ): Sequence<String> {
+        return TIMESTAMP_REGEX.findAll(text)
+            .filter { match ->
+                val value = match.value
                 value.length == SECONDS_LENGTH ||
-                value.length == MILLIS_LENGTH ||
-                (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
-                (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
-                value.contains(".") ||
-                value.last().equals('l', ignoreCase = true)
-            ) {
-                results.add(value)
-            }
-        }
-        return results.toList()
+                        value.length == MILLIS_LENGTH ||
+                        (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
+                        (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
+                        value.contains(".") ||
+                        value.last().equals('l', ignoreCase = true)
+            }.map { it.value }.distinct()
     }
 
-    fun findTextRanges(sentence: String, wordToFind: String): List<TextRange> {
+    fun findTextRanges(sentence: String, wordToFind: String): Sequence<TextRange> {
         val regex = Regex("\\b$wordToFind(\\.\\d{1,$DEFAULT_DECIMAL_LENGTH})?\\b")
-        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }.toList()
+        return regex.findAll(sentence).map { TextRange(it.range.first, it.range.last + 1) }
     }
 
     private fun dropLastChar(value: String): String =
@@ -87,9 +83,7 @@ object Helper {
             appSettingsState.isSupportMicroSecondsEnable,
             appSettingsState.isSupportNanoSecondsEnable
         )
-            .flatMap { word ->
-                findTextRanges(text, word).map { textRange -> word to textRange }
-            }
+            .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
                 if (uniqueIndices.add(offset)) {
@@ -105,5 +99,3 @@ object Helper {
         uniqueIndices.clear()
     }
 }
-
-

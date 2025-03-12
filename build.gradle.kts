@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.6.0"
+version = "6.8.0"
 
 repositories {
     mavenCentral()
@@ -78,7 +78,7 @@ intellijPlatform {
             recommended()
             select {
                 types = listOf(IntelliJPlatformType.IntellijIdeaUltimate)
-                sinceBuild = "231.*"
+                sinceBuild = "231"
             }
         }
     }

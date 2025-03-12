@@ -47,16 +47,17 @@ object Helper {
         text: String,
         isSupportMicroSeconds: Boolean = true,
         isSupportNanoSeconds: Boolean = true
-    ): Set<String> {
-        return TIMESTAMP_REGEX.findAll(text).filter { match ->
-            val value = match.value
-            value.length == SECONDS_LENGTH ||
-                    value.length == MILLIS_LENGTH ||
-                    (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
-                    (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
-                    value.contains(".") ||
-                    value.last().equals('l', ignoreCase = true)
-        }.map { it.value }.toSet()
+    ): Sequence<String> {
+        return TIMESTAMP_REGEX.findAll(text)
+            .filter { match ->
+                val value = match.value
+                value.length == SECONDS_LENGTH ||
+                        value.length == MILLIS_LENGTH ||
+                        (value.length == MICROS_LENGTH && isSupportMicroSeconds) ||
+                        (value.length == NANOS_LENGTH && isSupportNanoSeconds) ||
+                        value.contains(".") ||
+                        value.last().equals('l', ignoreCase = true)
+            }.map { it.value }.distinct()
     }
 
     fun findTextRanges(sentence: String, wordToFind: String): Sequence<TextRange> {
@@ -68,6 +69,7 @@ object Helper {
         if (value.last().equals('l', ignoreCase = true)) value.dropLast(1) else value
 
     fun createInlayHintsElement(
+        uniqueIndices: MutableSet<Int>,
         element: PsiElement,
         sink: InlayTreeSink,
         appSettingsState: AppSettingsState
@@ -84,12 +86,16 @@ object Helper {
             .flatMap { word -> findTextRanges(text, word).map { textRange -> word to textRange } }
             .forEach { (word, textRange) ->
                 val offset = if (inlayHintsPlaceEndOfLineEnabled) textRange.endOffset else textRange.startOffset
-                val instant = createInstantFormat(dropLastChar(word))
-                val hint = formatter.format(instant)
+                if (uniqueIndices.add(offset)) {
+                    val instant = createInstantFormat(dropLastChar(word))
+                    val hint = formatter.format(instant)
 
-                sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) {
-                    text(hint)
+                    sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) {
+                        text(hint)
+                    }
                 }
             }
+
+        uniqueIndices.clear()
     }
 }

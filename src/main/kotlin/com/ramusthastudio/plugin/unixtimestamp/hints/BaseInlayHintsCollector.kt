@@ -13,10 +13,11 @@ class BaseInlayHintsCollector<T : PsiElement?>(
     val editor: Editor,
     private val psiElement: Class<T>,
     private val settingsState: AppSettingsState = AppSettingsState.instance,
+    private val uniqueIndices: MutableSet<Int> = mutableSetOf()
 ) : SharedBypassCollector {
     override fun collectFromElement(element: PsiElement, sink: InlayTreeSink) {
         if (psiElement.isInstance(element)) {
-            createInlayHintsElement(element, sink, settingsState)
+            createInlayHintsElement(uniqueIndices, element, sink, settingsState)
         }
     }
 }

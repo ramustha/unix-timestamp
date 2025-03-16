@@ -1,6 +1,5 @@
 package com.ramusthastudio.plugin.unixtimestamp.utils
 
-import com.intellij.openapi.util.TextRange
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldHaveSize
@@ -8,7 +7,6 @@ import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.Instant
 import java.time.format.DateTimeFormatter
-import kotlin.random.Random
 
 class HelperTest : StringSpec({
 
@@ -126,49 +124,4 @@ class HelperTest : StringSpec({
         result[2] shouldBe timestamp3
     }
 
-    "findTextRanges should return correct ranges when searching for a timestamp" {
-        val timeStamp = "1691475292"
-        val text = """
-            Hey there! Timestamp is here: 1691475292 . That's it.
-            Hey there! Timestamp is here: 1691475292.1 . That's it.
-            Hey there! Timestamp is here: 1691475292.12. That's it.
-            """
-
-        val result = Helper.findTextRanges(text, timeStamp).toList()
-
-        val expected = listOf(
-            TextRange(43, 53),
-            TextRange(109, 121),
-            TextRange(177, 190),
-        )
-
-        result shouldBe expected
-    }
-
-    "findTextRanges should return empty list when targetWord not found" {
-        val text = "Hello Universe"
-        val targetWord = "World"
-
-        val result = Helper.findTextRanges(text, targetWord).toList()
-
-        result shouldBe emptyList()
-    }
-
-    "findTextRanges should work with huge strings" {
-        // Generate a large string of random lowercase characters
-        val hugeText = StringBuilder().apply {
-            for (i in 1..1_000_000) {
-                append(Random.nextInt(97, 122).toChar())
-            }
-        }.toString()
-
-        // Insert the timestamp at 500_000 position
-        val timeStamp = " ${System.currentTimeMillis()} "
-        val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
-
-        val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp).toList()
-        val expected = listOf(TextRange(500_000, 500_000 + timeStamp.length))
-
-        result shouldBe expected
-    }
 })

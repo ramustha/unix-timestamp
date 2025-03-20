@@ -72,7 +72,4 @@ object Helper {
                 .map { it.value to TextRange(it.range.first, it.range.last + 1) }
         }
     }
-
-    private fun String.dropLastChar(): String =
-        if (isNotEmpty() && last().equals('l', ignoreCase = true)) dropLast(1) else this
 }

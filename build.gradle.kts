@@ -3,12 +3,12 @@ import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij.platform") version "2.2.1"
+    id("org.jetbrains.intellij.platform") version "2.3.0"
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "7.0.0"
+version = "7.0.1"
 
 repositories {
     mavenCentral()
@@ -59,6 +59,7 @@ intellijPlatform {
     pluginConfiguration {
         ideaVersion {
             sinceBuild = "231"
+            untilBuild = "251.*"
         }
     }
 

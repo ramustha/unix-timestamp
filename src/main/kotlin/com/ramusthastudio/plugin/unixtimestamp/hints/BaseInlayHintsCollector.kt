@@ -22,9 +22,7 @@ class BaseInlayHintsCollector<T : PsiElement?>(
             val uniqueIndices: MutableSet<Int> = mutableSetOf()
             val text = element.text
             findUnixTimestamp(text)
-                .forEach { (word, textRange) ->
-                    addTextPresentation(uniqueIndices, textRange, word, sink)
-                }
+                .forEach { (word, textRange) -> addTextPresentation(uniqueIndices, textRange, word, sink) }
         }
     }
 
@@ -38,10 +36,7 @@ class BaseInlayHintsCollector<T : PsiElement?>(
         if (uniqueIndices.add(offset)) {
             val instant = createInstantFormat(word)
             val hint = settingsState.defaultLocalFormatter.format(instant)
-
-            sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) {
-                text(hint)
-            }
+            sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) { text(hint) }
         }
     }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "6.5.0"
+version = "6.7.0"
 
 repositories {
     mavenCentral()
@@ -68,7 +68,7 @@ tasks {
 
     // https://plugins.jetbrains.com/docs/marketplace/product-versions-in-use-statistics.html
     patchPluginXml {
-         sinceBuild.set("231.*")
+         sinceBuild.set("231")
     }
 
     signPlugin {

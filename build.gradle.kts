@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "7.0.1"
+version = "7.1.0"
 
 repositories {
     mavenCentral()
@@ -33,8 +33,6 @@ dependencies {
         bundledPlugin("org.jetbrains.kotlin")
         bundledPlugin("JavaScript")
 
-        // https://plugins.jetbrains.com/plugin/9442-vue-js/versions/stable
-        plugin("org.jetbrains.plugins.vue", "241.14494.159")
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable
         plugin("com.jetbrains.restClient", "241.14494.150")
         // https://plugins.jetbrains.com/plugin/631-python/versions/stable

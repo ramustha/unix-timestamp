@@ -31,7 +31,6 @@ dependencies {
         bundledPlugin("com.intellij.css")
         bundledPlugin("com.intellij.database")
         bundledPlugin("org.jetbrains.kotlin")
-        bundledPlugin("com.intellij.modules.json")
         bundledPlugin("JavaScript")
 
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable

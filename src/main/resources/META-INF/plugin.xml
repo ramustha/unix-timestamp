@@ -48,7 +48,7 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.json</depends>
+    <depends optional="true">com.intellij.modules.json</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
     <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>

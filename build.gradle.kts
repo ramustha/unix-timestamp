@@ -72,7 +72,6 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            ide(IntelliJPlatformType.IntellijIdeaUltimate, "251.23774.16")
             recommended()
             select {
                 types = listOf(IntelliJPlatformType.IntellijIdeaUltimate)

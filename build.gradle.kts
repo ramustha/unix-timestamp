@@ -24,13 +24,14 @@ java {
 
 dependencies {
     intellijPlatform {
-        create("IU", "2024.1")
+        create("IU", "2024.3")
 
         bundledPlugin("com.intellij.java")
         bundledPlugin("org.intellij.groovy")
         bundledPlugin("com.intellij.css")
         bundledPlugin("com.intellij.database")
         bundledPlugin("org.jetbrains.kotlin")
+        bundledPlugin("com.intellij.modules.json")
         bundledPlugin("JavaScript")
 
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable

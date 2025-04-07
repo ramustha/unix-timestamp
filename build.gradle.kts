@@ -2,9 +2,9 @@ import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 
 plugins {
     id("java")
-    // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-    id("org.jetbrains.intellij.platform") version "2.3.0"
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
+    id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.10"
 }
 
 group = "com.ramusthastudio.plugin"
@@ -15,9 +15,6 @@ repositories {
 
     intellijPlatform {
         defaultRepositories()
-        localPlatformArtifacts()
-        releases()
-        marketplace()
     }
 }
 
@@ -37,22 +34,24 @@ dependencies {
         bundledPlugin("JavaScript")
 
         // https://plugins.jetbrains.com/plugin/9442-vue-js/versions/stable
-        plugin("org.jetbrains.plugins.vue", "241.14494.238")
+        plugin("org.jetbrains.plugins.vue", "241.14494.159")
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable
         plugin("com.jetbrains.restClient", "241.14494.150")
         // https://plugins.jetbrains.com/plugin/631-python/versions/stable
-        plugin("Pythonid", "241.14494.314")
+        plugin("Pythonid", "241.14494.158")
         // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
-        plugin("org.jetbrains.plugins.go", "241.14494.127")
+        plugin("org.jetbrains.plugins.go", "241.14494.240")
         // https://plugins.jetbrains.com/plugin/6610-php/versions/stable
-        plugin("com.jetbrains.php", "241.14494.237")
+        plugin("com.jetbrains.php", "241.14494.240")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
-        plugin("org.intellij.scala", "2024.1.24")
+        plugin("org.intellij.scala", "2024.1.20")
+        // https://plugins.jetbrains.com/plugin/6954-kotlin/versions
+        plugin("org.jetbrains.kotlin", "232-1.9.24-release-822-IJ10072.27")
     }
 
     testImplementation(kotlin("test-junit5"))
-    testImplementation("io.kotest:kotest-framework-engine:5.6.2")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
+    testImplementation("io.kotest:kotest-framework-engine:5.7.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.7.2")
 }
 
 intellijPlatform {
@@ -88,15 +87,18 @@ intellijPlatform {
 tasks {
     // Set the JVM compatibility versions
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "17"
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     test {
         useJUnitPlatform()
     }
-
 }

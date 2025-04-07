@@ -3,10 +3,13 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.inlayProvider language="Vue"
+                                   providerId="vue.unix.timestamp"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="VueJS"
+                                   providerId="vuejs.unix.timestamp"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
         <codeInsight.inlayProvider language="VueTS"
+                                   providerId="vue.ts.unix.timestamp"
                                    implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.vue.VueUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

@@ -74,7 +74,7 @@
 
         <codeInsight.declarativeInlayProvider
                 language="TEXT"
-                providerId="plainText"
+                providerId="plaintext.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="plaintext.inlay.provider.name"
@@ -82,7 +82,7 @@
                 implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints"/>
         <codeInsight.declarativeInlayProvider
                 language="JSON"
-                providerId="json"
+                providerId="json.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="json.inlay.provider.name"
@@ -90,7 +90,7 @@
                 implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JsonUnixTimestampInlayHints"/>
         <codeInsight.declarativeInlayProvider
                 language="XML"
-                providerId="xml"
+                providerId="xml.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="xml.inlay.provider.name"

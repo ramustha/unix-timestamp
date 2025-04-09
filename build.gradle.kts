@@ -1,5 +1,3 @@
-import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
-
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
@@ -73,12 +71,7 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            ide(IntelliJPlatformType.IntellijIdeaUltimate, "251.23774.200")
             recommended()
-            select {
-                types = listOf(IntelliJPlatformType.IntellijIdeaUltimate)
-                sinceBuild = "231"
-            }
         }
     }
 }

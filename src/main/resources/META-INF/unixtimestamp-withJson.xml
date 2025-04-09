@@ -3,12 +3,12 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
-                language="Scala"
-                providerId="scala.unix.timestamp"
+                language="JSON"
+                providerId="json.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
-                nameKey="scala.inlay.provider.name"
+                nameKey="json.inlay.provider.name"
                 group="CODE_VISION_GROUP"
-                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.ScalaUnixTimestampInlayHints"/>
+                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JsonUnixTimestampInlayHints"/>
     </extensions>
 </idea-plugin>

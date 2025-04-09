@@ -4,7 +4,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="go"
-                providerId="go"
+                providerId="go.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="go.inlay.provider.name"

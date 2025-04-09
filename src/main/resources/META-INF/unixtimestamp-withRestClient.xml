@@ -4,7 +4,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="HTTP Request"
-                providerId="http"
+                providerId="http.request.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="http.inlay.provider.name"

@@ -27,7 +27,7 @@
         ]]></description>
     <change-notes>
         <![CDATA[
-        <p><b>6.x.x</b></p>
+        <p><b>7.x.x</b></p>
         <ul>
             <li>Support inlay hints</li>
             <li>Support multiple caret</li>
@@ -48,7 +48,6 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
     <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>
@@ -61,6 +60,7 @@
     <depends optional="true" config-file="unixtimestamp-withPythonCore.xml">PythonCore</depends>
     <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
     <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
+    <depends optional="true" config-file="unixtimestamp-withJson.xml">com.intellij.modules.json</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
@@ -74,23 +74,15 @@
 
         <codeInsight.declarativeInlayProvider
                 language="TEXT"
-                providerId="plainText"
+                providerId="plaintext.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="plaintext.inlay.provider.name"
                 group="CODE_VISION_GROUP"
                 implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.PlainTextUnixTimestampInlayHints"/>
         <codeInsight.declarativeInlayProvider
-                language="JSON"
-                providerId="json"
-                isEnabledByDefault="true"
-                bundle="UnixBundle"
-                nameKey="json.inlay.provider.name"
-                group="CODE_VISION_GROUP"
-                implementationClass="com.ramusthastudio.plugin.unixtimestamp.hints.JsonUnixTimestampInlayHints"/>
-        <codeInsight.declarativeInlayProvider
                 language="XML"
-                providerId="xml"
+                providerId="xml.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="xml.inlay.provider.name"

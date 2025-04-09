@@ -1,10 +1,14 @@
 <idea-plugin>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true" />
+    </extensions>
+    
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="kotlin"
-                providerId="java"
+                providerId="kotlin.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="kotlin.inlay.provider.name"

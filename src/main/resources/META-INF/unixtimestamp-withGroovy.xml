@@ -4,7 +4,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="Groovy"
-                providerId="groovy"
+                providerId="groovy.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="groovy.inlay.provider.name"

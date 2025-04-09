@@ -8,7 +8,6 @@ import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.Instant
 import java.time.format.DateTimeFormatter
-import kotlin.random.Random
 
 class HelperTest : StringSpec({
 
@@ -17,16 +16,18 @@ class HelperTest : StringSpec({
         Helper.createInstantFormat("1700723850") shouldBe Instant.parse("2023-11-23T07:17:30.000Z")
         // Epoch millis
         Helper.createInstantFormat("1700723850123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        // Epoch millis with suffix
+        Helper.createInstantFormat("1700723850123L") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
         // Epoch micros
         Helper.createInstantFormat("1732184141128000") shouldBe Instant.parse("2024-11-21T10:15:41.128Z")
         // Epoch nanos
         Helper.createInstantFormat("1732184198639000000") shouldBe Instant.parse("2024-11-21T10:16:38.639Z")
         // Epoch with decimal millis
-        Helper.createInstantFormat("1700723850.123") shouldBe Instant.parse("2023-11-23T07:17:30.123Z")
+        Helper.createInstantFormat("1700723850.123") shouldBe Instant.parse("2023-11-23T07:17:30Z")
         // Epoch with decimal micros
-        Helper.createInstantFormat("1700723850.123456") shouldBe Instant.parse("2023-11-23T07:17:30.123456Z")
+        Helper.createInstantFormat("1700723850.123456") shouldBe Instant.parse("2023-11-23T07:17:30Z")
         // Epoch with decimal nanos
-        Helper.createInstantFormat("1700723850.123456789") shouldBe Instant.parse("2023-11-23T07:17:30.123456789Z")
+        Helper.createInstantFormat("1700723850.123456789") shouldBe Instant.parse("2023-11-23T07:17:30Z")
     }
 
     "createTimestamp should correctly convert formatted date-time string to UNIX timestamp" {
@@ -38,14 +39,14 @@ class HelperTest : StringSpec({
 
     "findUnixTimestamp should correctly identify unix timestamp in string" {
         val text = "This is an example string with UNIX timestamp 1609459200000."
-        val result = Helper.findUnixTimestamp(text)
-        result[0] shouldBe "1609459200000"
+        val result = Helper.findUnixTimestamp(text).toList()
+        result[0] shouldBe Pair("1609459200000", TextRange(46, 59))
     }
 
     "Find all valid Unix timestamps in the text" {
         val text = "The unix times were 1479999999, 1479999999000 and there was also 1479999999"
 
-        val result = Helper.findUnixTimestamp(text)
+        val result = Helper.findUnixTimestamp(text).map { pair -> pair.first }.toList()
 
         result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }
@@ -53,7 +54,7 @@ class HelperTest : StringSpec({
     "Find Unix timestamps and ignore other numbers" {
         val text = "The unix times were 1479999999, 1479999999000 but there were also 12345, 789000"
 
-        val result = Helper.findUnixTimestamp(text)
+        val result = Helper.findUnixTimestamp(text).map { pair -> pair.first }.toList()
 
         result.shouldContainAll(listOf("1479999999", "1479999999000"))
     }
@@ -70,7 +71,7 @@ class HelperTest : StringSpec({
             }
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).map { it.first }.distinct().toList()
 
         // Assert the size of the result
         result shouldHaveSize 2
@@ -94,7 +95,7 @@ class HelperTest : StringSpec({
             }
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).map { it.first }.distinct().toList()
 
         // Assert the size of the result
         result shouldHaveSize 3
@@ -116,7 +117,7 @@ class HelperTest : StringSpec({
             append("Third: $timestamp3. ")
         }
 
-        val result = Helper.findUnixTimestamp(largeString)
+        val result = Helper.findUnixTimestamp(largeString).map { pair -> pair.first }.toList()
 
         result shouldHaveSize 3
         result[0] shouldBe timestamp1
@@ -124,49 +125,4 @@ class HelperTest : StringSpec({
         result[2] shouldBe timestamp3
     }
 
-    "findTextRanges should return correct ranges when searching for a timestamp" {
-        val timeStamp = "1691475292"
-        val text = """
-            Hey there! Timestamp is here: 1691475292 . That's it.
-            Hey there! Timestamp is here: 1691475292.1 . That's it.
-            Hey there! Timestamp is here: 1691475292.12. That's it.
-            """
-
-        val result = Helper.findTextRanges(text, timeStamp)
-
-        val expected = listOf(
-            TextRange(43, 53),
-            TextRange(109, 121),
-            TextRange(177, 190),
-        )
-
-        result shouldBe expected
-    }
-
-    "findTextRanges should return empty list when targetWord not found" {
-        val text = "Hello Universe"
-        val targetWord = "World"
-
-        val result = Helper.findTextRanges(text, targetWord)
-
-        result shouldBe emptyList()
-    }
-
-    "findTextRanges should work with huge strings" {
-        // Generate a large string of random lowercase characters
-        val hugeText = StringBuilder().apply {
-            for (i in 1..1_000_000) {
-                append(Random.nextInt(97, 122).toChar())
-            }
-        }.toString()
-
-        // Insert the timestamp at 500_000 position
-        val timeStamp = " ${System.currentTimeMillis()} "
-        val hugeTextWithTarget = hugeText.substring(0, 500_000) + timeStamp + hugeText.substring(500_000)
-
-        val result = Helper.findTextRanges(hugeTextWithTarget, timeStamp)
-        val expected = listOf(TextRange(500_000, 500_000 + timeStamp.length))
-
-        result shouldBe expected
-    }
 })

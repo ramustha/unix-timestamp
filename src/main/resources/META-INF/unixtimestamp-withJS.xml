@@ -4,7 +4,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="JavaScript"
-                providerId="javascript"
+                providerId="javascript.unix.timestamp"
                 isEnabledByDefault="true"
                 bundle="UnixBundle"
                 nameKey="javascript.inlay.provider.name"

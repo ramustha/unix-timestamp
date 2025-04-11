@@ -20,9 +20,19 @@ class BaseInlayHintsCollector<T : PsiElement?>(
     override fun collectFromElement(element: PsiElement, sink: InlayTreeSink) {
         if (psiElement.isInstance(element)) {
             val uniqueIndices: MutableSet<Int> = mutableSetOf()
-            val text = element.text
+            val textRange = element.textRange
+            val document = editor.document
+            val text = document.getText(textRange)
+            
             findUnixTimestamp(text)
-                .forEach { (word, textRange) -> addTextPresentation(uniqueIndices, textRange, word, sink) }
+                .forEach { (word, range) -> 
+                    // Convert relative range to absolute range
+                    val absoluteRange = TextRange(
+                        textRange.startOffset + range.startOffset,
+                        textRange.startOffset + range.endOffset
+                    )
+                    addTextPresentation(uniqueIndices, absoluteRange, word, sink)
+                }
         }
     }
 

@@ -1,6 +1,8 @@
 <idea-plugin>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <depends>com.intellij.modules.json</depends>
+    
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.declarativeInlayProvider
                 language="JSON"

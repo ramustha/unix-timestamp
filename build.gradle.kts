@@ -41,8 +41,6 @@ dependencies {
         plugin("com.jetbrains.php", "241.14494.240")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
         plugin("org.intellij.scala", "2024.1.20")
-        // https://plugins.jetbrains.com/plugin/6954-kotlin/versions
-        plugin("org.jetbrains.kotlin", "232-1.9.24-release-822-IJ10072.27")
     }
 
     testImplementation(kotlin("test-junit5"))

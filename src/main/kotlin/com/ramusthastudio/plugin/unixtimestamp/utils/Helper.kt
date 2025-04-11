@@ -61,15 +61,11 @@ object Helper {
 
     fun findUnixTimestamp(text: String): Sequence<Pair<String, TextRange>> {
         if (text.length < SECONDS_LENGTH) return emptySequence()
+        if (!text.any { it.isDigit() }) return emptySequence()
         
-        return if (text.length > 10000) {
-            TIMESTAMP_REGEX.findAll(text)
-                .asIterable()
-                .asSequence()
-                .map { it.value to TextRange(it.range.first, it.range.last + 1) }
-        } else {
-            TIMESTAMP_REGEX.findAll(text)
-                .map { it.value to TextRange(it.range.first, it.range.last + 1) }
-        }
+        return TIMESTAMP_REGEX.findAll(text)
+            .map { match ->
+                match.value to TextRange(match.range.first, match.range.last + 1)
+            }
     }
 }

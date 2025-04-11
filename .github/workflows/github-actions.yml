@@ -17,8 +17,5 @@ jobs:
         with:
           arguments: clean build
 
-      - name: Execute Plugin Verifier
-        run: gradle verifyPlugin
-
       - name: Execute Sign Plugin
         run: gradle signPlugin

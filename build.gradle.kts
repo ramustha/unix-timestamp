@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "7.1.1"
+version = "7.1.2"
 
 repositories {
     mavenCentral()
@@ -17,12 +17,13 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    // Required for 2024.2+
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
     intellijPlatform {
-        create("IU", "2024.1")
+        create("IU", "2024.3")
 
         bundledPlugin("com.intellij.java")
         bundledPlugin("org.intellij.groovy")
@@ -30,17 +31,21 @@ dependencies {
         bundledPlugin("com.intellij.database")
         bundledPlugin("org.jetbrains.kotlin")
         bundledPlugin("JavaScript")
+        // Required for 2024.3+
+        bundledPlugin("com.intellij.modules.json")
 
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable
-        plugin("com.jetbrains.restClient", "241.14494.150")
+        plugin("com.jetbrains.restClient", "243.21565.48")
         // https://plugins.jetbrains.com/plugin/631-python/versions/stable
-        plugin("Pythonid", "241.14494.158")
+        plugin("Pythonid", "243.21565.23")
+        // https://plugins.jetbrains.com/plugin/7322-python-community-edition/versions
+        plugin("PythonCore", "243.21565.23")
         // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
-        plugin("org.jetbrains.plugins.go", "241.14494.240")
+        plugin("org.jetbrains.plugins.go", "243.21565.23")
         // https://plugins.jetbrains.com/plugin/6610-php/versions/stable
-        plugin("com.jetbrains.php", "241.14494.240")
+        plugin("com.jetbrains.php", "243.21565.34")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
-        plugin("org.intellij.scala", "2024.1.20")
+        plugin("org.intellij.scala", "2024.3.1")
     }
 
     testImplementation(kotlin("test-junit5"))
@@ -51,8 +56,9 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            sinceBuild = "231"
-            untilBuild = "251.*"
+            // Support from 2024.1 to 2024.3
+            sinceBuild = "241"
+            untilBuild = "243.*"
         }
     }
 
@@ -77,13 +83,13 @@ tasks {
     // Set the JVM compatibility versions
     compileKotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         }
     }
 
     compileTestKotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         }
     }
 

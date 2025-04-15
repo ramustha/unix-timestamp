@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "7.1.2"
+version = "7.2.0"
 
 repositories {
     mavenCentral()
@@ -56,9 +56,9 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            // Support from 2024.1 to 2024.3
+            // Support from 2024.1 to 2025.1
             sinceBuild = "241"
-            untilBuild = "243.*"
+            untilBuild = "251.*"
         }
     }
 

@@ -48,6 +48,7 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
     <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>
@@ -59,7 +60,6 @@
     <depends optional="true" config-file="unixtimestamp-withPython.xml">PythonCore</depends>
     <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
     <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
-    <depends optional="true" config-file="unixtimestamp-withJson.xml">com.intellij.modules.json</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->

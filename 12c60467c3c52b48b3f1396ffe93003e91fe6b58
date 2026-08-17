@@ -1,0 +1,58 @@
+src/main/kotlin/com/ramusthastudio/plugin/unixtimestamp/action/CustomUnixTimestampAction.kt
+  c782e00e85e6010e 31-32
+.github/workflows/github-actions.yml
+  c782e00e85e6010e 3-4,9-10,18-21,24
+gradlew.bat
+  c782e00e85e6010e 22,26-27,54,68,75-78,80-82
+gradlew
+  c782e00e85e6010e 4,23,32,60,206,213
+src/main/kotlin/com/ramusthastudio/plugin/unixtimestamp/action/CurrentUnixTimestampAction.kt
+  c782e00e85e6010e 15-16
+src/main/kotlin/com/ramusthastudio/plugin/unixtimestamp/hints/PlainTextUnixTimestampInlayHints.kt
+  72452906f62388e8 15
+src/main/resources/META-INF/plugin.xml
+  72452906f62388e8 30-37
+gradle/wrapper/gradle-wrapper.properties
+  c782e00e85e6010e 3,5-6
+src/main/kotlin/com/ramusthastudio/plugin/unixtimestamp/hints/BaseInlayHintsCollector.kt
+  72452906f62388e8 5-6,8,15-16,18-23,26-34,36,38-48,51-55
+src/test/kotlin/com/ramusthastudio/plugin/unixtimestamp/utils/HelperTest.kt
+  72452906f62388e8 9,34-39,135-162
+build.gradle.kts
+  72452906f62388e8 4-5,9,20,26-28,40,42,44,46,48,50,54-56,62-63
+src/main/kotlin/com/ramusthastudio/plugin/unixtimestamp/utils/Helper.kt
+  72452906f62388e8 19-21,23-32,41-47,50-58,63-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.23",
+  "base_commit_sha": "12c60467c3c52b48b3f1396ffe93003e91fe6b58",
+  "prompts": {
+    "72452906f62388e8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a00cb6-1120-7a30-88a8-419a62515273",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "ramadhani.musthofa <ramusthanest@gmail.com>",
+      "messages": [],
+      "total_additions": 142,
+      "total_deletions": 94,
+      "accepted_lines": 137,
+      "overriden_lines": 0
+    },
+    "c782e00e85e6010e": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "afe816df-db4d-4ea3-b4f2-15e02ae516a1",
+        "model": "unknown"
+      },
+      "human_author": "ramadhani.musthofa <ramusthanest@gmail.com>",
+      "messages": [],
+      "total_additions": 104,
+      "total_deletions": 117,
+      "accepted_lines": 104,
+      "overriden_lines": 0
+    }
+  }
+}

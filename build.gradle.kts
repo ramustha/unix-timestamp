@@ -1,12 +1,12 @@
 plugins {
     id("java")
     // https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
-    id("org.jetbrains.intellij.platform") version "2.5.0"
-    id("org.jetbrains.kotlin.jvm") version "2.1.10"
+    id("org.jetbrains.intellij.platform") version "2.18.1"
+    id("org.jetbrains.kotlin.jvm") version "2.4.10"
 }
 
 group = "com.ramusthastudio.plugin"
-version = "7.2.0"
+version = "8.0.0"
 
 repositories {
     mavenCentral()
@@ -17,13 +17,15 @@ repositories {
 }
 
 java {
-    // Required for 2024.2+
+    // IntelliJ Platform 2024.2+ runs on Java 21.
     sourceCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
     intellijPlatform {
-        create("IU", "2024.3")
+        // Build against Java 21-based 2026.1 so the same artifact remains compatible
+        // with 2024.2+ and also runs on the Java 25-based 2026.2 platform.
+        intellijIdea("2026.1.5")
 
         bundledPlugin("com.intellij.java")
         bundledPlugin("org.intellij.groovy")
@@ -35,30 +37,30 @@ dependencies {
         bundledPlugin("com.intellij.modules.json")
 
         // https://plugins.jetbrains.com/plugin/13121-http-client/versions/stable
-        plugin("com.jetbrains.restClient", "243.21565.48")
+        plugin("com.jetbrains.restClient", "261.24374.34")
         // https://plugins.jetbrains.com/plugin/631-python/versions/stable
-        plugin("Pythonid", "243.21565.23")
+        plugin("Pythonid", "261.26222.65")
         // https://plugins.jetbrains.com/plugin/7322-python-community-edition/versions
-        plugin("PythonCore", "243.21565.23")
+        plugin("PythonCore", "261.26222.65")
         // https://plugins.jetbrains.com/plugin/9568-go/versions/stable
-        plugin("org.jetbrains.plugins.go", "243.21565.23")
+        plugin("org.jetbrains.plugins.go", "261.26222.22")
         // https://plugins.jetbrains.com/plugin/6610-php/versions/stable
-        plugin("com.jetbrains.php", "243.21565.34")
+        plugin("com.jetbrains.php", "261.26222.22")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
-        plugin("org.intellij.scala", "2024.3.1")
+        plugin("org.intellij.scala", "2026.1.20")
     }
 
     testImplementation(kotlin("test-junit5"))
-    testImplementation("io.kotest:kotest-framework-engine:5.7.2")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.7.2")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("io.kotest:kotest-framework-engine:6.1.11")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:6.1.11")
 }
 
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            // Support from 2024.1 to 2025.1
-            sinceBuild = "241"
-            untilBuild = "251.*"
+            // Java 21 bytecode supports IntelliJ Platform 2024.2+.
+            sinceBuild = "242"
         }
     }
 

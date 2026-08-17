@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldBeNull
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 
@@ -28,6 +29,12 @@ class HelperTest : StringSpec({
         Helper.createInstantFormat("1700723850.123456") shouldBe Instant.parse("2023-11-23T07:17:30Z")
         // Epoch with decimal nanos
         Helper.createInstantFormat("1700723850.123456789") shouldBe Instant.parse("2023-11-23T07:17:30Z")
+    }
+
+    "createInstantFormat should reject invalid and overflowing values without throwing" {
+        Helper.createInstantFormat("").shouldBeNull()
+        Helper.createInstantFormat("not-a-timestamp").shouldBeNull()
+        Helper.createInstantFormat("9999999999999999999").shouldBeNull()
     }
 
     "createTimestamp should correctly convert formatted date-time string to UNIX timestamp" {
@@ -123,6 +130,36 @@ class HelperTest : StringSpec({
         result[0] shouldBe timestamp1
         result[1] shouldBe timestamp2
         result[2] shouldBe timestamp3
+    }
+
+    "findUnixTimestamp should respect microsecond and nanosecond switches" {
+        val text = "seconds=1700723850 micros=1732184141128000 nanos=1732184198639000000"
+
+        Helper.findUnixTimestamp(
+            text,
+            isSupportMicroSeconds = false,
+            isSupportNanoSeconds = false
+        ).map { it.first }.toList() shouldBe listOf("1700723850")
+    }
+
+    "findUnixTimestamp should reject unsupported timestamp lengths" {
+        val text = "valid=1700723850 invalid=17007238501 invalid=170072385012"
+
+        Helper.findUnixTimestamp(text).map { it.first }.toList() shouldBe listOf("1700723850")
+    }
+
+    "findUnixTimestamp should accept a CharSequence and stop at the match limit" {
+        val text = buildString {
+            repeat(50_000) { index ->
+                append(1_700_000_000_000L + index).append(' ')
+            }
+        }
+
+        val result = Helper.findUnixTimestamp(StringBuilder(text), maxMatches = 1_000).toList()
+
+        result shouldHaveSize 1_000
+        result.first().first shouldBe "1700000000000"
+        result.last().first shouldBe "1700000000999"
     }
 
 })

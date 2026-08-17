@@ -12,7 +12,7 @@ open class PlainTextUnixTimestampInlayHints : InlayHintsProvider {
         file: PsiFile,
         editor: Editor
     ): InlayHintsCollector {
-        return BaseInlayHintsCollector(file, editor, psiFile())
+        return BaseInlayHintsCollector(editor, psiFile())
     }
 
     open fun psiFile(): Class<out PsiFile> = PsiPlainTextFile::class.java

@@ -27,6 +27,14 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>8.0.0</b></p>
+        <ul>
+            <li>Support IntelliJ Platform 2026.1, 2026.2, and future IDE builds while retaining compatibility with 2024.2 and newer.</li>
+            <li>Prevent editor freezes by scanning each file once instead of repeatedly rescanning it for every timestamp.</li>
+            <li>Reduce retained memory by removing the unbounded process-wide timestamp cache.</li>
+            <li>Bound inlay processing for very large files and make collection responsive to cancellation.</li>
+            <li>Respect microsecond and nanosecond settings while collecting inlay hints.</li>
+        </ul>
         <p><b>7.x.x</b></p>
         <ul>
             <li>Support inlay hints</li>

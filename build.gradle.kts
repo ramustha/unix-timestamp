@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ramusthastudio.plugin"
-version = "8.0.0"
+version = "8.0.1"
 
 repositories {
     mavenCentral()
@@ -48,12 +48,28 @@ dependencies {
         plugin("com.jetbrains.php", "261.26222.22")
         // https://plugins.jetbrains.com/plugin/1347-scala/versions
         plugin("org.intellij.scala", "2026.1.20")
+
+        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
     }
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.kotest:kotest-framework-engine:6.1.11")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:6.1.11")
+    // kotest pulls in kotlinx-coroutines-debug -> JNA 5.9.0, which conflicts
+    // with the JNA bundled in the IntelliJ platform (util-8.jar). Exclude it
+    // so the platform's JNA classes load against the IDE's native library.
+    testImplementation("io.kotest:kotest-framework-engine:6.1.11") {
+        exclude(group = "net.java.dev.jna")
+    }
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:6.1.11") {
+        exclude(group = "net.java.dev.jna")
+    }
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:6.1.2")
+}
+
+configurations.testRuntimeClasspath {
+    // IntelliJ ships a patched coroutine runtime required by its test framework.
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core-jvm")
 }
 
 intellijPlatform {
@@ -97,5 +113,8 @@ tasks {
 
     test {
         useJUnitPlatform()
+        // macOS test runs otherwise initialize JNA-backed native scrollbars,
+        // which are not available in the test JVM.
+        systemProperty("ide.mac.disableMacScrollbars", "true")
     }
 }

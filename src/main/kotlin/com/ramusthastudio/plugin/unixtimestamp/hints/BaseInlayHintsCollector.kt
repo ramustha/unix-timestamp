@@ -2,51 +2,56 @@ package com.ramusthastudio.plugin.unixtimestamp.hints
 
 import com.intellij.codeInsight.hints.declarative.InlayTreeSink
 import com.intellij.codeInsight.hints.declarative.InlineInlayPosition
-import com.intellij.codeInsight.hints.declarative.SharedBypassCollector
+import com.intellij.codeInsight.hints.declarative.HintFormat
+import com.intellij.codeInsight.hints.declarative.OwnBypassCollector
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.util.TextRange
-import com.intellij.psi.PsiElement
+import com.intellij.openapi.progress.ProgressManager
 import com.intellij.psi.PsiFile
 import com.ramusthastudio.plugin.unixtimestamp.settings.AppSettingsState
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.createInstantFormat
 import com.ramusthastudio.plugin.unixtimestamp.utils.Helper.findUnixTimestamp
 
-class BaseInlayHintsCollector<T : PsiElement?>(
-    val file: PsiFile,
-    val editor: Editor,
-    private val psiElement: Class<T>,
+class BaseInlayHintsCollector(
+    private val editor: Editor,
+    private val psiFileClass: Class<out PsiFile>,
     private val settingsState: AppSettingsState = AppSettingsState.instance
-) : SharedBypassCollector {
-    override fun collectFromElement(element: PsiElement, sink: InlayTreeSink) {
-        if (psiElement.isInstance(element)) {
-            val uniqueIndices: MutableSet<Int> = mutableSetOf()
-            val textRange = element.textRange
-            val document = editor.document
-            val text = document.getText(textRange)
-            
-            findUnixTimestamp(text)
-                .forEach { (word, range) -> 
-                    // Convert relative range to absolute range
-                    val absoluteRange = TextRange(
-                        textRange.startOffset + range.startOffset,
-                        textRange.startOffset + range.endOffset
-                    )
-                    addTextPresentation(uniqueIndices, absoluteRange, word, sink)
-                }
+) : OwnBypassCollector {
+    override fun collectHintsForFile(file: PsiFile, sink: InlayTreeSink) {
+        ProgressManager.checkCanceled()
+        val document = editor.document
+        if (!psiFileClass.isInstance(file) || document.textLength > MAX_DOCUMENT_LENGTH) {
+            return
+        }
+
+        findUnixTimestamp(
+            document.charsSequence,
+            settingsState.isSupportMicroSecondsEnable,
+            settingsState.isSupportNanoSecondsEnable,
+            MAX_HINTS_PER_FILE
+        ).forEachIndexed { index, (word, textRange) ->
+            if (index % CANCELLATION_CHECK_INTERVAL == 0) {
+                ProgressManager.checkCanceled()
+            }
+
+            val instant = createInstantFormat(word) ?: return@forEachIndexed
+            val hint = settingsState.defaultLocalFormatter.format(instant)
+            val offset = if (settingsState.isInlayHintsPlaceEndOfLineEnable) {
+                textRange.endOffset
+            } else {
+                textRange.startOffset
+            }
+            sink.addPresentation(
+                InlineInlayPosition(offset, false),
+                emptyList(),
+                null,
+                HintFormat.default
+            ) { text(hint) }
         }
     }
 
-    private fun addTextPresentation(
-        uniqueIndices: MutableSet<Int>,
-        textRange: TextRange,
-        word: String,
-        sink: InlayTreeSink
-    ) {
-        val offset = if (settingsState.isInlayHintsPlaceEndOfLineEnable) textRange.endOffset else textRange.startOffset
-        if (uniqueIndices.add(offset)) {
-            val instant = createInstantFormat(word)
-            val hint = settingsState.defaultLocalFormatter.format(instant)
-            sink.addPresentation(InlineInlayPosition(offset, false), hasBackground = true) { text(hint) }
-        }
+    companion object {
+        internal const val MAX_DOCUMENT_LENGTH = 2_000_000
+        internal const val MAX_HINTS_PER_FILE = 1_000
+        private const val CANCELLATION_CHECK_INTERVAL = 128
     }
 }

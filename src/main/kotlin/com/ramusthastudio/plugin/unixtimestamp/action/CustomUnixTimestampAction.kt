@@ -28,8 +28,8 @@ class CustomUnixTimestampAction : AnActionButton() {
     override fun actionPerformed(e: AnActionEvent) {
         val timestampDialog = GenerateTimestampDialog(appSettingsState)
         if (timestampDialog.showAndGet()) {
-            val editor = e.getRequiredData(CommonDataKeys.EDITOR)
-            val project = e.getRequiredData(CommonDataKeys.PROJECT)
+            val editor = e.getData(CommonDataKeys.EDITOR) ?: return
+            val project = e.project ?: return
             val document = editor.document
             val allCarets = editor.caretModel.allCarets
             val currentTime = timestampDialog.result

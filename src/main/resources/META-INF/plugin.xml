@@ -27,6 +27,19 @@
         ]]></description>
     <change-notes>
         <![CDATA[
+        <p><b>8.0.1</b></p>
+        <ul>
+            <li>Restore inlay hints for JSON files, which were not registered in 8.0.0.</li>
+            <li>Add automated inlay hint tests for plain text, JSON, and JavaScript files.</li>
+        </ul>
+        <p><b>8.0.0</b></p>
+        <ul>
+            <li>Support IntelliJ Platform 2026.1, 2026.2, and future IDE builds while retaining compatibility with 2024.2 and newer.</li>
+            <li>Prevent editor freezes by scanning each file once instead of repeatedly rescanning it for every timestamp.</li>
+            <li>Reduce retained memory by removing the unbounded process-wide timestamp cache.</li>
+            <li>Bound inlay processing for very large files and make collection responsive to cancellation.</li>
+            <li>Respect microsecond and nanosecond settings while collecting inlay hints.</li>
+        </ul>
         <p><b>7.x.x</b></p>
         <ul>
             <li>Support inlay hints</li>
@@ -48,6 +61,8 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
+    <depends optional="true" config-file="unixtimestamp-withJson.xml">com.intellij.modules.json</depends>
     <depends optional="true" config-file="unixtimestamp-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="unixtimestamp-withGroovy.xml">org.intellij.groovy</depends>
     <depends optional="true" config-file="unixtimestamp-withScala.xml">org.intellij.scala</depends>
@@ -56,11 +71,9 @@
     <depends optional="true" config-file="unixtimestamp-withCSS.xml">com.intellij.css</depends>
     <depends optional="true" config-file="unixtimestamp-withDatabase.xml">com.intellij.database</depends>
     <depends optional="true" config-file="unixtimestamp-withRestClient.xml">com.jetbrains.restClient</depends>
-    <depends optional="true" config-file="unixtimestamp-withPython.xml">Pythonid</depends>
-    <depends optional="true" config-file="unixtimestamp-withPythonCore.xml">PythonCore</depends>
+    <depends optional="true" config-file="unixtimestamp-withPython.xml">PythonCore</depends>
     <depends optional="true" config-file="unixtimestamp-withGo.xml">org.jetbrains.plugins.go</depends>
     <depends optional="true" config-file="unixtimestamp-withPhp.xml">com.jetbrains.php</depends>
-    <depends optional="true" config-file="unixtimestamp-withJson.xml">com.intellij.modules.json</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
